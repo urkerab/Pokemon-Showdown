@@ -1375,6 +1375,7 @@ let BattleAbilities = {
 			const forme = pokemon.hp <= pokemon.maxhp / 2 ? 'cramorantgorging' : 'cramorantgulping';
 			pokemon.formeChange(forme, move);
 		},
+		isUnbreakable: true,
 		id: "gulpmissile",
 		name: "Gulp Missile",
 		rating: 1.5,
@@ -2221,8 +2222,9 @@ let BattleAbilities = {
 				}
 			}
 			if (Object.keys(negativeBoosts).length) {
-				this.add('-ability', target, 'Mirror Armor');
-				this.boost(negativeBoosts, source, target, null, true);
+				if (source.volatiles['substitute'] || !this.boost(negativeBoosts, source, target)) {
+					this.add('-immune', target, '[from] ability: Mirror Armor');
+				}
 			}
 		},
 		id: "mirrorarmor",
