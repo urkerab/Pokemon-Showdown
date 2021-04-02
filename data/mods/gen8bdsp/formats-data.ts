@@ -56,7 +56,7 @@ export const FormatsData: {[k: string]: ModdedSpeciesFormatsData} = {
 		randomBattleMoves: ["poisonjab", "protect", "toxicspikes", "uturn"],
 	},
 	beedrillmega: {
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 		tier: "Illegal",
 	},
 	pidgey: {
@@ -71,7 +71,7 @@ export const FormatsData: {[k: string]: ModdedSpeciesFormatsData} = {
 		randomBattleMoves: ["bravebird", "defog", "quickattack", "roost", "steelwing", "uturn"],
 	},
 	pidgeotmega: {
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 		tier: "Illegal",
 	},
 	rattata: {
@@ -2138,6 +2138,6 @@ export const FormatsData: {[k: string]: ModdedSpeciesFormatsData} = {
 	// Because it's marked as Unobtainable in the main file for some reason
 	eternatuseternamax: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 };

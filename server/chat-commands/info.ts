@@ -46,7 +46,7 @@ export function findFormats(targetId: string, isOMSearch = false) {
 	for (const format of formatList) {
 		const sectionId = toID(format.section);
 		// Skip generation prefix if it wasn't provided
-		const formatId = /^gen\d+/.test(targetId) ? format.id : format.id.slice(4);
+		const formatId = /^gen\d/.test(targetId) ? format.id : format.id.slice(4);
 		if (
 			!targetId || format[targetId + 'Show' as 'searchShow'] || sectionId === targetId ||
 			formatId.startsWith(targetId) || exactFormat.exists
@@ -551,65 +551,107 @@ export const commands: Chat.ChatCommands = {
 	dex: 'data',
 	pokedex: 'data',
 	data(target, room, user, connection, cmd) {
+		if (!this.broadcasting && this.cmdToken === '!') {
+			const message = this.checkChat(this.message);
+			if (!message) return false;
+
+			// broadcast cooldown
+			const broadcastMessage = message.toLowerCase().replace(/[^a-z0-9\s!,]/g, '');
+
+			if (room && room.lastBroadcast === this.broadcastMessage &&
+					room.lastBroadcastTime >= Date.now() - 20 * 1000) {
+				this.errorReply("You can't broadcast this because it was just broadcasted.");
+				return false;
+			}
+
+			this.message = message;
+			this.broadcastMessage = broadcastMessage;
+		}
 		if (!this.runBroadcast()) return;
 		const gen = parseInt(cmd.substr(-1));
 		if (gen) target += `, gen${gen}`;
 
-		const {dex, format, targets} = this.splitFormat(target, true);
-
 		let buffer = '';
-		target = targets.join(',');
-		const targetId = toID(target);
+		const targets = target.split(/[,/]/);
+		let targetId = toID(targets[0]);
 		if (!targetId) return this.parse('/help data');
-		const targetNum = parseInt(target);
+		const targetNum = parseInt(targets[0]);
 		if (!isNaN(targetNum) && `${targetNum}` === target) {
 			for (const pokemon of Dex.species.all()) {
 				if (pokemon.num === targetNum) {
-					target = pokemon.baseSpecies;
+					targets[0] = pokemon.name;
+					targetId = pokemon.id;
 					break;
 				}
 			}
 		}
-		const newTargets = dex.dataSearch(target);
+		/** @type {Format?} */
+		const format = Dex.formats.get(targets[1] || room?.battle?.format);
+		const dex = Dex.formats.get(targets[1]).exists ? Dex.forFormat(format) : toID(targets[1]) in Dex.dexes ? Dex.mod(toID(targets[1])) : room?.battle ? Dex.forFormat(format) : Dex;
+		const newTargets = dex.dataSearch(targets[0].trim());
 		const showDetails = (cmd.startsWith('dt') || cmd === 'details');
 		if (!newTargets || !newTargets.length) {
-			return this.errorReply(`No Pok\u00e9mon, item, move, ability or nature named '${target}' was found${Dex.gen > dex.gen ? ` in Gen ${dex.gen}` : ""}. (Check your spelling?)`);
+			return this.errorReply(`No Pok\u00e9mon, item, move, ability or nature named '${targets[0]}' was found. (Check your spelling?)`);
 		}
 
+		let reportInexact: [string, AnyObject] | false = newTargets[0].isInexact && [targets[0], newTargets[0]];
 		for (const [i, newTarget] of newTargets.entries()) {
-			if (newTarget.isInexact && !i) {
-				buffer = `No Pok\u00e9mon, item, move, ability or nature named '${target}' was found${Dex.gen > dex.gen ? ` in Gen ${dex.gen}` : ""}. Showing the data of '${newTargets[0].name}' instead.\n`;
+			let pokemon;
+			let details: {[k: string]: number | string} | null = null;
+			let desc = null;
+			if (targets.length > 2 && newTarget.searchType === 'pokemon' && format.onModifySpecies) {
+				const set: Partial<PokemonSet> = {name: "", species: newTarget.name, moves: []};
+				for (const subTarget of targets.slice(2)) {
+					if (toID(subTarget) === 'shiny') {
+						set.shiny = true;
+					} else {
+						const subTargets = dex.dataSearch(subTarget.trim());
+						if (subTargets && subTargets.length === 1) {
+							if (!i && !reportInexact && subTargets[0].isInexact) reportInexact = [subTarget, subTargets[0]];
+							switch (subTargets[0].searchType) {
+							case 'pokemon':
+								set.name = subTargets[0].name;
+								break;
+							case 'move':
+								set.moves!.push(toID(subTarget));
+								break;
+							case 'ability':
+								set.ability = subTargets[0].name;
+								break;
+							case 'item':
+								set.item = toID(subTarget);
+								break;
+							case 'nature':
+								set.nature = subTargets[0].name;
+								break;
+							}
+						} else {
+							set.name = subTarget.trim();
+						}
+					}
+				}
+				try {
+					const clampIntRange = Utils.clampIntRange;
+					pokemon = format.onModifySpecies.call({dex, clampIntRange, toID} as Battle, dex.species.get(newTarget.name), {m: {}, set: set} as Pokemon, format, set.item && dex.items.get(set.item) || undefined);
+					if (targets[1] && !pokemon) reportInexact = [target, newTargets[0]];
+				} catch (err: any) {
+					Rooms.global.reportCrash(err);
+				}
+			} else if (!i && !reportInexact && targets[1] && dex === Dex && !format.exists) {
+				reportInexact = [target, newTarget];
 			}
-			let details: {[k: string]: string} = {};
+			if (reportInexact) {
+				buffer = `No Pok\u00e9mon, item, move, ability or nature named '${reportInexact[0]}' was found. Showing the data of '${reportInexact[1].isInexact || reportInexact[1].name}' instead.\n`;
+				reportInexact = false;
+			}
 			switch (newTarget.searchType) {
 			case 'nature':
 				const nature = Dex.natures.get(newTarget.name);
-				buffer += `${nature.name} nature: `;
-				if (nature.plus) {
-					buffer += `+10% ${Dex.stats.names[nature.plus]}, -10% ${Dex.stats.names[nature.minus!]}.`;
-				} else {
-					buffer += `No effect.`;
-				}
-				return this.sendReply(buffer);
+				buffer += `|raw|${Chat.getDataNatureHTML(nature)}\n`;
+				break;
 			case 'pokemon':
-				let pokemon = dex.species.get(newTarget.name);
-				if (format?.onModifySpecies) {
-					pokemon = format.onModifySpecies.call({dex, clampIntRange: Utils.clampIntRange, toID} as Battle, pokemon) || pokemon;
-				}
-				let tierDisplay = room?.settings.dataCommandTierDisplay;
-				if (!tierDisplay && room?.battle) {
-					if (room.battle.format.includes('doubles') || room.battle.format.includes('vgc')) {
-						tierDisplay = 'doubles tiers';
-					} else if (room.battle.format.includes('nationaldex')) {
-						tierDisplay = 'National Dex tiers';
-					}
-				}
-				if (!tierDisplay) tierDisplay = 'tiers';
-				const displayedTier = tierDisplay === 'tiers' ? pokemon.tier :
-					tierDisplay === 'doubles tiers' ? pokemon.doublesTier :
-					tierDisplay === 'National Dex tiers' ? pokemon.natDexTier :
-					pokemon.num >= 0 ? String(pokemon.num) : pokemon.tier;
-				buffer += `|raw|${Chat.getDataPokemonHTML(pokemon, dex.gen, displayedTier)}\n`;
+				if (!pokemon) pokemon = dex.species.get(newTarget.name);
+				buffer += `|raw|${Chat.getDataPokemonHTML(pokemon, dex.gen, format && format.gameType !== 'singles' ? pokemon.doublesTier : undefined)}\n`;
 				if (showDetails) {
 					let weighthit = 20;
 					if (pokemon.weighthg >= 2000) {
@@ -624,8 +666,8 @@ export const commands: Chat.ChatCommands = {
 						weighthit = 40;
 					}
 					details = {
-						"Dex#": String(pokemon.num),
-						Gen: String(pokemon.gen) || 'CAP',
+						"Dex#": pokemon.num,
+						Gen: pokemon.gen,
 						Height: `${pokemon.heightm} m`,
 					};
 					details["Weight"] = `${pokemon.weighthg / 10} kg <em>(${weighthit} BP)</em>`;
@@ -633,6 +675,7 @@ export const commands: Chat.ChatCommands = {
 					if (gmaxMove && dex.gen >= 8) details["G-Max Move"] = gmaxMove;
 					if (pokemon.color && dex.gen >= 5) details["Dex Colour"] = pokemon.color;
 					if (pokemon.eggGroups && dex.gen >= 2) details["Egg Group(s)"] = pokemon.eggGroups.join(", ");
+					if (pokemon.innate) details["Innate"] = dex.abilities.get(pokemon.innate).name;
 					const evos: string[] = [];
 					for (const evoName of pokemon.evos) {
 						const evo = dex.species.get(evoName);
@@ -674,15 +717,16 @@ export const commands: Chat.ChatCommands = {
 				break;
 			case 'item':
 				const item = dex.items.get(newTarget.name);
-				buffer += `|raw|${Chat.getDataItemHTML(item)}\n`;
+				desc = showDetails && item.shortDesc && item.desc !== item.shortDesc && item.desc;
+				buffer += `|raw|${Chat.getDataItemHTML(item, !!desc)}\n`;
 				if (showDetails) {
 					details = {
-						Gen: String(item.gen),
+						"Gen": item.gen,
 					};
 
 					if (dex.gen >= 4) {
 						if (item.fling) {
-							details["Fling Base Power"] = String(item.fling.basePower);
+							details["Fling Base Power"] = item.fling.basePower;
 							if (item.fling.status) details["Fling Effect"] = item.fling.status;
 							if (item.fling.volatileStatus) details["Fling Effect"] = item.fling.volatileStatus;
 							if (item.isBerry) details["Fling Effect"] = "Activates the Berry's effect on the target.";
@@ -697,7 +741,7 @@ export const commands: Chat.ChatCommands = {
 					}
 					if (item.naturalGift && dex.gen >= 3) {
 						details["Natural Gift Type"] = item.naturalGift.type;
-						details["Natural Gift Base Power"] = String(item.naturalGift.basePower);
+						details["Natural Gift Base Power"] = item.naturalGift.basePower;
 					}
 					if (item.isNonstandard) {
 						details[`Unobtainable in Gen ${dex.gen}`] = "";
@@ -706,13 +750,15 @@ export const commands: Chat.ChatCommands = {
 				break;
 			case 'move':
 				const move = dex.moves.get(newTarget.name);
-				buffer += `|raw|${Chat.getDataMoveHTML(move)}\n`;
+				desc = showDetails && move.shortDesc && move.desc !== move.shortDesc && move.desc;
+				buffer += `|raw|${Chat.getDataMoveHTML(move, !!desc)}\n`;
 				if (showDetails) {
 					details = {
-						Priority: String(move.priority),
-						Gen: String(move.gen) || 'CAP',
+						Priority: move.priority,
+						Gen: move.gen,
 					};
 
+					if (move.gen && move.gen < 7) details["Contest Condition"] = Dex.mod('gottalent').moves.get(move.id).contestType!;
 					if (move.isNonstandard === "Past" && dex.gen >= 8) details["&#10007; Past Gens Only"] = "";
 					if (move.secondary || move.secondaries) details["&#10003; Secondary effect"] = "";
 					if (move.flags['contact']) details["&#10003; Contact"] = "";
@@ -735,7 +781,7 @@ export const commands: Chat.ChatCommands = {
 						if (move.gen >= 8 && move.isMax) {
 							// Don't display Z-Power for Max/G-Max moves
 						} else if (move.zMove?.basePower) {
-							details["Z-Power"] = String(move.zMove.basePower);
+							details["Z-Power"] = move.zMove.basePower;
 						} else if (move.zMove?.effect) {
 							const zEffects: {[k: string]: string} = {
 								clearnegativeboost: "Restores negative stat stages to 0",
@@ -774,7 +820,7 @@ export const commands: Chat.ChatCommands = {
 							details["&#10003; Max Move"] = "";
 							if (typeof move.isMax === "string") details["User"] = `${move.isMax}`;
 						} else if (move.maxMove?.basePower) {
-							details["Dynamax Power"] = String(move.maxMove.basePower);
+							details["Dynamax Power"] = move.maxMove.basePower;
 						}
 					}
 
@@ -810,10 +856,11 @@ export const commands: Chat.ChatCommands = {
 				break;
 			case 'ability':
 				const ability = dex.abilities.get(newTarget.name);
-				buffer += `|raw|${Chat.getDataAbilityHTML(ability)}\n`;
+				desc = showDetails && ability.shortDesc && ability.shortDesc !== ability.desc && ability.desc;
+				buffer += `|raw|${Chat.getDataAbilityHTML(ability, !!desc)}\n`;
 				if (showDetails) {
 					details = {
-						Gen: String(ability.gen) || 'CAP',
+						"Gen": ability.gen || "CAP",
 					};
 					if (ability.isPermanent) details["&#10003; Not affected by Gastro Acid"] = "";
 					if (ability.isBreakable) details["&#10003; Ignored by Mold Breaker"] = "";
@@ -823,7 +870,8 @@ export const commands: Chat.ChatCommands = {
 				throw new Error(`Unrecognized searchType`);
 			}
 
-			if (showDetails) {
+			if (details) {
+				if (desc) buffer += Utils.html`|raw|<font size="1">${desc}</font>\n`;
 				buffer += `|raw|<font size="1">${Object.entries(details).map(([detail, value]) => (
 					value === '' ? detail : `<font color="#686868">${detail}:</font> ${value}`
 				)).join("&nbsp;|&ThickSpace;")}</font>\n`;
@@ -866,70 +914,48 @@ export const commands: Chat.ChatCommands = {
 	weakness(target, room, user) {
 		if (!target) return this.parse('/help weakness');
 		if (!this.runBroadcast()) return;
-		const {format, dex, targets} = this.splitFormat(target.split(/[,/]/).map(toID));
-
-		let isInverse = false;
-		if (format && Dex.formats.getRuleTable(format).has('inversemod')) {
-			isInverse = true;
-		} else if (targets[targets.length - 1] === 'inverse') {
-			isInverse = true;
+		target = target.trim();
+		const targets = target.split(/[,/]/).map(toID);
+		const maybeMod = targets[targets.length - 1];
+		let mod = Dex;
+		let format: Format | null = null;
+		if (maybeMod && maybeMod in Dex.dexes) {
+			mod = Dex.mod(maybeMod);
 			targets.pop();
+		} else if (maybeMod && Dex.formats.get(maybeMod).exists) {
+			format = Dex.formats.get(maybeMod);
+			mod = Dex.mod(format.mod);
+			targets.pop();
+		} else if (room?.battle) {
+			format = Dex.formats.get(room.battle.format);
+			mod = Dex.mod(format.mod);
 		}
-
-		let species: {types: string[], [k: string]: any} = dex.species.get(targets[0]);
-		const type1 = dex.types.get(targets[0]);
-		const type2 = dex.types.get(targets[1]);
-		const type3 = dex.types.get(targets[2]);
+		const isInverse = format?.ruleTable?.has('inversemod');
+		let species: {types: string[], [k: string]: any} = mod.species.get(targets[0]);
 
 		if (species.exists) {
-			target = species.name;
+			target = species.name!;
 		} else {
-			const types = [];
-			if (type1.exists) {
-				types.push(type1.name);
-				if (type2.exists && type2 !== type1) {
-					types.push(type2.name);
-				}
-				if (type3.exists && type3 !== type1 && type3 !== type2) {
-					types.push(type3.name);
-				}
+			const types = new Set(targets.map(mod.types.get, mod.types));
+			for (const type of types) {
+				if (!type.exists) return this.sendReplyBox(Utils.html`${target} isn't a recognized type or pokemon${Dex.gen > mod.gen ? ` in Gen ${mod.gen}` : ""}.`);
 			}
-
-			if (types.length === 0) {
-				return this.sendReplyBox(Utils.html`${target} isn't a recognized type or Pokemon${Dex.gen > dex.gen ? ` in Gen ${dex.gen}` : ""}.`);
-			}
-			species = {types: types};
-			target = types.join("/");
+			species = {types: Array.from(types, type => type.name)};
+			target = species.types.join('/');
 		}
 
 		const weaknesses = [];
 		const resistances = [];
 		const immunities = [];
-		for (const type of dex.types.names()) {
-			const notImmune = dex.getImmunity(type, species);
+		for (let type of mod.types.names()) {
+			const notImmune = mod.getImmunity(type, species);
 			if (notImmune || isInverse) {
 				let typeMod = !notImmune && isInverse ? 1 : 0;
-				typeMod += (isInverse ? -1 : 1) * dex.getEffectiveness(type, species);
-				switch (typeMod) {
-				case 1:
-					weaknesses.push(type);
-					break;
-				case 2:
-					weaknesses.push(`<b>${type}</b>`);
-					break;
-				case 3:
-					weaknesses.push(`<b><i>${type}</i></b>`);
-					break;
-				case -1:
-					resistances.push(type);
-					break;
-				case -2:
-					resistances.push(`<b>${type}</b>`);
-					break;
-				case -3:
-					resistances.push(`<b><i>${type}</i></b>`);
-					break;
-				}
+				typeMod += (isInverse ? -1 : 1) * mod.getEffectiveness(type, species);
+				if (typeMod > 2 || typeMod < -2) type = "<i>" + type + "</i>";
+				if (typeMod > 1 || typeMod < -1) type = "<b>" + type + "</b>";
+				if (typeMod > 0) weaknesses.push(type);
+				if (typeMod < 0) resistances.push(type);
 			} else {
 				immunities.push(type);
 			}
@@ -947,7 +973,7 @@ export const commands: Chat.ChatCommands = {
 			trapped: "Trapping",
 		};
 		for (const status in statuses) {
-			if (!dex.getImmunity(status, species)) {
+			if (!mod.getImmunity(status, species)) {
 				immunities.push(statuses[status]);
 			}
 		}
@@ -961,9 +987,9 @@ export const commands: Chat.ChatCommands = {
 	},
 	weaknesshelp: [
 		`/weakness [pokemon] - Provides a Pok\u00e9mon's resistances, weaknesses, and immunities, ignoring abilities.`,
-		`/weakness [type 1]/[type 2] - Provides a type or type combination's resistances, weaknesses, and immunities, ignoring abilities.`,
-		`!weakness [pokemon] - Shows everyone a Pok\u00e9mon's resistances, weaknesses, and immunities, ignoring abilities. Requires: + % @ # &`,
-		`!weakness [type 1]/[type 2] - Shows everyone a type or type combination's resistances, weaknesses, and immunities, ignoring abilities. Requires: + % @ # &`,
+		`/weakness [type][/[type]...] - Provides a type or type combination's resistances, weaknesses, and immunities, ignoring abilities.`,
+		`!weakness [pokemon] - Shows everyone a Pok\u00e9mon's resistances, weaknesses, and immunities, ignoring abilities. Requires: + % @ # & ~`,
+		`!weakness [type][/[type]...] - Shows everyone a type or type combination's resistances, weaknesses, and immunities, ignoring abilities. Requires: + % @ # & ~`,
 	],
 
 	eff: 'effectiveness',
@@ -1016,13 +1042,13 @@ export const commands: Chat.ChatCommands = {
 		if (!this.runBroadcast()) return;
 
 		let factor = 0;
-		if (dex.getImmunity(source, defender) ||
-			source.ignoreImmunity && (source.ignoreImmunity === true || source.ignoreImmunity[source.type])) {
+		if ((dex.getImmunity(source, defender) && (!source.secondaryType || Dex.getImmunity(source.secondaryType, defender))) || source.ignoreImmunity && (source.ignoreImmunity === true || source.ignoreImmunity[source.type])) {
 			let totalTypeMod = 0;
 			if (source.effectType !== 'Move' || source.category !== 'Status' && (source.basePower || source.basePowerCallback)) {
 				for (const type of defender.types) {
-					const baseMod = dex.getEffectiveness(source, type);
-					const moveMod = source.onEffectiveness?.call({dex: Dex} as Battle, baseMod, null, type, source);
+					let baseMod = Dex.getEffectiveness(source, type);
+					if (source.secondaryType) baseMod += dex.getEffectiveness(source.secondaryType, type);
+					const moveMod = source.onEffectiveness && source.onEffectiveness.call({dex}, baseMod, null, type, source);
 					totalTypeMod += typeof moveMod === 'number' ? moveMod : baseMod;
 				}
 			}
@@ -1045,7 +1071,7 @@ export const commands: Chat.ChatCommands = {
 		if (!target) return this.parse("/help coverage");
 
 		const {dex, targets} = this.splitFormat(target.split(/[,+/]/));
-		const sources: (string | Move)[] = [];
+		const sources: (string | ActiveMove)[] = [];
 		let dispTable = false;
 		const bestCoverage: {[k: string]: number} = {};
 		let hasThousandArrows = false;
@@ -1082,9 +1108,9 @@ export const commands: Chat.ChatCommands = {
 			}
 
 			// arg is a move?
-			const move = dex.moves.get(arg);
+			const move = dex.getActiveMove(arg);
 			if (!move.exists) {
-				return this.errorReply(`Type or move '${arg}' not found.`);
+				return this.errorReply(`No type or move '${arg}' found${Dex.gen > dex.gen ? ` in Gen ${dex.gen}` : ""}.`);
 			} else if (move.gen > dex.gen) {
 				return this.errorReply(`Move '${arg}' is not available in Gen ${dex.gen}.`);
 			}
@@ -1097,8 +1123,9 @@ export const commands: Chat.ChatCommands = {
 					eff = 0;
 				} else {
 					if (!dex.getImmunity(move.type, type) && !move.ignoreImmunity) continue;
-					const baseMod = dex.getEffectiveness(move, type);
-					const moveMod = move.onEffectiveness?.call({dex} as Battle, baseMod, null, type, move as ActiveMove);
+					let baseMod = dex.getEffectiveness(move, type);
+					if (move.secondaryType) baseMod += dex.getEffectiveness(move.secondaryType, type);
+					const moveMod = move.onEffectiveness?.call({dex} as Battle, baseMod, null, type, move);
 					eff = typeof moveMod === 'number' ? moveMod : baseMod;
 				}
 				if (eff > bestCoverage[type]) bestCoverage[type] = eff;
@@ -1174,22 +1201,20 @@ export const commands: Chat.ChatCommands = {
 						for (const move of sources) {
 							let curEff = 0;
 							if (typeof move === 'string') {
-								if (!dex.getImmunity(move, type1) || !dex.getImmunity(move, type2)) {
-									continue;
-								}
+								if (!dex.getImmunity(move, type1) || !dex.getImmunity(move, type2)) continue;
 								let baseMod = dex.getEffectiveness(move, type1);
 								curEff += baseMod;
 								baseMod = dex.getEffectiveness(move, type2);
 								curEff += baseMod;
 							} else {
-								if ((!dex.getImmunity(move.type, type1) || !dex.getImmunity(move.type, type2)) && !move.ignoreImmunity) {
-									continue;
-								}
-								let baseMod = dex.getEffectiveness(move.type, type1);
-								let moveMod = move.onEffectiveness?.call({dex} as Battle, baseMod, null, type1, move as ActiveMove);
+								if ((!dex.getImmunity(move, type1) || !dex.getImmunity(move, type2)) && !move.ignoreImmunity) continue;
+								let baseMod = dex.getEffectiveness(move, type1);
+								if (move.secondaryType) baseMod += dex.getEffectiveness(move.secondaryType, type1);
+								let moveMod = move.onEffectiveness?.call({dex} as Battle, baseMod, null, type1, move);
 								curEff += typeof moveMod === 'number' ? moveMod : baseMod;
-								baseMod = dex.getEffectiveness(move.type, type2);
-								moveMod = move.onEffectiveness?.call({dex} as Battle, baseMod, null, type2, move as ActiveMove);
+								baseMod = dex.getEffectiveness(move, type2);
+								if (move.secondaryType) baseMod += dex.getEffectiveness(move.secondaryType, type2);
+								moveMod = move.onEffectiveness && move.onEffectiveness.call({dex} as Battle, baseMod, null, type2, move);
 								curEff += typeof moveMod === 'number' ? moveMod : baseMod;
 							}
 
@@ -1336,7 +1361,7 @@ export const commands: Chat.ChatCommands = {
 					ivSet = true;
 
 					if (isNaN(iv)) {
-						return this.sendReplyBox('Invalid value for IVs: ' + Utils.escapeHTML(arg));
+						return this.sendReplyBox(Utils.html`Invalid value for IVs: ${arg}`);
 					}
 
 					continue;
@@ -1359,7 +1384,7 @@ export const commands: Chat.ChatCommands = {
 					evSet = true;
 
 					if (isNaN(ev)) {
-						return this.sendReplyBox('Invalid value for EVs: ' + Utils.escapeHTML(arg));
+						return this.sendReplyBox(Utils.html`Invalid value for EVs: ${arg}`);
 					}
 					if (ev > 255 || ev < 0) {
 						return this.sendReplyBox('The amount of EVs should be between 0 and 255.');
@@ -1392,7 +1417,7 @@ export const commands: Chat.ChatCommands = {
 					modSet = true;
 				}
 				if (isNaN(modifier)) {
-					return this.sendReplyBox('Invalid value for modifier: ' + Utils.escapeHTML(String(modifier)));
+					return this.sendReplyBox(Utils.html`Invalid value for modifier: ${modifier}`);
 				}
 				if (modifier > 6) {
 					return this.sendReplyBox('Modifier should be a number between -6 and +6');
@@ -1417,7 +1442,7 @@ export const commands: Chat.ChatCommands = {
 					realSet = true;
 
 					if (isNaN(realStat)) {
-						return this.sendReplyBox('Invalid value for target real stat: ' + Utils.escapeHTML(arg));
+						return this.sendReplyBox(Utils.html`Invalid value for target real stat: ${arg}`);
 					}
 					if (realStat < 0) {
 						return this.sendReplyBox('The target real stat must be greater than 0.');
@@ -1846,18 +1871,10 @@ export const commands: Chat.ChatCommands = {
 			const rules: string[] = [];
 			let rulesetHtml = '';
 			if (['Format', 'Rule', 'ValidatorRule'].includes(format.effectType)) {
-				if (format.ruleset?.length) {
-					rules.push(`<b>Ruleset</b> - ${Utils.escapeHTML(format.ruleset.join(", "))}`);
-				}
-				if (format.banlist?.length) {
-					rules.push(`<b>Bans</b> - ${Utils.escapeHTML(format.banlist.join(", "))}`);
-				}
-				if (format.unbanlist?.length) {
-					rules.push(`<b>Unbans</b> - ${Utils.escapeHTML(format.unbanlist.join(", "))}`);
-				}
-				if (format.restricted?.length) {
-					rules.push(`<b>Restricted</b> - ${Utils.escapeHTML(format.restricted.join(", "))}`);
-				}
+				if (format.ruleset?.length) rules.push(Utils.html`<b>Ruleset</b> - ${format.ruleset.join(", ")}`);
+				if (format.banlist?.length) rules.push(Utils.html`<b>Bans</b> - ${format.banlist.join(", ")}`);
+				if (format.unbanlist?.length) rules.push(Utils.html`<b>Unbans</b> - ${format.unbanlist.join(", ")}`);
+				if (format.restricted?.length) rules.push(Utils.html`<b>Restricted</b> - ${format.restricted.join(", ")}`);
 				if (rules.length > 0) {
 					rulesetHtml = `<details><summary>Banlist/Ruleset</summary>${rules.join("<br />")}</details>`;
 				} else {

@@ -490,22 +490,20 @@ export const IPTools = new class {
 					resolve(`${ip.split('.').slice(0, 2).join('.')}?/unknown`);
 					return;
 				}
-				if (!hosts?.[0]) {
-					if (ip.startsWith('50.')) {
-						resolve('comcast.net?/res');
-					} else if (ipNumber >= telstraRange.minIP && ipNumber <= telstraRange.maxIP) {
-						resolve(telstraRange.host);
-					} else {
-						this.testConnection(ip, result => {
-							if (result) {
-								resolve(`${ip.split('.').slice(0, 2).join('.')}?/proxy`);
-							} else {
-								resolve(`${ip.split('.').slice(0, 2).join('.')}?/unknown`);
-							}
-						});
-					}
-				} else {
+				if (hosts?.[0]) {
 					resolve(hosts[0]);
+				} else if (ip.startsWith('50.')) {
+					resolve('comcast.net?/res');
+				} else if (ipNumber >= telstraRange.minIP && ipNumber <= telstraRange.maxIP) {
+					resolve(telstraRange.host);
+				} else {
+					this.testConnection(ip, result => {
+						if (result) {
+							resolve(`${ip.split('.').slice(0, 2).join('.')}?/proxy`);
+						} else {
+							resolve(`${ip.split('.').slice(0, 2).join('.')}?/unknown`);
+						}
+					});
 				}
 			});
 		});

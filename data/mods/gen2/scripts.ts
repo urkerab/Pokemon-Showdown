@@ -316,7 +316,7 @@ export const Scripts: ModdedBattleScriptsData = {
 			if (move.target === 'all' && !isSelf) {
 				hitResult = this.battle.singleEvent('TryHitField', moveData, {}, target, pokemon, move);
 			} else if ((move.target === 'foeSide' || move.target === 'allySide') && !isSelf) {
-				hitResult = this.battle.singleEvent('TryHitSide', moveData, {}, (target ? target.side : null), pokemon, move);
+				hitResult = this.battle.singleEvent('TryHitSide', moveData, {}, target, pokemon, move);
 			} else if (target) {
 				hitResult = this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
 			}
@@ -383,7 +383,7 @@ export const Scripts: ModdedBattleScriptsData = {
 				}
 				if (moveData.status) {
 					hitResult = target.trySetStatus(moveData.status, pokemon, move);
-					if (!hitResult && move.status) return hitResult;
+					if (!hitResult && move.status) return false;
 					didSomething = didSomething || hitResult;
 				}
 				if (moveData.forceStatus) {

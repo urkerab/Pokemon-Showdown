@@ -55,6 +55,7 @@ class Ladder extends LadderStore {
 			connection.popup(`You are barred from starting any new games until your battle ban expires.`);
 			return null;
 		}
+		/*
 		const gameCount = user.games.size;
 		if (Monitor.countConcurrentBattle(gameCount, connection)) {
 			return null;
@@ -62,6 +63,7 @@ class Ladder extends LadderStore {
 		if (Monitor.countPrepBattle(connection.ip, connection)) {
 			return null;
 		}
+		*/
 
 		try {
 			this.formatid = Dex.formats.validate(this.formatid);
@@ -214,7 +216,7 @@ class Ladder extends LadderStore {
 			}
 		}
 		Ladders.challenges.add(new BattleChallenge(user.id, targetUser.id, ready));
-		Ladders.challenges.send(user.id, targetUser.id, `/log ${user.name} wants to battle!`);
+		// Ladders.challenges.send(user.id, targetUser.id, `/log ${user.name} wants to battle!`);
 		user.lastChallenge = Date.now();
 		return true;
 	}

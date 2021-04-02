@@ -81,6 +81,7 @@ export interface SecondaryEffect extends HitEffect {
 	 */
 	kingsrock?: boolean;
 	self?: HitEffect;
+	sideCondition?: string;
 }
 
 export interface MoveEventMethods {
@@ -121,8 +122,7 @@ export interface MoveEventMethods {
 	onTry?: CommonHandlers['ResultSourceMove'];
 	onTryHit?: CommonHandlers['ExtResultSourceMove'];
 	onTryHitField?: CommonHandlers['ResultMove'];
-	onTryHitSide?: (this: Battle, side: Side, source: Pokemon, move: ActiveMove) => boolean |
-	 null | "" | void;
+	onTryHitSide?: CommonHandlers['ResultMove'];
 	onTryImmunity?: CommonHandlers['ResultMove'];
 	onTryMove?: CommonHandlers['ResultSourceMove'];
 	onUseMoveMessage?: CommonHandlers['VoidSourceMove'];
@@ -138,6 +138,7 @@ export interface MoveData extends EffectData, MoveEventMethods, HitEffect {
 	pp: number;
 	category: 'Physical' | 'Special' | 'Status';
 	type: string;
+	secondaryType?: string;
 	priority: number;
 	target: MoveTarget;
 	flags: AnyObject;
@@ -307,6 +308,7 @@ export interface ActiveMove extends MutableMove {
 	hasAuraBreak?: boolean;
 	hasBounced?: boolean;
 	hasSheerForce?: boolean;
+	ignoreStatusImmunity?: {[k: string]: boolean};
 	/** Is the move called by Dancer? Used to prevent infinite Dancer recursion. */
 	isExternal?: boolean;
 	lastHit?: boolean;
@@ -330,14 +332,28 @@ export interface ActiveMove extends MutableMove {
 	 * `isZ` or `isMax`, but hacked moves will have this be `false` and `isZ` / `isMax` be truthy.
 	 */
 	isZOrMaxPowered?: boolean;
+
+	// oms
+	acidifyBoosted?: boolean;
+	corruptionBoosted?: boolean;
+	draconizeBoosted?: boolean;
+	hotPotato?: boolean;
+	incendiaryBoosted?: boolean;
+	liquidizeBoosted?: boolean;
+	metagamiateBoosted?: boolean;
+	statusHazard?: boolean;
+	type1?: string;
+	type3?: string;
+	zoneBoosted?: boolean;
 }
 
-type MoveCategory = 'Physical' | 'Special' | 'Status';
+export type MoveCategory = 'Physical' | 'Special' | 'Status';
 
 export class DataMove extends BasicEffect implements Readonly<BasicEffect & MoveData> {
 	declare readonly effectType: 'Move';
 	/** Move type. */
 	readonly type: string;
+	readonly secondaryType?: string;
 	/** Move target. */
 	readonly target: MoveTarget;
 	/** Move base power. */
@@ -376,19 +392,19 @@ export class DataMove extends BasicEffect implements Readonly<BasicEffect & Move
 	/**
 	 * Pokemon for the attack stat. Ability and Item damage modifiers still come from the real attacker.
 	 */
-	 readonly overrideOffensivePokemon?: 'target' | 'source';
+	readonly overrideOffensivePokemon?: 'target' | 'source';
 	/**
 	 * Physical moves use attack stat modifiers, special moves use special attack stat modifiers.
 	 */
-	 readonly overrideOffensiveStat?: StatIDExceptHP;
+	readonly overrideOffensiveStat?: StatIDExceptHP;
 	/**
 	 * Pokemon for the defense stat. Ability and Item damage modifiers still come from the real defender.
 	 */
-	 readonly overrideDefensivePokemon?: 'target' | 'source';
+	readonly overrideDefensivePokemon?: 'target' | 'source';
 	/**
 	 * uses modifiers that match the new stat
 	 */
-	 readonly overrideDefensiveStat?: StatIDExceptHP;
+	readonly overrideDefensiveStat?: StatIDExceptHP;
 	/** Whether or not this move ignores negative attack boosts. */
 	readonly ignoreNegativeOffensive: boolean;
 	/** Whether or not this move ignores positive defense boosts. */

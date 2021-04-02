@@ -270,7 +270,7 @@ export class ModdedDex {
 	}
 
 	getDescs(table: keyof TextTableData, id: ID, dataEntry: AnyObject) {
-		if (dataEntry.shortDesc) {
+		if (dataEntry.desc || dataEntry.shortDesc) {
 			return {
 				desc: dataEntry.desc,
 				shortDesc: dataEntry.shortDesc,
@@ -382,6 +382,7 @@ export class ModdedDex {
 					isInexact,
 					searchType: searchTypes[table],
 					name: res.name,
+					thing: res,
 				});
 			}
 		}
@@ -487,7 +488,7 @@ export class ModdedDex {
 		const basePath = this.dataDir + '/';
 
 		const Scripts = this.loadDataFile(basePath, 'Scripts');
-		this.parentMod = this.isBase ? '' : (Scripts.inherit || 'base');
+		this.parentMod = this.isBase ? '' : Scripts.inherit || (/^gen\d./.test(this.currentMod) ? this.currentMod.slice(0, 4) : 'base');
 
 		let parentDex;
 		if (this.parentMod) {
@@ -532,13 +533,7 @@ export class ModdedDex {
 					} else if (childTypedData[entryId] && childTypedData[entryId].inherit) {
 						// {inherit: true} can be used to modify only parts of the parent data,
 						// instead of overwriting entirely
-						delete childTypedData[entryId].inherit;
-
-						// Merge parent into children entry, preserving existing childs' properties.
-						for (const key in parentTypedData[entryId]) {
-							if (key in childTypedData[entryId]) continue;
-							childTypedData[entryId][key] = parentTypedData[entryId][key];
-						}
+						this.mergeEntry(childTypedData[entryId], parentTypedData[entryId] as AnyObject);
 					}
 				}
 			}
@@ -554,6 +549,18 @@ export class ModdedDex {
 		if (Scripts.init) Scripts.init.call(this);
 
 		return this.dataCache;
+	}
+
+	// Merge parent into children entry, preserving existing childs' properties.
+	mergeEntry(child: AnyObject, parent: AnyObject) {
+		delete child.inherit;
+		for (const key in parent) {
+			if (!(key in child)) {
+				child[key] = parent[key];
+			} else if (child[key] && child[key].inherit) {
+				this.mergeEntry(child[key], parent[key]);
+			}
+		}
 	}
 
 	includeFormats(): this {

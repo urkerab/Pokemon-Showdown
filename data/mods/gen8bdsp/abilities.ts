@@ -1,38 +1,38 @@
 export const Abilities: {[k: string]: ModdedAbilityData} = {
 	asoneglastrier: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	asonespectrier: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	chillingneigh: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	curiousmedicine: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	dragonsmaw: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	grimneigh: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	quickdraw: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	transistor: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	unseenfist: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 };

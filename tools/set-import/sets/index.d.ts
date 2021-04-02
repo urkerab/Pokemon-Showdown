@@ -1,5 +1,5 @@
-export declare type StatName = 'hp' | 'atk' | 'def' | 'spa' | 'spd' | 'spe';
-export type StatsTable<T = number> = {[stat in StatName]: T};
+export declare type StatID = 'hp' | 'atk' | 'def' | 'spa' | 'spd' | 'spe';
+export type StatsTable<T = number> = {[stat in StatID]: T};
 export interface PokemonSet<T = string> {
 	name: string;
 	species: T;

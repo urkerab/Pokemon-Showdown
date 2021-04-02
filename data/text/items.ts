@@ -1326,7 +1326,7 @@ export const ItemsText: {[k: string]: ItemText} = {
 	},
 	protectivepads: {
 		name: "Protective Pads",
-		desc: "Holder's moves are protected from adverse contact effects, except Pickpocket.",
+		desc: "Holder's contact moves are protected from adverse effects, except Pickpocket.",
 
 		block: "  [POKEMON] protected itself with its Protective Pads!",
 	},

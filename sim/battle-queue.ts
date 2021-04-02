@@ -19,7 +19,7 @@ import type {Battle} from './battle';
 export interface MoveAction {
 	/** action type */
 	choice: 'move' | 'beforeTurnMove' | 'priorityChargeMove';
-	order: 3 | 5 | 200 | 201 | 199 | 106;
+	order: 3 | 5 | 200 | 201 | 199 | 107;
 	/** priority of the action (lower first) */
 	priority: number;
 	/** fractional priority of the action (lower first) */
@@ -44,6 +44,8 @@ export interface MoveAction {
 	maxMove?: string;
 	/** effect that called the move (eg Instruct) if any */
 	sourceEffect?: Effect | null;
+	// oms
+	linked?: Move[];
 }
 
 /** A switch action */
@@ -92,7 +94,7 @@ export interface FieldAction {
 /** A generic action done by a single pokemon */
 export interface PokemonAction {
 	/** action type */
-	choice: 'megaEvo' | 'shift' | 'runPrimal' | 'runSwitch' | 'event' | 'runUnnerve' | 'runDynamax';
+	choice: 'megaEvoDone' | 'megaEvo' | 'shift' | 'runPrimal' | 'runSwitch' | 'event' | 'runUnnerve' | 'runDynamax';
 	/** priority of the action (lower first) */
 	priority: number;
 	/** speed of pokemon doing action (higher first if priority tie) */
@@ -178,8 +180,9 @@ export class BattleQueue {
 				runPrimal: 102,
 				switch: 103,
 				megaEvo: 104,
-				runDynamax: 105,
-				priorityChargeMove: 106,
+				megaEvoDone: 105,
+				runDynamax: 106,
+				priorityChargeMove: 107,
 
 				shift: 200,
 				// default is 200 (for moves)
@@ -207,6 +210,12 @@ export class BattleQueue {
 						choice: 'megaEvo',
 						pokemon: action.pokemon,
 					}));
+					if (this.battle.gen === 7) {
+						actions.unshift(...this.resolveAction({
+							choice: 'megaEvoDone',
+							pokemon: action.pokemon,
+						}));
+					}
 				}
 				if (action.maxMove && !action.pokemon.volatiles['dynamax']) {
 					actions.unshift(...this.resolveAction({

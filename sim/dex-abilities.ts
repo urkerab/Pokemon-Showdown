@@ -3,7 +3,7 @@ import {BasicEffect, toID} from './dex-data';
 
 interface AbilityEventMethods {
 	onCheckShow?: (this: Battle, pokemon: Pokemon) => void;
-	onEnd?: (this: Battle, target: Pokemon & Side & Field) => void;
+	onEnd?: (this: Battle, target: Pokemon & Side & Field, source?: Pokemon, effect?: Effect) => void;
 	onPreStart?: (this: Battle, pokemon: Pokemon) => void;
 	onStart?: (this: Battle, target: Pokemon) => void;
 }
@@ -23,6 +23,10 @@ export class Ability extends BasicEffect implements Readonly<BasicEffect> {
 	declare readonly condition?: ConditionData;
 	declare readonly isPermanent?: boolean;
 	declare readonly isBreakable?: boolean;
+	readonly copyLimited?: string[];
+
+	// oms
+	readonly item?: ID;
 
 	constructor(data: AnyObject) {
 		super(data);

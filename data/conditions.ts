@@ -170,7 +170,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 			this.effectState.time = this.random(2, 6);
 		},
 		onEnd(target) {
-			this.add('-end', target, 'confusion');
+			if (target.isActive) this.add('-end', target, 'confusion');
 		},
 		onBeforeMovePriority: 3,
 		onBeforeMove(pokemon) {
@@ -239,7 +239,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 			this.damage(pokemon.baseMaxhp / this.effectState.boundDivisor);
 		},
 		onEnd(pokemon) {
-			this.add('-end', pokemon, this.effectState.sourceEffect, '[partiallytrapped]');
+			if (pokemon.isActive) this.add('-end', pokemon, this.effectState.sourceEffect, '[partiallytrapped]');
 		},
 		onTrapPokemon(pokemon) {
 			const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
@@ -267,7 +267,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 			}
 		},
 		onEnd(target) {
-			if (this.effectState.trueDuration > 1) return;
+			if (!target.isActive || this.effectState.trueDuration > 1) return;
 			target.addVolatile('confusion');
 		},
 		onLockMove(pokemon) {
@@ -303,7 +303,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 			this.runEvent('PrepareHit', attacker, defender, effect);
 		},
 		onEnd(target) {
-			target.removeVolatile(this.effectState.move);
+			if (target.isActive) target.removeVolatile(this.effectState.move);
 		},
 		onLockMove() {
 			return this.effectState.move;
@@ -406,6 +406,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 		},
 	},
 	healreplacement: {
+		duration: 2,
 		// this is a slot condition
 		name: 'healreplacement',
 		onStart(target, source, sourceEffect) {
@@ -482,14 +483,14 @@ export const Conditions: {[k: string]: ConditionData} = {
 		onFieldStart(field, source, effect) {
 			if (effect?.effectType === 'Ability') {
 				if (this.gen <= 5) this.effectState.duration = 0;
-				this.add('-weather', 'RainDance', '[from] ability: ' + effect.name, '[of] ' + source);
+				this.add('-weather', 'Rain Dance', '[from] ability: ' + effect.name, '[of] ' + source);
 			} else {
-				this.add('-weather', 'RainDance');
+				this.add('-weather', 'Rain Dance');
 			}
 		},
 		onFieldResidualOrder: 1,
 		onFieldResidual() {
-			this.add('-weather', 'RainDance', '[upkeep]');
+			this.add('-weather', 'Rain Dance', '[upkeep]');
 			this.eachEvent('Weather');
 		},
 		onFieldEnd() {
@@ -517,11 +518,11 @@ export const Conditions: {[k: string]: ConditionData} = {
 			}
 		},
 		onFieldStart(field, source, effect) {
-			this.add('-weather', 'PrimordialSea', '[from] ability: ' + effect.name, '[of] ' + source);
+			this.add('-weather', 'Primordial Sea', '[from] ability: ' + effect.name, '[of] ' + source);
 		},
 		onFieldResidualOrder: 1,
 		onFieldResidual() {
-			this.add('-weather', 'PrimordialSea', '[upkeep]');
+			this.add('-weather', 'Primordial Sea', '[upkeep]');
 			this.eachEvent('Weather');
 		},
 		onFieldEnd() {
@@ -552,9 +553,9 @@ export const Conditions: {[k: string]: ConditionData} = {
 		onFieldStart(battle, source, effect) {
 			if (effect?.effectType === 'Ability') {
 				if (this.gen <= 5) this.effectState.duration = 0;
-				this.add('-weather', 'SunnyDay', '[from] ability: ' + effect.name, '[of] ' + source);
+				this.add('-weather', 'Sunny Day', '[from] ability: ' + effect.name, '[of] ' + source);
 			} else {
-				this.add('-weather', 'SunnyDay');
+				this.add('-weather', 'Sunny Day');
 			}
 		},
 		onImmunity(type, pokemon) {
@@ -563,7 +564,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 		},
 		onFieldResidualOrder: 1,
 		onFieldResidual() {
-			this.add('-weather', 'SunnyDay', '[upkeep]');
+			this.add('-weather', 'Sunny Day', '[upkeep]');
 			this.eachEvent('Weather');
 		},
 		onFieldEnd() {
@@ -591,7 +592,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 			}
 		},
 		onFieldStart(field, source, effect) {
-			this.add('-weather', 'DesolateLand', '[from] ability: ' + effect.name, '[of] ' + source);
+			this.add('-weather', 'Desolate Land', '[from] ability: ' + effect.name, '[of] ' + source);
 		},
 		onImmunity(type, pokemon) {
 			if (pokemon.hasItem('utilityumbrella')) return;
@@ -599,7 +600,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 		},
 		onFieldResidualOrder: 1,
 		onFieldResidual() {
-			this.add('-weather', 'DesolateLand', '[upkeep]');
+			this.add('-weather', 'Desolate Land', '[upkeep]');
 			this.eachEvent('Weather');
 		},
 		onFieldEnd() {
@@ -686,11 +687,11 @@ export const Conditions: {[k: string]: ConditionData} = {
 			}
 		},
 		onFieldStart(field, source, effect) {
-			this.add('-weather', 'DeltaStream', '[from] ability: ' + effect.name, '[of] ' + source);
+			this.add('-weather', 'Delta Stream', '[from] ability: ' + effect.name, '[of] ' + source);
 		},
 		onFieldResidualOrder: 1,
 		onFieldResidual() {
-			this.add('-weather', 'DeltaStream', '[upkeep]');
+			this.add('-weather', 'Delta Stream', '[upkeep]');
 			this.eachEvent('Weather');
 		},
 		onFieldEnd() {

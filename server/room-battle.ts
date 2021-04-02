@@ -13,6 +13,7 @@
 
 import {FS, Repl, ProcessManager} from '../lib';
 import {execSync} from "child_process";
+import {SubprocessStream} from "../lib/process-manager";
 import {BattleStream} from "../sim/battle-stream";
 import * as RoomGames from "./room-game";
 import type {Tournament} from './tournaments/index';
@@ -514,7 +515,7 @@ export class RoomBattle extends RoomGames.RoomGame<RoomBattlePlayer> {
 	 * userid that requested extraction -> playerids that accepted the extraction
 	 */
 	readonly allowExtraction: {[k: string]: Set<ID>};
-	readonly stream: Streams.ObjectReadWriteStream<string>;
+	readonly stream: SubprocessStream;
 	readonly timer: RoomBattleTimer;
 	missingBattleStartMessage: boolean | 'multi';
 	started: boolean;
@@ -584,7 +585,7 @@ export class RoomBattle extends RoomGames.RoomGame<RoomBattlePlayer> {
 		this.rqid = 1;
 		this.requestCount = 0;
 
-		this.stream = PM.createStream();
+		this.stream = PM.createStream() as SubprocessStream;
 
 		let ratedMessage = '';
 		if (options.ratedMessage) {
@@ -780,7 +781,7 @@ export class RoomBattle extends RoomGames.RoomGame<RoomBattlePlayer> {
 			}
 		}
 		if (!this.ended) {
-			this.room.add(`|bigerror|The simulator process crashed. We've been notified and will fix this ASAP.`);
+			this.room.add(`|bigerror|The simulator process crashed. Please report the error so that it can be fixed.`);
 			if (!disconnected) Monitor.crashlog(new Error(`Sim stream interrupted`), `A sim stream`);
 			this.started = true;
 			this.ended = true;
@@ -852,6 +853,13 @@ export class RoomBattle extends RoomGames.RoomGame<RoomBattlePlayer> {
 				this.clearPlayers();
 			}
 			this.checkActive();
+			break;
+
+		case 'evalbattle':
+			// @ts-ignore
+			this.evalbattle = lines;
+			const user = Users.get(lines[1]);
+			user?.sendTo(this.roomid, lines.slice(2).join('\n'));
 			break;
 		}
 	}
@@ -1346,7 +1354,7 @@ export class RoomBattleStream extends BattleStream {
 				log: battle ? '\n' + battle.getDebugLog() : '',
 			});
 
-			this.push(`update\n|html|<div class="broadcast-red"><b>The battle crashed</b><br />Don't worry, we're working on fixing it.</div>`);
+			this.push(`update\n|html|<div class="broadcast-red"><b>The battle crashed</b><br />Please report the error so that it can be fixed.</div>`);
 			if (battle) {
 				for (const side of battle.sides) {
 					if (side?.requestState) {

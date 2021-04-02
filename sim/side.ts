@@ -99,8 +99,15 @@ export class Side {
 	 */
 	lastMove: Move | null;
 
+	// OMs
+	god?: Pokemon;
+	reflectedType?: string;
+	sharedPower?: Set<string>;
+	usedMoves?: Set<string>;
+	points?: {[k: string]: number};
+
 	constructor(name: string, battle: Battle, sideNum: number, team: PokemonSet[]) {
-		const sideScripts = battle.dex.data.Scripts.side;
+		const sideScripts = battle.format.side || battle.dex.data.Scripts.side;
 		if (sideScripts) Object.assign(this, sideScripts);
 
 		this.battle = battle;
@@ -156,6 +163,7 @@ export class Side {
 
 		// old-gens
 		this.lastMove = null;
+		this.clearChoice();
 	}
 
 	toJSON(): AnyObject {
@@ -324,6 +332,7 @@ export class Side {
 
 		status = this.battle.dex.conditions.get(status);
 		if (this.slotConditions[target][status.id]) {
+			this.slotConditions[target][status.id].sourceEffect = sourceEffect;
 			if (!status.onRestart) return false;
 			return this.battle.singleEvent('Restart', status, this.slotConditions[target][status.id], this, source, sourceEffect);
 		}
@@ -331,6 +340,7 @@ export class Side {
 			id: status.id,
 			target: this,
 			source,
+			sourceEffect,
 			sourceSlot: source.getSlot(),
 			duration: status.duration,
 		};

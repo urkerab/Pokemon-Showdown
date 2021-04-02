@@ -68,7 +68,7 @@ export const Scripts: ModdedBattleScriptsData = {
 				if (zMoveName) {
 					const zMove = this.dex.moves.get(zMoveName);
 					if (!zMove.isZ && zMove.category === 'Status') zMoveName = "Z-" + zMoveName;
-					zMoves.push({move: zMoveName, target: zMove.target});
+					zMoves.push({move: zMoveName, target: zMove.target, basePower: zMove.basePower, category: zMove.category});
 				} else {
 					zMoves.push(null);
 				}
@@ -213,6 +213,8 @@ export const Scripts: ModdedBattleScriptsData = {
 				}
 			}
 			if (noLock && pokemon.volatiles['lockedmove']) delete pokemon.volatiles['lockedmove'];
+			this.battle.faintMessages();
+			this.battle.checkWin();
 		},
 
 		// Dollar Store Brand prankster immunity implementation
@@ -521,6 +523,7 @@ export const Scripts: ModdedBattleScriptsData = {
 			// hit is 1 higher than the actual hit count
 			if (hit === 1) return damage.fill(false);
 			if (nullDamage) damage.fill(false);
+			this.battle.faintMessages(false, false, !pokemon.hp);
 			if (move.multihit && typeof move.smartTarget !== 'boolean') {
 				this.battle.add('-hitcount', targets[0], hit - 1);
 			}

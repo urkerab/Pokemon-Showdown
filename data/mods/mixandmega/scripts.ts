@@ -40,6 +40,7 @@ export const Scripts: ModdedBattleScriptsData = {
 			}
 
 			pokemon.canMegaEvo = null;
+			this.battle.runEvent('AfterMega', pokemon);
 			return true;
 		},
 		getMixedSpecies(originalForme, megaForme) {
@@ -54,17 +55,9 @@ export const Scripts: ModdedBattleScriptsData = {
 		},
 		getMegaDeltas(megaSpecies) {
 			const baseSpecies = this.dex.species.get(megaSpecies.baseSpecies);
-			const deltas: {
-				ability: string,
-				baseStats: SparseStatsTable,
-				weighthg: number,
-				originalMega: string,
-				requiredItem: string | undefined,
-				type?: string,
-				isMega?: boolean,
-			} = {
-				ability: megaSpecies.abilities['0'],
-				baseStats: {},
+			const deltas: MegaDeltas = {
+				abilities: megaSpecies.abilities,
+				baseStats: {hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0},
 				weighthg: megaSpecies.weighthg - baseSpecies.weighthg,
 				originalMega: megaSpecies.name,
 				requiredItem: megaSpecies.requiredItem,
@@ -80,13 +73,14 @@ export const Scripts: ModdedBattleScriptsData = {
 			} else if (megaSpecies.types[1] !== baseSpecies.types[1]) {
 				deltas.type = megaSpecies.types[1];
 			}
-			if (megaSpecies.isMega) deltas.isMega = true;
+			if (megaSpecies.isMega) deltas.isMega = megaSpecies.forme;
 			return deltas;
 		},
-		doGetMixedSpecies(speciesOrForme, deltas) {
+		doGetMixedSpecies(template, deltas) {
 			if (!deltas) throw new TypeError("Must specify deltas!");
-			const species = this.dex.deepClone(this.dex.species.get(speciesOrForme));
-			species.abilities = {'0': deltas.ability};
+			if (!template || typeof template === 'string') template = this.dex.species.get(template);
+			const species = this.dex.deepClone(template);
+			species.abilities = deltas.abilities;
 			if (species.types[0] === deltas.type) {
 				species.types = [deltas.type];
 			} else if (deltas.type === 'mono') {
@@ -94,9 +88,10 @@ export const Scripts: ModdedBattleScriptsData = {
 			} else if (deltas.type) {
 				species.types = [species.types[0], deltas.type];
 			}
-			const baseStats = species.baseStats;
-			for (const statName in baseStats) {
-				baseStats[statName] = this.battle.clampIntRange(baseStats[statName] + deltas.baseStats[statName], 1, 255);
+			const baseStats = template.baseStats;
+			let statId: StatID;
+			for (statId in baseStats) {
+				baseStats[statId] = this.battle.clampIntRange(baseStats[statId] + deltas.baseStats[statId], 1, 255);
 			}
 			species.weighthg = Math.max(1, species.weighthg + deltas.weighthg);
 			species.originalMega = deltas.originalMega;

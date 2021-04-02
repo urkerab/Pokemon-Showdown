@@ -34,7 +34,7 @@ export const Items: {[itemid: string]: ItemData} = {
 			basePower: 30,
 		},
 		onDamagingHit(damage, target, source, move) {
-			if (move.type === 'Water') {
+			if (move.type === 'Water' && target.boosts.spa < 6) {
 				target.useItem();
 			}
 		},
@@ -66,17 +66,8 @@ export const Items: {[itemid: string]: ItemData} = {
 		fling: {
 			basePower: 30,
 		},
-		onBoostPriority: 1,
-		onBoost(boost, target) {
-			target.itemState.lastAtk = target.boosts['atk'];
-		},
 		onAfterBoost(boost, target, source, effect) {
-			const noAtkChange = boost.atk! < 0 && target.boosts['atk'] === -6 && target.itemState.lastAtk === -6;
-			const noContraryAtkChange = boost.atk! > 0 && target.boosts['atk'] === 6 && target.itemState.lastAtk === 6;
-			if (target.boosts['spe'] === 6 || noAtkChange || noContraryAtkChange) {
-				return;
-			}
-			if (effect.name === 'Intimidate') {
+			if (effect.name === 'Intimidate' && target.boosts.spe < 6) {
 				target.useItem();
 			}
 		},
@@ -231,12 +222,12 @@ export const Items: {[itemid: string]: ItemData} = {
 			type: "Ground",
 		},
 		onUpdate(pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
+			if ((pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) && pokemon.boosts.spd < 6) {
 				pokemon.eatItem();
 			}
 		},
-		onEat(pokemon) {
-			this.boost({spd: 1});
+		boosts: {
+			spd: 1,
 		},
 		num: 205,
 		gen: 3,
@@ -648,7 +639,7 @@ export const Items: {[itemid: string]: ItemData} = {
 			basePower: 30,
 		},
 		onDamagingHit(damage, target, source, move) {
-			if (move.type === 'Electric') {
+			if (move.type === 'Electric' && target.boosts.atk < 6) {
 				target.useItem();
 			}
 		},
@@ -1486,7 +1477,7 @@ export const Items: {[itemid: string]: ItemData} = {
 			basePower: 10,
 		},
 		onStart(pokemon) {
-			if (!pokemon.ignoringItem() && this.field.isTerrain('electricterrain')) {
+			if (!pokemon.ignoringItem() && this.field.isTerrain('electricterrain') && pokemon.boosts.def < 6) {
 				pokemon.useItem();
 			}
 		},
@@ -1991,12 +1982,12 @@ export const Items: {[itemid: string]: ItemData} = {
 			type: "Ice",
 		},
 		onUpdate(pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
+			if ((pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) && pokemon.boosts.def < 6) {
 				pokemon.eatItem();
 			}
 		},
-		onEat(pokemon) {
-			this.boost({def: 1});
+		boosts: {
+			def: 1,
 		},
 		num: 202,
 		gen: 3,
@@ -2156,7 +2147,7 @@ export const Items: {[itemid: string]: ItemData} = {
 			basePower: 10,
 		},
 		onStart(pokemon) {
-			if (!pokemon.ignoringItem() && this.field.isTerrain('grassyterrain')) {
+			if (!pokemon.ignoringItem() && this.field.isTerrain('grassyterrain') && pokemon.boosts.def < 6) {
 				pokemon.useItem();
 			}
 		},
@@ -2663,13 +2654,13 @@ export const Items: {[itemid: string]: ItemData} = {
 			type: "Fairy",
 		},
 		onAfterMoveSecondary(target, source, move) {
-			if (move.category === 'Physical') {
+			if (move.category === 'Physical' && target.boosts.def < 6) {
 				if (move.id === 'present' && move.heal) return;
 				target.eatItem();
 			}
 		},
-		onEat(pokemon) {
-			this.boost({def: 1});
+		boosts: {
+			def: 1,
 		},
 		num: 687,
 		gen: 6,
@@ -2885,12 +2876,12 @@ export const Items: {[itemid: string]: ItemData} = {
 			type: "Grass",
 		},
 		onUpdate(pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
+			if ((pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) && pokemon.boosts.atk < 6) {
 				pokemon.eatItem();
 			}
 		},
-		onEat(pokemon) {
-			this.boost({atk: 1});
+		boosts: {
+			atk: 1,
 		},
 		num: 201,
 		gen: 3,
@@ -3036,7 +3027,7 @@ export const Items: {[itemid: string]: ItemData} = {
 			basePower: 30,
 		},
 		onDamagingHit(damage, target, source, move) {
-			if (move.type === 'Water') {
+			if (move.type === 'Water' && target.boosts.spd < 6) {
 				target.useItem();
 			}
 		},
@@ -3207,12 +3198,12 @@ export const Items: {[itemid: string]: ItemData} = {
 			type: "Dark",
 		},
 		onAfterMoveSecondary(target, source, move) {
-			if (move.category === 'Special') {
+			if (move.category === 'Special' && target.boosts.spd < 6) {
 				target.eatItem();
 			}
 		},
-		onEat(pokemon) {
-			this.boost({spd: 1});
+		boosts: {
+			spd: 1,
 		},
 		num: 688,
 		gen: 6,
@@ -3534,7 +3525,7 @@ export const Items: {[itemid: string]: ItemData} = {
 			basePower: 10,
 		},
 		onStart(pokemon) {
-			if (!pokemon.ignoringItem() && this.field.isTerrain('mistyterrain')) {
+			if (!pokemon.ignoringItem() && this.field.isTerrain('mistyterrain') && pokemon.boosts.spd < 6) {
 				pokemon.useItem();
 			}
 		},
@@ -3668,6 +3659,7 @@ export const Items: {[itemid: string]: ItemData} = {
 	normaliumz: {
 		name: "Normalium Z",
 		spritenum: 631,
+		onPlate: 'Normal',
 		onTakeItem: false,
 		zMove: true,
 		zMoveType: "Normal",
@@ -3873,12 +3865,12 @@ export const Items: {[itemid: string]: ItemData} = {
 			type: "Poison",
 		},
 		onUpdate(pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
+			if ((pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) && pokemon.boosts.spa < 6) {
 				pokemon.eatItem();
 			}
 		},
-		onEat(pokemon) {
-			this.boost({spa: 1});
+		boosts: {
+			spa: 1,
 		},
 		num: 204,
 		gen: 3,
@@ -4228,7 +4220,7 @@ export const Items: {[itemid: string]: ItemData} = {
 			basePower: 10,
 		},
 		onStart(pokemon) {
-			if (!pokemon.ignoringItem() && this.field.isTerrain('psychicterrain')) {
+			if (!pokemon.ignoringItem() && this.field.isTerrain('psychicterrain') && pokemon.boosts.spd < 6) {
 				pokemon.useItem();
 			}
 		},
@@ -4561,7 +4553,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		fling: {
 			basePower: 60,
 		},
-		onDamagingHitOrder: 2,
+		onDamagingHitOrder: 3,
 		onDamagingHit(damage, target, source, move) {
 			if (this.checkMoveMakesContact(move, source, target)) {
 				this.damage(source.baseMaxhp / 6, source, target);
@@ -4754,12 +4746,12 @@ export const Items: {[itemid: string]: ItemData} = {
 			type: "Fighting",
 		},
 		onUpdate(pokemon) {
-			if (pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) {
+			if ((pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony'))) && pokemon.boosts.spe < 6) {
 				pokemon.eatItem();
 			}
 		},
-		onEat(pokemon) {
-			this.boost({spe: 1});
+		boosts: {
+			spe: 1,
 		},
 		num: 203,
 		gen: 3,
@@ -5062,7 +5054,7 @@ export const Items: {[itemid: string]: ItemData} = {
 			basePower: 30,
 		},
 		onDamagingHit(damage, target, source, move) {
-			if (move.type === 'Ice') {
+			if (move.type === 'Ice' && target.boosts.atk < 6) {
 				target.useItem();
 			}
 		},
@@ -5547,6 +5539,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1130,
 		gen: 8,
+		moveid: 'swordsdance',
 	},
 	tr01: {
 		name: "TR01",
@@ -5556,6 +5549,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1131,
 		gen: 8,
+		moveid: 'bodyslam',
 	},
 	tr02: {
 		name: "TR02",
@@ -5565,6 +5559,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 730,
 		num: 1132,
 		gen: 8,
+		moveid: 'flamethrower',
 	},
 	tr03: {
 		name: "TR03",
@@ -5574,6 +5569,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 731,
 		num: 1133,
 		gen: 8,
+		moveid: 'hydropump',
 	},
 	tr04: {
 		name: "TR04",
@@ -5583,6 +5579,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 731,
 		num: 1134,
 		gen: 8,
+		moveid: 'surf',
 	},
 	tr05: {
 		name: "TR05",
@@ -5592,6 +5589,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 735,
 		num: 1135,
 		gen: 8,
+		moveid: 'icebeam',
 	},
 	tr06: {
 		name: "TR06",
@@ -5601,6 +5599,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 735,
 		num: 1136,
 		gen: 8,
+		moveid: 'blizzard',
 	},
 	tr07: {
 		name: "TR07",
@@ -5610,6 +5609,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 722,
 		num: 1137,
 		gen: 8,
+		moveid: 'lowkick',
 	},
 	tr08: {
 		name: "TR08",
@@ -5619,6 +5619,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 733,
 		num: 1138,
 		gen: 8,
+		moveid: 'thunderbolt',
 	},
 	tr09: {
 		name: "TR09",
@@ -5628,6 +5629,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 733,
 		num: 1139,
 		gen: 8,
+		moveid: 'thunder',
 	},
 	tr10: {
 		name: "TR10",
@@ -5637,6 +5639,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 725,
 		num: 1140,
 		gen: 8,
+		moveid: 'earthquake',
 	},
 	tr11: {
 		name: "TR11",
@@ -5646,6 +5649,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1141,
 		gen: 8,
+		moveid: 'psychic',
 	},
 	tr12: {
 		name: "TR12",
@@ -5655,6 +5659,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1142,
 		gen: 8,
+		moveid: 'agility',
 	},
 	tr13: {
 		name: "TR13",
@@ -5664,6 +5669,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1143,
 		gen: 8,
+		moveid: 'focusenergy',
 	},
 	tr14: {
 		name: "TR14",
@@ -5673,6 +5679,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1144,
 		gen: 8,
+		moveid: 'metronome',
 	},
 	tr15: {
 		name: "TR15",
@@ -5682,6 +5689,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 730,
 		num: 1145,
 		gen: 8,
+		moveid: 'fireblast',
 	},
 	tr16: {
 		name: "TR16",
@@ -5691,6 +5699,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 731,
 		num: 1146,
 		gen: 8,
+		moveid: 'waterfall',
 	},
 	tr17: {
 		name: "TR17",
@@ -5700,6 +5709,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1147,
 		gen: 8,
+		moveid: 'amnesia',
 	},
 	tr18: {
 		name: "TR18",
@@ -5709,6 +5719,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 727,
 		num: 1148,
 		gen: 8,
+		moveid: 'leechlife',
 	},
 	tr19: {
 		name: "TR19",
@@ -5718,6 +5729,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1149,
 		gen: 8,
+		moveid: 'triattack',
 	},
 	tr20: {
 		name: "TR20",
@@ -5727,6 +5739,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1150,
 		gen: 8,
+		moveid: 'substitute',
 	},
 	tr21: {
 		name: "TR21",
@@ -5736,6 +5749,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 722,
 		num: 1151,
 		gen: 8,
+		moveid: 'reversal',
 	},
 	tr22: {
 		name: "TR22",
@@ -5745,6 +5759,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 724,
 		num: 1152,
 		gen: 8,
+		moveid: 'sludgebomb',
 	},
 	tr23: {
 		name: "TR23",
@@ -5754,6 +5769,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 725,
 		num: 1153,
 		gen: 8,
+		moveid: 'spikes',
 	},
 	tr24: {
 		name: "TR24",
@@ -5763,6 +5779,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 736,
 		num: 1154,
 		gen: 8,
+		moveid: 'outrage',
 	},
 	tr25: {
 		name: "TR25",
@@ -5772,6 +5789,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1155,
 		gen: 8,
+		moveid: 'psyshock',
 	},
 	tr26: {
 		name: "TR26",
@@ -5781,6 +5799,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1156,
 		gen: 8,
+		moveid: 'endure',
 	},
 	tr27: {
 		name: "TR27",
@@ -5790,6 +5809,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1157,
 		gen: 8,
+		moveid: 'sleeptalk',
 	},
 	tr28: {
 		name: "TR28",
@@ -5799,6 +5819,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 727,
 		num: 1158,
 		gen: 8,
+		moveid: 'megahorn',
 	},
 	tr29: {
 		name: "TR29",
@@ -5808,6 +5829,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1159,
 		gen: 8,
+		moveid: 'batonpass',
 	},
 	tr30: {
 		name: "TR30",
@@ -5817,6 +5839,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1160,
 		gen: 8,
+		moveid: 'encore',
 	},
 	tr31: {
 		name: "TR31",
@@ -5826,6 +5849,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 729,
 		num: 1161,
 		gen: 8,
+		moveid: 'irontail',
 	},
 	tr32: {
 		name: "TR32",
@@ -5835,6 +5859,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 737,
 		num: 1162,
 		gen: 8,
+		moveid: 'crunch',
 	},
 	tr33: {
 		name: "TR33",
@@ -5844,6 +5869,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 728,
 		num: 1163,
 		gen: 8,
+		moveid: 'shadowball',
 	},
 	tr34: {
 		name: "TR34",
@@ -5853,6 +5879,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1164,
 		gen: 8,
+		moveid: 'futuresight',
 	},
 	tr35: {
 		name: "TR35",
@@ -5862,6 +5889,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1165,
 		gen: 8,
+		moveid: 'uproar',
 	},
 	tr36: {
 		name: "TR36",
@@ -5871,6 +5899,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 730,
 		num: 1166,
 		gen: 8,
+		moveid: 'heatwave',
 	},
 	tr37: {
 		name: "TR37",
@@ -5880,6 +5909,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 737,
 		num: 1167,
 		gen: 8,
+		moveid: 'taunt',
 	},
 	tr38: {
 		name: "TR38",
@@ -5889,6 +5919,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1168,
 		gen: 8,
+		moveid: 'trick',
 	},
 	tr39: {
 		name: "TR39",
@@ -5898,6 +5929,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 722,
 		num: 1169,
 		gen: 8,
+		moveid: 'superpower',
 	},
 	tr40: {
 		name: "TR40",
@@ -5907,6 +5939,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1170,
 		gen: 8,
+		moveid: 'skillswap',
 	},
 	tr41: {
 		name: "TR41",
@@ -5916,6 +5949,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 730,
 		num: 1171,
 		gen: 8,
+		moveid: 'blazekick',
 	},
 	tr42: {
 		name: "TR42",
@@ -5925,6 +5959,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1172,
 		gen: 8,
+		moveid: 'hypervoice',
 	},
 	tr43: {
 		name: "TR43",
@@ -5934,6 +5969,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 730,
 		num: 1173,
 		gen: 8,
+		moveid: 'overheat',
 	},
 	tr44: {
 		name: "TR44",
@@ -5943,6 +5979,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1174,
 		gen: 8,
+		moveid: 'cosmicpower',
 	},
 	tr45: {
 		name: "TR45",
@@ -5952,6 +5989,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 731,
 		num: 1175,
 		gen: 8,
+		moveid: 'muddywater',
 	},
 	tr46: {
 		name: "TR46",
@@ -5961,6 +5999,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 729,
 		num: 1176,
 		gen: 8,
+		moveid: 'irondefense',
 	},
 	tr47: {
 		name: "TR47",
@@ -5970,6 +6009,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 736,
 		num: 1177,
 		gen: 8,
+		moveid: 'dragonclaw',
 	},
 	tr48: {
 		name: "TR48",
@@ -5979,6 +6019,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 722,
 		num: 1178,
 		gen: 8,
+		moveid: 'bulkup',
 	},
 	tr49: {
 		name: "TR49",
@@ -5988,6 +6029,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1179,
 		gen: 8,
+		moveid: 'calmmind',
 	},
 	tr50: {
 		name: "TR50",
@@ -5997,6 +6039,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 732,
 		num: 1180,
 		gen: 8,
+		moveid: 'leafblade',
 	},
 	tr51: {
 		name: "TR51",
@@ -6006,6 +6049,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 736,
 		num: 1181,
 		gen: 8,
+		moveid: 'dragondance',
 	},
 	tr52: {
 		name: "TR52",
@@ -6015,6 +6059,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 729,
 		num: 1182,
 		gen: 8,
+		moveid: 'gyroball',
 	},
 	tr53: {
 		name: "TR53",
@@ -6024,6 +6069,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 722,
 		num: 1183,
 		gen: 8,
+		moveid: 'closecombat',
 	},
 	tr54: {
 		name: "TR54",
@@ -6033,6 +6079,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 724,
 		num: 1184,
 		gen: 8,
+		moveid: 'toxicspikes',
 	},
 	tr55: {
 		name: "TR55",
@@ -6042,6 +6089,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 730,
 		num: 1185,
 		gen: 8,
+		moveid: 'flareblitz',
 	},
 	tr56: {
 		name: "TR56",
@@ -6051,6 +6099,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 722,
 		num: 1186,
 		gen: 8,
+		moveid: 'aurasphere',
 	},
 	tr57: {
 		name: "TR57",
@@ -6060,6 +6109,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 724,
 		num: 1187,
 		gen: 8,
+		moveid: 'poisonjab',
 	},
 	tr58: {
 		name: "TR58",
@@ -6069,6 +6119,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 737,
 		num: 1188,
 		gen: 8,
+		moveid: 'darkpulse',
 	},
 	tr59: {
 		name: "TR59",
@@ -6078,6 +6129,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 732,
 		num: 1189,
 		gen: 8,
+		moveid: 'seedbomb',
 	},
 	tr60: {
 		name: "TR60",
@@ -6087,6 +6139,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 727,
 		num: 1190,
 		gen: 8,
+		moveid: 'xscissor',
 	},
 	tr61: {
 		name: "TR61",
@@ -6096,6 +6149,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 727,
 		num: 1191,
 		gen: 8,
+		moveid: 'bugbuzz',
 	},
 	tr62: {
 		name: "TR62",
@@ -6105,6 +6159,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 736,
 		num: 1192,
 		gen: 8,
+		moveid: 'dragonpulse',
 	},
 	tr63: {
 		name: "TR63",
@@ -6114,6 +6169,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 726,
 		num: 1193,
 		gen: 8,
+		moveid: 'powergem',
 	},
 	tr64: {
 		name: "TR64",
@@ -6123,6 +6179,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 722,
 		num: 1194,
 		gen: 8,
+		moveid: 'focusblast',
 	},
 	tr65: {
 		name: "TR65",
@@ -6132,6 +6189,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 732,
 		num: 1195,
 		gen: 8,
+		moveid: 'energyball',
 	},
 	tr66: {
 		name: "TR66",
@@ -6141,6 +6199,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 723,
 		num: 1196,
 		gen: 8,
+		moveid: 'bravebird',
 	},
 	tr67: {
 		name: "TR67",
@@ -6150,6 +6209,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 725,
 		num: 1197,
 		gen: 8,
+		moveid: 'earthpower',
 	},
 	tr68: {
 		name: "TR68",
@@ -6159,6 +6219,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 737,
 		num: 1198,
 		gen: 8,
+		moveid: 'nastyplot',
 	},
 	tr69: {
 		name: "TR69",
@@ -6168,6 +6229,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1199,
 		gen: 8,
+		moveid: 'zenheadbutt',
 	},
 	tr70: {
 		name: "TR70",
@@ -6177,6 +6239,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 729,
 		num: 1200,
 		gen: 8,
+		moveid: 'flashcannon',
 	},
 	tr71: {
 		name: "TR71",
@@ -6186,6 +6249,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 732,
 		num: 1201,
 		gen: 8,
+		moveid: 'leafstorm',
 	},
 	tr72: {
 		name: "TR72",
@@ -6195,6 +6259,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 732,
 		num: 1202,
 		gen: 8,
+		moveid: 'powerwhip',
 	},
 	tr73: {
 		name: "TR73",
@@ -6204,6 +6269,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 724,
 		num: 1203,
 		gen: 8,
+		moveid: 'gunkshot',
 	},
 	tr74: {
 		name: "TR74",
@@ -6213,6 +6279,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 729,
 		num: 1204,
 		gen: 8,
+		moveid: 'ironhead',
 	},
 	tr75: {
 		name: "TR75",
@@ -6222,6 +6289,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 726,
 		num: 1205,
 		gen: 8,
+		moveid: 'stoneedge',
 	},
 	tr76: {
 		name: "TR76",
@@ -6231,6 +6299,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 726,
 		num: 1206,
 		gen: 8,
+		moveid: 'stealthrock',
 	},
 	tr77: {
 		name: "TR77",
@@ -6240,6 +6309,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 732,
 		num: 1207,
 		gen: 8,
+		moveid: 'grassknot',
 	},
 	tr78: {
 		name: "TR78",
@@ -6249,6 +6319,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 724,
 		num: 1208,
 		gen: 8,
+		moveid: 'sludgewave',
 	},
 	tr79: {
 		name: "TR79",
@@ -6258,6 +6329,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 729,
 		num: 1209,
 		gen: 8,
+		moveid: 'heavyslam',
 	},
 	tr80: {
 		name: "TR80",
@@ -6267,6 +6339,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 733,
 		num: 1210,
 		gen: 8,
+		moveid: 'electroball',
 	},
 	tr81: {
 		name: "TR81",
@@ -6276,6 +6349,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 737,
 		num: 1211,
 		gen: 8,
+		moveid: 'foulplay',
 	},
 	tr82: {
 		name: "TR82",
@@ -6285,6 +6359,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1212,
 		gen: 8,
+		moveid: 'storedpower',
 	},
 	tr83: {
 		name: "TR83",
@@ -6294,6 +6369,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1213,
 		gen: 8,
+		moveid: 'allyswitch',
 	},
 	tr84: {
 		name: "TR84",
@@ -6303,6 +6379,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 731,
 		num: 1214,
 		gen: 8,
+		moveid: 'scald',
 	},
 	tr85: {
 		name: "TR85",
@@ -6312,6 +6389,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 721,
 		num: 1215,
 		gen: 8,
+		moveid: 'workup',
 	},
 	tr86: {
 		name: "TR86",
@@ -6321,6 +6399,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 733,
 		num: 1216,
 		gen: 8,
+		moveid: 'wildcharge',
 	},
 	tr87: {
 		name: "TR87",
@@ -6330,6 +6409,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 725,
 		num: 1217,
 		gen: 8,
+		moveid: 'drillrun',
 	},
 	tr88: {
 		name: "TR88",
@@ -6339,6 +6419,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 730,
 		num: 1218,
 		gen: 8,
+		moveid: 'heatcrash',
 	},
 	tr89: {
 		name: "TR89",
@@ -6348,6 +6429,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 723,
 		num: 1219,
 		gen: 8,
+		moveid: 'hurricane',
 	},
 	tr90: {
 		name: "TR90",
@@ -6357,6 +6439,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 738,
 		num: 1220,
 		gen: 8,
+		moveid: 'playrough',
 	},
 	tr91: {
 		name: "TR91",
@@ -6366,6 +6449,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 724,
 		num: 1221,
 		gen: 8,
+		moveid: 'venomdrench',
 	},
 	tr92: {
 		name: "TR92",
@@ -6375,6 +6459,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 738,
 		num: 1222,
 		gen: 8,
+		moveid: 'dazzlinggleam',
 	},
 	tr93: {
 		name: "TR93",
@@ -6384,6 +6469,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 737,
 		num: 1223,
 		gen: 8,
+		moveid: 'darkestlariat',
 	},
 	tr94: {
 		name: "TR94",
@@ -6393,6 +6479,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 725,
 		num: 1224,
 		gen: 8,
+		moveid: 'highhorsepower',
 	},
 	tr95: {
 		name: "TR95",
@@ -6402,6 +6489,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 737,
 		num: 1225,
 		gen: 8,
+		moveid: 'throatchop',
 	},
 	tr96: {
 		name: "TR96",
@@ -6411,6 +6499,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 727,
 		num: 1226,
 		gen: 8,
+		moveid: 'pollenpuff',
 	},
 	tr97: {
 		name: "TR97",
@@ -6420,6 +6509,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 734,
 		num: 1227,
 		gen: 8,
+		moveid: 'psychicfangs',
 	},
 	tr98: {
 		name: "TR98",
@@ -6429,6 +6519,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 731,
 		num: 1228,
 		gen: 8,
+		moveid: 'liquidation',
 	},
 	tr99: {
 		name: "TR99",
@@ -6438,6 +6529,7 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 722,
 		num: 1229,
 		gen: 8,
+		moveid: 'bodypress',
 	},
 	twistedspoon: {
 		name: "Twisted Spoon",

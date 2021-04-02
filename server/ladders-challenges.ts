@@ -223,6 +223,7 @@ export class Challenges extends Map<ID, Challenge[]> {
 		const challenge = this.search(userid1, userid2);
 		userid1 = challenge ? challenge.from : userid1;
 		userid2 = challenge ? challenge.to : userid2;
+		if (challenge && Users.get(challenge.to)?.id === 'abyssalbot') Users.get('abyssalbot')?.send(`|updatechallenges|` + JSON.stringify({challengesFrom: {[challenge.from]: challenge.format}}));
 		this.send(userid1, userid2, this.getUpdate(challenge));
 	}
 	send(userid1: ID, userid2: ID, message: string) {
@@ -231,8 +232,8 @@ export class Challenges extends Map<ID, Challenge[]> {
 		const user1Identity = user1 ? user1.getIdentity() : ` ${userid1}`;
 		const user2Identity = user2 ? user2.getIdentity() : ` ${userid2}`;
 		const fullMessage = `|pm|${user1Identity}|${user2Identity}|${message}`;
-		user1?.send(fullMessage);
-		user2?.send(fullMessage);
+		if (user1 && user1.id !== 'abyssalbot') user1.send(fullMessage);
+		if (user2 && user2.id !== 'abyssalbot') user2.send(fullMessage);
 	}
 	updateFor(connection: Connection | User) {
 		const user = connection.user;
@@ -241,6 +242,7 @@ export class Challenges extends Map<ID, Challenge[]> {
 
 		const userIdentity = user.getIdentity();
 		let messages = '';
+		const challengesFrom: {[k: string]: string} = {};
 		for (const challenge of challenges) {
 			let fromIdentity, toIdentity;
 			if (challenge.from === user.id) {
@@ -251,9 +253,11 @@ export class Challenges extends Map<ID, Challenge[]> {
 				const fromUser = Users.get(challenge.from);
 				fromIdentity = fromUser ? fromUser.getIdentity() : ` ${challenge.from}`;
 				toIdentity = userIdentity;
+				challengesFrom[challenge.from] = challenge.format;
 			}
 			messages += `|pm|${fromIdentity}|${toIdentity}|${this.getUpdate(challenge)}\n`;
 		}
+		if (user.id === 'abyssalbot') messages = `|updatechallenges|` + JSON.stringify({challengesFrom});
 		connection.send(messages);
 	}
 }

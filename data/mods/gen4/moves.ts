@@ -1177,8 +1177,10 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 		condition: {
 			duration: 4,
 			onEnd(target) {
-				this.add('-start', target, 'perish0');
-				target.faint();
+				if (target.isActive) {
+					this.add('-start', target, 'perish0');
+					target.faint();
+				}
 			},
 			onResidualOrder: 12,
 			onResidual(pokemon) {

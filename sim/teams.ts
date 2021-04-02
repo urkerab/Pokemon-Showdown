@@ -104,6 +104,18 @@ export interface PokemonSet {
 	 */
 	dynamaxLevel?: number;
 	gigantamax?: boolean;
+	// oms
+	sketchMove?: string;
+	template?: Species;
+	crossTemplate?: Species;
+	crossMovesLeft?: number;
+	follower?: boolean;
+	abilitySources?: string[];
+	donorTemplate?: string;
+	typemons?: { type?: string, moves: string[] };
+	fuseTemplate?: Species;
+	signatureMove?: string;
+	addedType?: Set<string>;
 }
 
 export const Teams = new class Teams {

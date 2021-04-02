@@ -122,5 +122,6 @@ export const Abilities: {[k: string]: ModdedAbilityData} = {
 	zenmode: {
 		inherit: true,
 		isPermanent: false,
+		copyLimited: ['skillswap'],
 	},
 };

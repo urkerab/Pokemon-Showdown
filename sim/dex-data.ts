@@ -142,6 +142,12 @@ export class Nature extends BasicEffect implements Readonly<BasicEffect & Nature
 		this.gen = 3;
 		this.plus = data.plus || undefined;
 		this.minus = data.minus || undefined;
+		if (!this.desc && !this.plus) this.desc = 'No effect.';
+		if (!this.desc) {
+			const statNames: {[k: string]: string} =
+				{atk: "Attack", def: "Defense", spa: "Special Attack", spd: "Special Defense", spe: "Speed"};
+			this.desc = `+10% ${statNames[this.plus!]}, -10% ${statNames[this.minus!]}.`;
+		}
 	}
 }
 

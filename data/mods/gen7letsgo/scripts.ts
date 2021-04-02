@@ -3,7 +3,16 @@ export const Scripts: ModdedBattleScriptsData = {
 	init() {
 		this.modData('Abilities', 'noability').isNonstandard = null;
 		for (const i in this.data.Pokedex) {
-			this.modData('Pokedex', i).abilities = {0: 'No Ability'};
+			const dataTemplate = this.modData('Pokedex', i);
+			dataTemplate.abilities = {0: 'No Ability'};
+			if (dataTemplate.requiredItem && this.items.get(dataTemplate.requiredItem).megaStone) {
+				dataTemplate.requiredItem = '';
+			}
+		}
+		for (const i in this.data.Moves) {
+			if (this.data.Moves[i].num! < 1 || this.data.Moves[i].num! > 164 && !['protect', 'sludgebomb', 'outrage', 'megahorn', 'encore', 'irontail', 'crunch', 'mirrorcoat', 'shadowball', 'fakeout', 'heatwave', 'willowisp', 'facade', 'taunt', 'helpinghand', 'superpower', 'brickbreak', 'yawn', 'bulkup', 'calmmind', 'roost', 'feint', 'uturn', 'suckerpunch', 'flareblitz', 'poisonjab', 'darkpulse', 'airslash', 'xscissor', 'bugbuzz', 'dragonpulse', 'nastyplot', 'iceshard', 'flashcannon', 'powerwhip', 'stealthrock', 'aquajet', 'quiverdance', 'foulplay', 'clearsmog', 'scald', 'shellsmash', 'dragontail', 'drillrun', 'playrough', 'moonblast', 'dazzlinggleam', 'zippyzap', 'splishysplash', 'floatyfall', 'bouncybubble', 'buzzybuzz', 'sizzlyslide', 'glitzyglow', 'baddybad', 'sappyseed', 'freezyfrost', 'sparklyswirl', 'doubleironbash'].includes(i)) {
+				this.modData('Moves', i).isNonstandard = true;
+			}
 		}
 	},
 	/**

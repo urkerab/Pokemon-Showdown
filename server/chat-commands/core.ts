@@ -1037,7 +1037,7 @@ export const commands: Chat.ChatCommands = {
 		const fromUser = Ladders.challenges.accept(this);
 
 		this.pmTarget = fromUser;
-		this.sendChatMessage(`/text You accepted the battle invite`);
+		// this.sendChatMessage(`/text You accepted the battle invite`);
 		this.parse(`/join ${targetRoom.roomid}`);
 		battle.joinGame(user, slot, playerOpts);
 	},
@@ -1273,8 +1273,8 @@ export const commands: Chat.ChatCommands = {
 		if (!user.named) {
 			return this.popupReply(this.tr`You must choose a username before you challenge someone.`);
 		}
-		if (Config.pmmodchat && !user.hasSysopAccess() && !Users.globalAuth.atLeast(user, Config.pmmodchat as GroupSymbol)) {
-			const groupName = Config.groups[Config.pmmodchat].name || Config.pmmodchat;
+		if (Config.laddermodchat && !user.hasSysopAccess() && !Users.globalAuth.atLeast(user, Config.laddermodchat as AuthLevel)) {
+			const groupName = Config.groups[Config.laddermodchat]?.name || Config.laddermodchat;
 			this.popupReply(this.tr`This server requires you to be rank ${groupName} or higher to challenge users.`);
 			return false;
 		}
@@ -1360,7 +1360,7 @@ export const commands: Chat.ChatCommands = {
 		}
 		const gameRoom = await Ladders.acceptChallenge(connection, chall as Ladders.BattleChallenge);
 		if (!gameRoom) return false;
-		this.sendChatMessage(Utils.html`/nonotify ${user.name} accepted the challenge, starting &laquo;<a href="/${gameRoom.roomid}">${gameRoom.roomid}</a>&raquo;`);
+		// this.sendChatMessage(Utils.html`/nonotify ${user.name} accepted the challenge, starting &laquo;<a href="/${gameRoom.roomid}">${gameRoom.roomid}</a>&raquo;`);
 		return true;
 	},
 	accepthelp: [`/accept [user] - Accepts a challenge from the given user.`],
@@ -1390,16 +1390,18 @@ export const commands: Chat.ChatCommands = {
 	useteamhelp: [`/useteam [packed team] - Sets your team for your next battles to the given [team].`],
 
 	vtm(target, room, user, connection) {
+		/*
 		if (Monitor.countPrepBattle(connection.ip, connection)) {
 			return;
 		}
+		*/
 		if (!target) return this.errorReply(this.tr`Provide a valid format.`);
 		const originalFormat = Dex.formats.get(target);
 		// Note: The default here of [Gen 8] Anything Goes isn't normally hit; since the web client will send a default format
 		const format = originalFormat.effectType === 'Format' ? originalFormat : Dex.formats.get(
 			'[Gen 8] Anything Goes'
 		);
-		if (format.effectType !== this.tr`Format`) return this.popupReply(this.tr`Please provide a valid format.`);
+		if (format.effectType !== 'Format') return this.popupReply(this.tr`Please provide a valid format.`);
 
 		return TeamValidatorAsync.get(format.id).validateTeam(user.battleSettings.team).then(result => {
 			const matchMessage = (originalFormat === format ? "" : this.tr`The format '${originalFormat.name}' was not found.`);

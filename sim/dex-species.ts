@@ -1,10 +1,9 @@
 import {toID, BasicEffect} from './dex-data';
 
-interface SpeciesAbility {
+export type AbilityIndex = '0' | '1' | 'H' | 'S';
+type SparseAbility = {[k in AbilityIndex]?: string};
+export interface SpeciesAbility extends SparseAbility {
 	0: string;
-	1?: string;
-	H?: string;
-	S?: string;
 }
 
 type SpeciesTag = "Mythical" | "Restricted Legendary" | "Sub-Legendary";
@@ -234,6 +233,12 @@ export class Species extends BasicEffect implements Readonly<BasicEffect & Speci
 	declare readonly exclusiveMoves?: readonly ID[];
 	declare readonly comboMoves?: readonly ID[];
 	declare readonly essentialMove?: ID;
+	readonly spritenum?: number;
+	// oms
+	readonly innate?: string;
+	readonly originalMega?: string;
+	readonly stallingMove?: boolean;
+	readonly inheritedItem?: string;
 
 	constructor(data: AnyObject) {
 		super(data);
@@ -286,12 +291,14 @@ export class Species extends BasicEffect implements Readonly<BasicEffect & Speci
 		this.canGigantamax = data.canGigantamax || undefined;
 		this.gmaxUnreleased = !!data.gmaxUnreleased;
 		this.cannotDynamax = !!data.cannotDynamax;
-		this.battleOnly = data.battleOnly || (this.isMega ? this.baseSpecies : undefined);
+		this.battleOnly = data.battleOnly;
 		this.changesFrom = data.changesFrom ||
 			(this.battleOnly !== this.baseSpecies ? this.battleOnly : this.baseSpecies);
 		if (Array.isArray(data.changesFrom)) this.changesFrom = data.changesFrom[0];
 
 		if (!this.gen && this.num >= 1) {
+			// For Megamons
+			this.battleOnly = this.battleOnly || this.isMega && this.baseSpecies || undefined;
 			if (this.num >= 810 || ['Gmax', 'Galar', 'Galar-Zen', 'Hisui'].includes(this.forme)) {
 				this.gen = 8;
 			} else if (this.num >= 722 || this.forme.startsWith('Alola') || this.forme === 'Starter') {
@@ -351,7 +358,7 @@ export class DexSpecies {
 		this.dex = dex;
 	}
 
-	get(name?: string | Species): Species {
+	get(name?: string | Species | null): Species {
 		if (name && typeof name !== 'string') return name;
 
 		name = (name || '').trim();
@@ -376,6 +383,7 @@ export class DexSpecies {
 					...this.dex.data.Pokedex[baseId],
 					...this.dex.data.FormatsData[id],
 					name: id,
+					exists: false,
 				});
 				species.abilities = {0: species.abilities['S']!};
 			} else {

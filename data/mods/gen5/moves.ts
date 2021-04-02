@@ -488,6 +488,12 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 		inherit: true,
 		flags: {contact: 1, protect: 1, mirror: 1},
 	},
+	leechseed: {
+		inherit: true,
+		onTryImmunity(target) { // XXX For Anti-Vaxxers
+			return !target.hasType('Grass');
+		},
+	},
 	lick: {
 		inherit: true,
 		basePower: 20,
@@ -599,7 +605,7 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	naturepower: {
 		inherit: true,
-		onTryHit() {},
+		onTry() {},
 		onHit(pokemon) {
 			this.actions.useMove('earthquake', pokemon);
 		},

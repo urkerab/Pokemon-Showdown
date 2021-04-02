@@ -3,14 +3,17 @@ import {toID, BasicEffect} from './dex-data';
 import {EventMethods} from './dex-conditions';
 import {Tags} from '../data/tags';
 
-const DEFAULT_MOD = 'gen8';
+const BASE_MOD = 'gen8';
+const DEFAULT_MOD = 'gen7';
+const MAIN_FORMATS = `${__dirname}/../config/formats`;
+const LOCAL_FORMATS = `${__dirname}/../config/local-formats`;
 
 export interface FormatData extends Partial<Format>, EventMethods {
 	name: string;
 }
 
 export type FormatList = (FormatData | {section: string, column?: number})[];
-export type ModdedFormatData = FormatData | Omit<FormatData, 'name'> & {inherit: true};
+export type ModdedFormatData = FormatData | Omit<Omit<FormatData, 'name'>, 'inherit'> & {inherit: true};
 
 type FormatEffectType = 'Format' | 'Ruleset' | 'Rule' | 'ValidatorRule';
 
@@ -324,6 +327,7 @@ export class RuleTable extends Map<string, string> {
 }
 
 export class Format extends BasicEffect implements Readonly<BasicEffect> {
+	inherit?: string[];
 	readonly mod: string;
 	/**
 	 * Name of the team generator algorithm, if this format uses
@@ -374,6 +378,7 @@ export class Format extends BasicEffect implements Readonly<BasicEffect> {
 
 	declare readonly battle?: ModdedBattleScriptsData;
 	declare readonly pokemon?: ModdedBattlePokemon;
+	readonly side?: ModdedBattleSide;
 	declare readonly queue?: ModdedBattleQueue;
 	declare readonly field?: ModdedField;
 	declare readonly actions?: ModdedBattleActions;
@@ -383,17 +388,18 @@ export class Format extends BasicEffect implements Readonly<BasicEffect> {
 	declare readonly threads?: string[];
 	declare readonly timer?: Partial<GameTimerSettings>;
 	declare readonly tournamentShow?: boolean;
+	readonly factoryTier?: string;
 	declare readonly checkCanLearn?: (
-		this: TeamValidator, move: Move, species: Species, setSources: PokemonSources, set: PokemonSet
+		this: TeamValidator, move: Move, species: Species, setSources?: PokemonSources, set?: PokemonSet
 	) => string | null;
-	declare readonly getEvoFamily?: (this: Format, speciesid: string) => ID;
+	declare readonly getEvoFamily?: (this: Format, species: string | Species) => ID;
 	declare readonly getSharedPower?: (this: Format, pokemon: Pokemon) => Set<string>;
 	declare readonly onChangeSet?: (
 		this: TeamValidator, set: PokemonSet, format: Format, setHas?: AnyObject, teamHas?: AnyObject
 	) => string[] | void;
 	declare readonly onModifySpeciesPriority?: number;
 	declare readonly onModifySpecies?: (
-		this: Battle, species: Species, target?: Pokemon, source?: Pokemon, effect?: Effect
+		this: Battle, species: Species, target: Pokemon, source: Format, effect?: Effect
 	) => Species | void;
 	declare readonly onBattleStart?: (this: Battle) => void;
 	declare readonly onTeamPreview?: (this: Battle) => void;
@@ -403,13 +409,19 @@ export class Format extends BasicEffect implements Readonly<BasicEffect> {
 	declare readonly onValidateTeam?: (
 		this: TeamValidator, team: PokemonSet[], format: Format, teamHas: AnyObject
 	) => string[] | void;
-	declare readonly validateSet?: (this: TeamValidator, set: PokemonSet, teamHas: AnyObject) => string[] | null;
+	declare readonly validateSet?: (this: TeamValidator, set: PokemonSet, teamHas: AnyObject) => string[] | null | void;
 	declare readonly validateTeam?: (this: TeamValidator, team: PokemonSet[], options?: {
 		removeNicknames?: boolean,
 		skipSets?: {[name: string]: {[key: string]: boolean}},
-	}) => string[] | void;
+	}) => string[] | null;
 	declare readonly section?: string;
 	declare readonly column?: number;
+
+	// oms
+	readonly accessories?: { [index: string]: {type: string} & SparseStatsTable };
+	readonly customBans?: { [index: string]: string[] };
+	readonly maxHazards?: number;
+	abilityMap?: { [index: string]: string[] };
 
 	constructor(data: AnyObject) {
 		super(data);
@@ -433,7 +445,7 @@ export class Format extends BasicEffect implements Readonly<BasicEffect> {
 	}
 }
 
-/** merges format lists from config/formats and config/custom-formats */
+/** merges format lists from config/formats and config/custom-formats
 function mergeFormatLists(main: FormatList, custom: FormatList | undefined): FormatList {
 	// interface for the builder.
 	interface FormatSection {
@@ -488,6 +500,7 @@ function mergeFormatLists(main: FormatList, custom: FormatList | undefined): For
 
 	return result;
 }
+*/
 
 export class DexFormats {
 	readonly dex: ModdedDex;
@@ -507,23 +520,16 @@ export class DexFormats {
 		const formatsList = [];
 
 		// Load formats
-		let customFormats;
-		try {
-			customFormats = require(`${__dirname}/../config/custom-formats`).Formats;
-			if (!Array.isArray(customFormats)) {
-				throw new TypeError(`Exported property 'Formats' from "./config/custom-formats.ts" must be an array`);
-			}
-		} catch (e: any) {
-			if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') {
-				throw e;
-			}
+		const LocalFormats: AnyObject[] = require(LOCAL_FORMATS).Formats;
+		if (!Array.isArray(LocalFormats)) {
+			throw new TypeError(`Exported property 'Formats' from "./config/local-formats.ts" must be an array`);
 		}
-		let Formats: AnyObject[] = require(`${__dirname}/../config/formats`).Formats;
+		const Formats: AnyObject[] = require(MAIN_FORMATS).Formats;
 		if (!Array.isArray(Formats)) {
 			throw new TypeError(`Exported property 'Formats' from "./config/formats.ts" must be an array`);
 		}
-		if (customFormats) Formats = mergeFormatLists(Formats as any, customFormats);
 
+		const baseFormats = new Map<ID, AnyObject>();
 		let section = '';
 		let column = 1;
 		for (const [i, format] of Formats.entries()) {
@@ -536,7 +542,7 @@ export class DexFormats {
 			}
 			if (!format.section) format.section = section;
 			if (!format.column) format.column = column;
-			if (this.rulesetCache.has(id)) throw new Error(`Format #${i + 1} has a duplicate ID: '${id}'`);
+			if (baseFormats.has(id)) throw new Error(`Format #${i + 1} has a duplicate ID: '${id}'`);
 			format.effectType = 'Format';
 			format.baseRuleset = format.ruleset ? format.ruleset.slice() : [];
 			if (format.challengeShow === undefined) format.challengeShow = true;
@@ -545,6 +551,63 @@ export class DexFormats {
 			if (format.mod === undefined) format.mod = 'gen8';
 			if (!this.dex.dexes[format.mod]) throw new Error(`Format "${format.name}" requires nonexistent mod: '${format.mod}'`);
 
+			baseFormats.set(id, format);
+		}
+
+		section = '';
+		column = 1;
+		for (const [i, format] of LocalFormats.entries()) {
+			const id = toID(format.name);
+			if (format.section) section = format.section;
+			if (format.column) column = format.column;
+			if (!format.name && format.section) continue;
+			if (!id) {
+				throw new RangeError(`Format #${i + 1} must have a name with alphanumeric characters, not '${format.name}'`);
+			}
+			if (!format.section) format.section = section;
+			if (!format.column) format.column = column;
+			if (this.rulesetCache.has(id)) throw new Error(`Format #${i + 1} has a duplicate ID: '${id}'`);
+			const baseFormat = baseFormats.get(id);
+			if (baseFormat) Object.assign(format, Object.assign(baseFormat, format));
+			format.effectType = 'Format';
+			format.baseRuleset = format.ruleset ? format.ruleset.slice() : [];
+			if (format.challengeShow === undefined) format.challengeShow = true;
+			if (format.searchShow === undefined) format.searchShow = true;
+			if (format.tournamentShow === undefined) format.tournamentShow = true;
+			if (!format.inherit && format.mod === undefined) {
+				throw new Error(`Format "${format.name}" has no mod`);
+			}
+			if (format.mod !== undefined && !this.dex.dexes[format.mod]) {
+				throw new Error(`Format "${format.name}" requires nonexistent mod: '${format.mod}'`);
+			}
+
+			baseFormats.set(id, format);
+		}
+		for (const format of LocalFormats) {
+			if (format.inherit) {
+				for (const inherit of format.inherit) {
+					if (!baseFormats.has(toID(inherit))) {
+						throw new Error(`Format "${format.name}" requires nonexistent parent: '${inherit}'`);
+					}
+				}
+			}
+		}
+		const inheritFormats = (id: ID) => {
+			const effect = {};
+			const format = baseFormats.get(id)!;
+			for (const inherit of format.inherit!.map(toID)) {
+				if (baseFormats.get(inherit)!.inherit) inheritFormats(inherit);
+				Object.assign(effect, baseFormats.get(inherit));
+			}
+			delete format.inherit;
+			Object.assign(effect, format);
+			Object.assign(format, effect);
+		};
+		for (const id of baseFormats.keys()) {
+			if (baseFormats.get(id)!.inherit) inheritFormats(id);
+		}
+		for (const format of LocalFormats) {
+			const id = toID(format.name);
 			const ruleset = new Format(format);
 			this.rulesetCache.set(id, ruleset);
 			formatsList.push(ruleset);
@@ -591,9 +654,6 @@ export class DexFormats {
 			name = this.dex.data.Aliases[id];
 			id = toID(name);
 		}
-		if (this.dex.data.Rulesets.hasOwnProperty(DEFAULT_MOD + id)) {
-			id = (DEFAULT_MOD + id) as ID;
-		}
 		let supplementaryAttributes: AnyObject | null = null;
 		if (name.includes('@@@')) {
 			if (!isTrusted) {
@@ -615,6 +675,10 @@ export class DexFormats {
 		let effect;
 		if (this.dex.data.Rulesets.hasOwnProperty(id)) {
 			effect = new Format({name, ...this.dex.data.Rulesets[id] as any, ...supplementaryAttributes});
+		} else if (this.dex.data.Rulesets.hasOwnProperty(DEFAULT_MOD + id)) {
+			effect = new Format({name, ...this.dex.data.Rulesets[DEFAULT_MOD + id] as any, ...supplementaryAttributes});
+		} else if (this.dex.data.Rulesets.hasOwnProperty(BASE_MOD + id)) {
+			effect = new Format({name, ...this.dex.data.Rulesets[BASE_MOD + id] as any, ...supplementaryAttributes});
 		} else {
 			effect = new Format({id, name, exists: false});
 		}
@@ -792,7 +856,7 @@ export class DexFormats {
 			for (const [subRule, source, limit, bans] of subRuleTable.complexTeamBans) {
 				ruleTable.addComplexTeamBan(subRule, source || subformat.name, limit, bans);
 			}
-			if (subRuleTable.checkCanLearn) {
+			if (subRuleTable.checkCanLearn && !format.checkCanLearn) {
 				if (ruleTable.checkCanLearn) {
 					throw new Error(
 						`"${format.name}" has conflicting move validation rules from ` +
@@ -828,7 +892,7 @@ export class DexFormats {
 	}
 
 	validateRule(rule: string, format: Format | null = null) {
-		if (rule !== rule.trim()) throw new Error(`Rule "${rule}" should be trimmed`);
+		if (rule.replace(/^ -/, "-") !== rule.trim()) throw new Error(`Rule "${rule}" should be trimmed`);
 		switch (rule.charAt(0)) {
 		case '-':
 		case '*':
@@ -844,7 +908,7 @@ export class DexFormats {
 				let checkTeam = buf.includes('++');
 				const banNames = buf.split(checkTeam ? '++' : '+').map(v => v.trim());
 				if (banNames.length === 1 && limit > 0) checkTeam = true;
-				const innerRule = banNames.join(checkTeam ? ' ++ ' : ' + ');
+				const innerRule = banNames.join(' + ');
 				const bans = banNames.map(v => this.validateBanRule(v));
 
 				if (checkTeam) {
@@ -862,6 +926,15 @@ export class DexFormats {
 			const ruleset = this.dex.formats.get(id);
 			if (!ruleset.exists) {
 				throw new Error(`Unrecognized rule "${rule}"`);
+			}
+			if (format) {
+				let mod = format.mod;
+				while (mod !== ruleset.mod) {
+					mod = this.dex.mod(mod).parentMod;
+					if (!mod) {
+						throw new Error(`Can't mashup "${format.name}" with "${ruleset.name}" because it has a custom mod or is from an older generation`);
+					}
+				}
 			}
 			if (typeof value === 'string') id = `${id}=${value.trim()}`;
 			if (rule.startsWith('!!')) return `!!${id}`;

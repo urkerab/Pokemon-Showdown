@@ -1,4 +1,5 @@
 export const Scripts: ModdedBattleScriptsData = {
+	inherit: 'gen8',
 	getActionSpeed(action) {
 		if (action.choice === 'move') {
 			let move = action.move;
@@ -67,23 +68,9 @@ export const Scripts: ModdedBattleScriptsData = {
 
 			this.add('start');
 
-			if (this.format.onBattleStart) this.format.onBattleStart.call(this);
-			for (const rule of this.ruleTable.keys()) {
-				if ('+*-!'.includes(rule.charAt(0))) continue;
-				const subFormat = this.dex.formats.get(rule);
-				if (subFormat.onBattleStart) subFormat.onBattleStart.call(this);
-			}
-
 			for (const side of this.sides) {
 				for (let i = 0; i < side.active.length; i++) {
-					if (!side.pokemonLeft) {
-						// forfeited before starting
-						side.active[i] = side.pokemon[i];
-						side.active[i].fainted = true;
-						side.active[i].hp = 0;
-					} else {
-						this.actions.switchIn(side.pokemon[i], i);
-					}
+					this.actions.switchIn(side.pokemon[i], i);
 				}
 			}
 			for (const pokemon of this.getAllPokemon()) {
@@ -96,15 +83,13 @@ export const Scripts: ModdedBattleScriptsData = {
 		case 'move':
 			if (!action.pokemon.isActive) return false;
 			if (action.pokemon.fainted) return false;
-			// Linked moves
-			// @ts-ignore
+			// This is where moves are linked
 			if (action.linked) {
-				// @ts-ignore
-				const linkedMoves: ActiveMove[] = action.linked;
+				const linkedMoves = action.linked;
 				for (let i = linkedMoves.length - 1; i >= 0; i--) {
 					const validTarget = this.validTargetLoc(action.targetLoc, action.pokemon, linkedMoves[i].target);
-					const targetLoc = validTarget ? action.targetLoc : 0;
-					const pseudoAction: Action = {
+					const targetLoc = validTarget ? action.targetLoc : this.getRandomTarget(action.pokemon, linkedMoves[i])!.position + 1;
+					const pseudoAction: MoveAction = {
 						choice: 'move', priority: action.priority, speed: action.speed, pokemon: action.pokemon,
 						targetLoc: targetLoc, moveid: linkedMoves[i].id, move: linkedMoves[i], mega: action.mega,
 						order: action.order, fractionalPriority: action.fractionalPriority, originalTarget: action.originalTarget,
@@ -222,29 +207,15 @@ export const Scripts: ModdedBattleScriptsData = {
 			// in gen 3 or earlier, switching in fainted pokemon is done after
 			// every move, rather than only at the end of the turn.
 			this.checkFainted();
-		} else if (action.choice === 'megaEvo' && this.gen === 7) {
-			this.eachEvent('Update');
-			// In Gen 7, the action order is recalculated for a Pokémon that mega evolves.
-			for (const [i, queuedAction] of this.queue.list.entries()) {
-				if (queuedAction.pokemon === action.pokemon && queuedAction.choice === 'move') {
-					this.queue.list.splice(i, 1);
-					queuedAction.mega = 'done';
-					this.queue.insertChoice(queuedAction, true);
-					break;
-				}
-			}
-			return false;
 		} else if (this.queue.peek()?.choice === 'instaswitch') {
 			return false;
 		}
 
-		if (this.gen >= 5) {
-			this.eachEvent('Update');
-			for (const [pokemon, originalHP] of residualPokemon) {
-				const maxhp = pokemon.getUndynamaxedHP(pokemon.maxhp);
-				if (pokemon.hp && pokemon.getUndynamaxedHP() <= maxhp / 2 && originalHP > maxhp / 2) {
-					this.runEvent('EmergencyExit', pokemon);
-				}
+		this.eachEvent('Update');
+		for (const [pokemon, originalHP] of residualPokemon) {
+			const maxhp = pokemon.getUndynamaxedHP(pokemon.maxhp);
+			if (pokemon.hp && pokemon.getUndynamaxedHP() <= maxhp / 2 && originalHP > maxhp / 2) {
+				this.runEvent('EmergencyExit', pokemon);
 			}
 		}
 
@@ -287,9 +258,7 @@ export const Scripts: ModdedBattleScriptsData = {
 			}
 		}
 
-		if (this.gen < 5) this.eachEvent('Update');
-
-		if (this.gen >= 8 && this.queue.peek()?.choice === 'move') {
+		if (this.queue.peek()?.choice === 'move') {
 			// In gen 8, speed is updated dynamically so update the queue's speed properties and sort it.
 			this.updateSpeed();
 			for (const queueAction of this.queue.list) {
@@ -413,7 +382,8 @@ export const Scripts: ModdedBattleScriptsData = {
 					if (dancer.fainted) continue;
 					this.battle.add('-activate', dancer, 'ability: Dancer');
 					const dancersTarget = !target!.isAlly(dancer) && pokemon.isAlly(dancer) ? target! : pokemon;
-					this.runMove(move.id, dancer, dancer.getLocOf(dancersTarget), this.dex.abilities.get('dancer'), undefined, true);
+					const dancersTargetLoc = dancer.getLocOf(dancersTarget);
+					this.runMove(move.id, dancer, dancersTargetLoc, this.dex.abilities.get('dancer'), undefined, true);
 				}
 			}
 			if (noLock && pokemon.volatiles['lockedmove']) delete pokemon.volatiles['lockedmove'];
@@ -429,6 +399,7 @@ export const Scripts: ModdedBattleScriptsData = {
 
 			if (!action.side && action.pokemon) action.side = action.pokemon.side;
 			if (!action.move && action.moveid) action.move = this.battle.dex.getActiveMove(action.moveid);
+			if (!action.choice && action.move) action.choice = 'move';
 			if (!action.order) {
 				const orders: {[choice: string]: number} = {
 					team: 1,
@@ -442,7 +413,8 @@ export const Scripts: ModdedBattleScriptsData = {
 					runPrimal: 102,
 					switch: 103,
 					megaEvo: 104,
-					runDynamax: 105,
+					megaEvoDone: 105,
+					runDynamax: 106,
 
 					shift: 200,
 					// default is 200 (for moves)
@@ -478,12 +450,11 @@ export const Scripts: ModdedBattleScriptsData = {
 						}));
 					}
 					action.fractionalPriority = this.battle.runEvent('FractionalPriority', action.pokemon, null, action.move, 0);
-					const linkedMoves: [string, string] = action.pokemon.getLinkedMoves();
-					if (linkedMoves.length &&
-							!(action.pokemon.getItem().isChoice || action.pokemon.hasAbility('gorillatactics')) &&
-							!action.zmove && !action.maxMove) {
+					const linkedMoves: ID[] = action.pokemon.getLinkedMoves();
+					if (linkedMoves.length && !action.pokemon.getItem().isChoice && !action.zmove && !action.maxMove) {
 						const decisionMove = this.battle.toID(action.move);
 						if (linkedMoves.includes(decisionMove)) {
+							// flag the move as linked here
 							action.linked = linkedMoves.map(moveid => this.battle.dex.getActiveMove(moveid));
 							const linkedOtherMove = action.linked[1 - linkedMoves.indexOf(decisionMove)];
 							if (linkedOtherMove.beforeTurnCallback) {
@@ -498,7 +469,7 @@ export const Scripts: ModdedBattleScriptsData = {
 					}
 				} else if (['switch', 'instaswitch'].includes(action.choice)) {
 					if (typeof action.pokemon.switchFlag === 'string') {
-						action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
+						action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag);
 					}
 					action.pokemon.switchFlag = false;
 				}
@@ -532,18 +503,17 @@ export const Scripts: ModdedBattleScriptsData = {
 			if (linkedMoves.length !== 2 || linkedMoves[0].pp <= 0 || linkedMoves[1].pp <= 0) return [];
 			const ret = [linkedMoves[0].id, linkedMoves[1].id];
 			if (ignoreDisabled) return ret;
+
+			// Disabling effects which won't abort execution of moves already added to battle event loop.
 			if (!this.ateBerry && ret.includes('belch' as ID)) return [];
-			if (this.hasItem('assaultvest') &&
-				(this.battle.dex.moves.get(ret[0]).category === 'Status' || this.battle.dex.moves.get(ret[1]).category === 'Status')) {
+			if (this.hasItem('assaultvest') && (this.battle.dex.moves.get(ret[0]).category === 'Status' || this.battle.dex.moves.get(ret[1]).category === 'Status')) {
 				return [];
 			}
 			return ret;
 		},
 		hasLinkedMove(moveid) {
-			// @ts-ignore
-			const linkedMoves: ID[] = this.getLinkedMoves(true);
-			if (!linkedMoves.length) return false;
-			return linkedMoves.some(x => x === moveid);
+			const linkedMoves = this.getLinkedMoves(true);
+			return linkedMoves.includes(moveid);
 		},
 	},
 };

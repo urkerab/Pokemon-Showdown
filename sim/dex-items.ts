@@ -15,6 +15,9 @@ export interface ItemData extends Partial<Item>, PokemonEventMethods {
 export type ModdedItemData = ItemData | Partial<Omit<ItemData, 'name'>> & {
 	inherit: true,
 	onCustap?: (this: Battle, pokemon: Pokemon) => void,
+
+	// oms
+	type?: string,
 };
 
 export class Item extends BasicEffect implements Readonly<BasicEffect> {
@@ -99,6 +102,11 @@ export class Item extends BasicEffect implements Readonly<BasicEffect> {
 	declare readonly onEat?: ((this: Battle, pokemon: Pokemon) => void) | false;
 	declare readonly onPrimal?: (this: Battle, pokemon: Pokemon) => void;
 	declare readonly onStart?: (this: Battle, target: Pokemon) => void;
+
+	// oms
+	readonly type?: string;
+	readonly ability?: string;
+	readonly moveid?: string;
 
 	constructor(data: AnyObject) {
 		super(data);

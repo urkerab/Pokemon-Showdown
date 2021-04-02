@@ -1,67 +1,67 @@
 export const Moves: {[k: string]: ModdedMoveData} = {
 	accelerock: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	anchorshot: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	appleacid: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	astralbarrage: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	aurawheel: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	banefulbunker: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	behemothbash: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	behemothblade: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	blueflare: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	boltbeak: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	boltstrike: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	branchpoke: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	breakingswipe: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	brutalswing: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	burningjealousy: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	celebrate: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	chatter: {
 		inherit: true,
@@ -69,35 +69,35 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	clangingscales: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	clangoroussoul: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	coaching: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	coreenforcer: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	corrosivegas: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	courtchange: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	craftyshield: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	darkestlariat: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	darkvoid: {
 		inherit: true,
@@ -105,87 +105,87 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	decorate: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	diamondstorm: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	doubleironbash: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	dragondarts: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	dragonenergy: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	drumbeating: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	dualwingbeat: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	dynamaxcannon: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	eeriespell: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	electrify: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	electroweb: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	eternabeam: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	expandingforce: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fairylock: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	falsesurrender: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fierydance: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fierywrath: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	firelash: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	firepledge: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	firstimpression: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fishiousrend: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	flash: {
 		inherit: true,
@@ -193,211 +193,211 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	fleurcannon: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	flipturn: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	floralhealing: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	flyingpress: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	forestscurse: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	freezeshock: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	freezingglare: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fusionbolt: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fusionflare: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	geargrind: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gearup: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	geomancy: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	glaciallance: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	glaciate: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxbefuddle: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxcannonade: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxcentiferno: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxchistrike: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxcuddle: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxdepletion: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxdrumsolo: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxfinale: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxfireball: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxfoamburst: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxgoldrush: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxgravitas: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxhydrosnipe: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxmalodor: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxmeltdown: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxoneblow: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxrapidflow: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxreplenish: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxresonance: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxsandblast: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxsmite: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxsnooze: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxsteelsurge: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxstonesurge: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxstunshock: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxsweetness: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxtartness: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxterror: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxvinelash: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxvolcalith: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxvoltcrash: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxwildfire: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gmaxwindrage: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	grasspledge: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	grassyglide: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	gravapple: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	happyhour: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	headcharge: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	heartswap: {
 		inherit: true,
@@ -405,7 +405,7 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	heatcrash: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	hiddenpower: {
 		inherit: true,
@@ -477,27 +477,27 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	holdback: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	holdhands: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	hornleech: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	iceburn: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	instruct: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	jawlock: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	judgment: {
 		inherit: true,
@@ -505,111 +505,111 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	junglehealing: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	kingsshield: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	landswrath: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	lashout: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	magicpowder: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	matblock: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxairstream: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxdarkness: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxflare: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxflutterby: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxgeyser: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxguard: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxhailstorm: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxknuckle: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxlightning: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxmindstorm: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxooze: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxovergrowth: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxphantasm: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxquake: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxrockfall: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxstarfall: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxsteelspike: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxstrike: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	maxwyrmwind: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	meteorassault: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	meteorbeam: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	metronome: {
 		inherit: true,
@@ -621,83 +621,83 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	mindblown: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	mistyexplosion: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	moongeistbeam: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	multiattack: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	naturesmadness: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	nightdaze: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	noretreat: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	oblivionwing: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	obstruct: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	octolock: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	overdrive: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	paraboliccharge: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	photongeyser: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	plasmafists: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	pollenpuff: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	poltergeist: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	powertrip: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	prismaticlaser: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	psychicfangs: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	psychicterrain: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	psychoboost: {
 		inherit: true,
@@ -705,15 +705,15 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	purify: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	pyroball: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	risingvoltage: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	rockclimb: {
 		inherit: true,
@@ -721,23 +721,23 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	sacredsword: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	scaleshot: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	scorchingsands: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	searingshot: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	secretsword: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	seedflare: {
 		inherit: true,
@@ -745,23 +745,23 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	shadowbone: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	shellsidearm: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	shelltrap: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	shiftgear: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	shoreup: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	sketch: {
 		inherit: true,
@@ -769,67 +769,67 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	skittersmack: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	snaptrap: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	snipeshot: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	solarblade: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	sparklingaria: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	spectralthief: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	speedswap: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	spiritbreak: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	spiritshackle: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	steameruption: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	steelbeam: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	steelroller: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	strangesteam: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	stuffcheeks: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	sunsteelstrike: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	surgingstrikes: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tailglow: {
 		inherit: true,
@@ -837,43 +837,43 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	tailslap: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tarshot: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	teatime: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	technoblast: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	terrainpulse: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	thousandarrows: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	thousandwaves: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	thundercage: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	thunderouskick: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	topsyturvy: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	toxicthread: {
 		inherit: true,
@@ -881,34 +881,34 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 	},
 	trickortreat: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tripleaxel: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tropkick: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	vcreate: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	waterpledge: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	watershuriken: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	wickedblow: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	zingzap: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 };

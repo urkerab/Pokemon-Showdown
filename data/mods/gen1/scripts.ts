@@ -888,7 +888,6 @@ export const Scripts: ModdedBattleScriptsData = {
 				this.runEvent('AfterEachBoost', target, source, effect, currentBoost);
 			}
 		}
-		this.runEvent('AfterBoost', target, source, effect, boost);
 		return success;
 	},
 };

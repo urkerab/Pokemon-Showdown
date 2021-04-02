@@ -7,18 +7,18 @@
 
 import {Utils} from '../../lib';
 
+/*
 interface StoneDeltas {
 	baseStats: {[stat in StatID]: number};
 	bst: number;
 	weighthg: number;
 	type?: string;
 }
+*/
 
 type TierShiftTiers = 'UU' | 'RUBL' | 'RU' | 'NUBL' | 'NU' | 'PUBL' | 'PU' | 'NFE' | 'LC';
 
-function getMegaStone(stone: string, mod = 'gen8'): Item | null {
-	let dex = Dex;
-	if (mod && toID(mod) in Dex.dexes) dex = Dex.mod(toID(mod));
+function getMegaStone(stone: string, dex = Dex): Item | null {
 	const item = dex.items.get(stone);
 	if (!item.exists) {
 		if (toID(stone) === 'dragonascent') {
@@ -77,10 +77,11 @@ export const commands: Chat.ChatCommands = {
 	],
 
 	mnm: 'mixandmega',
+	mnmlc: 'mixandmega',
 	mixandmega(target, room, user) {
 		if (!toID(target) || !target.includes('@')) return this.parse('/help mixandmega');
 		this.runBroadcast();
-		let dex = Dex;
+		let dex = Dex.mod('gen7');
 		const sep = target.split('@');
 		const stoneName = sep.slice(1).join('@').trim().split(',');
 		const mod = stoneName[1];
@@ -94,12 +95,55 @@ export const commands: Chat.ChatCommands = {
 				throw new Chat.ErrorMessage(`The SSB mod supports custom elements for Mega Stones that have the capability of crashing the server.`);
 			}
 		}
-		const stone = getMegaStone(stoneName[0], mod);
+		const stone = getMegaStone(stoneName[0], dex);
 		const species = dex.species.get(sep[0]);
 		if (!stone || (dex.gen >= 8 && ['redorb', 'blueorb'].includes(stone.id))) {
 			throw new Chat.ErrorMessage(`Error: Mega Stone not found.`);
 		}
-		if (!species.exists) throw new Chat.ErrorMessage(`Error: Pok\u00e9mon not found.`);
+		if (!species.exists) throw new Chat.ErrorMessage(`Error: Pokemon not found.`);
+		if (species.isMega || species.name === 'Necrozma-Ultra') { // Mega Pokemon and Ultra Necrozma cannot be mega evolved
+			this.errorReply(`Warning: You cannot mega evolve Mega Pokemon or Ultra Necrozma in Mix and Mega.`);
+		}
+		const banlist = Dex.formats.get('gen7mixandmega').banlist;
+		if (banlist.includes(stone.name)) {
+			this.errorReply(`Warning: ${stone.name} is banned from Mix and Mega.`);
+		}
+		const restricted = Dex.formats.get('gen7mixandmega').restricted;
+		if (restricted.includes(stone.name) && species.name !== stone.megaEvolves) {
+			this.errorReply(`Warning: ${stone.name} is restricted to ${stone.megaEvolves} in Mix and Mega.`);
+		}
+		const cannotMega = Dex.formats.get('gen7mixandmega').cannotMega || [];
+		if (
+			this.cmd !== 'mnmlc' && cannotMega.includes(species.name) && species.name !== stone.megaEvolves && !species.isMega
+		) {
+			// Separate messages because there's a difference between being already mega evolved / NFE and being banned from mega evolving
+			this.errorReply(`Warning: ${species.name} is banned from mega evolving with a non-native mega stone in Mix and Mega.`);
+		}
+		if (['Multitype', 'RKS System'].includes(species.abilities['0']) && !['Arceus', 'Silvally'].includes(species.name)) {
+			this.errorReply(`Warning: ${species.name} is required to hold ${species.baseSpecies === 'Arceus' && species.requiredItems ? 'either ' + species.requiredItems[0] + ' or ' + species.requiredItems[1] : species.requiredItem}.`);
+		}
+		if (stone.isNonstandard === "Unobtainable") {
+			this.errorReply(`Warning: ${stone.name} is unreleased and is not usable in current Mix and Mega.`);
+		}
+		if (toID(sep[1]) === 'dragonascent' && !['smeargle', 'rayquaza', 'rayquazamega'].includes(toID(sep[0]))) {
+			this.errorReply(`Warning: Only Pokemon with access to Dragon Ascent can mega evolve with Mega Rayquaza's traits.`);
+		}
+		// Fake Pokemon and Mega Stones
+		if (species.isNonstandard === "CAP") {
+			this.errorReply(`Warning: ${species.name} is not a real Pokemon and is therefore not usable in Mix and Mega.`);
+		}
+		if (stone.isNonstandard === "CAP") {
+			this.errorReply(`Warning: ${stone.name} is a fake mega stone created by the CAP Project and is restricted to the CAP ${stone.megaEvolves}.`);
+		}
+		dex = Dex.forFormat('gen7mixandmegarocs');
+		const clampIntRange = Utils.clampIntRange;
+		const mixedSpecies = dex.formats.get('gen7mixandmegarocs').onModifySpecies!.call(
+			{dex, clampIntRange, toID, ...dex.loadData().Scripts} as any as Battle, species, {} as any as Pokemon, {} as any as Format, stone
+		);
+		if (!mixedSpecies) {
+			throw new Chat.ErrorMessage(`Error: ${species.name} is already the mega evolution of ${stone.name}.`);
+		}
+		/*
 		let baseSpecies = dex.species.get(stone.megaEvolves);
 		let megaSpecies = dex.species.get(stone.megaStone);
 		if (stone.id === 'redorb') { // Orbs do not have 'Item.megaStone' or 'Item.megaEvolves' properties.
@@ -144,6 +188,7 @@ export const commands: Chat.ChatCommands = {
 		}
 		mixedSpecies.weighthg = Math.max(1, species.weighthg + deltas.weighthg);
 		mixedSpecies.tier = "MnM";
+		*/
 		let weighthit = 20;
 		if (mixedSpecies.weighthg >= 2000) {
 			weighthit = 120;
@@ -178,7 +223,7 @@ export const commands: Chat.ChatCommands = {
 	megastone: 'stone',
 	stone(target) {
 		const sep = target.split(',');
-		let dex = Dex;
+		let dex = Dex.mod('gen7');
 		if (sep[1]) {
 			if (toID(sep[1]) in Dex.dexes) {
 				dex = Dex.mod(toID(sep[1]));
@@ -192,102 +237,41 @@ export const commands: Chat.ChatCommands = {
 		const targetid = toID(sep[0]);
 		if (!targetid) return this.parse('/help stone');
 		this.runBroadcast();
-		const stone = getMegaStone(targetid, sep[1]);
-		if (stone && dex.gen >= 8 && ['redorb', 'blueorb'].includes(stone.id)) {
-			throw new Chat.ErrorMessage("The Orbs do not exist in Gen 8 and later.");
+		const stone = getMegaStone(targetid, dex);
+		if (!stone || (dex.gen >= 8 && ['redorb', 'blueorb'].includes(stone.id))) {
+			throw new Chat.ErrorMessage(`Error: Mega Stone not found.`);
 		}
-		const stones = [];
-		if (!stone) {
-			const species = dex.species.get(targetid.replace(/(?:mega[xy]?|primal)$/, ''));
-			if (!species.exists) throw new Chat.ErrorMessage(`Error: Mega Stone not found.`);
-			if (!species.otherFormes) throw new Chat.ErrorMessage(`Error: Mega Evolution not found.`);
-			for (const poke of species.otherFormes) {
-				if (!/(?:-Primal|-Mega(?:-[XY])?)$/.test(poke)) continue;
-				const megaPoke = dex.species.get(poke);
-				const flag = megaPoke.requiredMove === 'Dragon Ascent' ? megaPoke.requiredMove : megaPoke.requiredItem;
-				if (/mega[xy]$/.test(targetid) && toID(megaPoke.name) !== toID(dex.species.get(targetid))) continue;
-				if (!flag) continue;
-				stones.push(getMegaStone(flag, sep[1]));
-			}
-			if (!stones.length) throw new Chat.ErrorMessage(`Error: Mega Evolution not found.`);
+		const banlist = Dex.formats.get('gen7mixandmega').banlist;
+		if (banlist.includes(stone.name)) {
+			this.errorReply(`Warning: ${stone.name} is banned from Mix and Mega.`);
 		}
-		const toDisplay = (stones.length ? stones : [stone]);
-		for (const aStone of toDisplay) {
-			if (!aStone) return;
-			let baseSpecies = dex.species.get(aStone.megaEvolves);
-			let megaSpecies = dex.species.get(aStone.megaStone);
-			if (dex.gen >= 8 && ['redorb', 'blueorb'].includes(aStone.id)) {
-				throw new Chat.ErrorMessage("The Orbs do not exist in Gen 8 and later.");
-			}
-			if (aStone.id === 'redorb') { // Orbs do not have 'Item.megaStone' or 'Item.megaEvolves' properties.
-				megaSpecies = dex.species.get("Groudon-Primal");
-				baseSpecies = dex.species.get("Groudon");
-			} else if (aStone.id === 'blueorb') {
-				megaSpecies = dex.species.get("Kyogre-Primal");
-				baseSpecies = dex.species.get("Kyogre");
-			}
-			const deltas: StoneDeltas = {
-				baseStats: Object.create(null),
-				weighthg: megaSpecies.weighthg - baseSpecies.weighthg,
-				bst: megaSpecies.bst - baseSpecies.bst,
-			};
-			let statId: StatID;
-			for (statId in megaSpecies.baseStats) {
-				deltas.baseStats[statId] = megaSpecies.baseStats[statId] - baseSpecies.baseStats[statId];
-			}
-			if (megaSpecies.types.length > baseSpecies.types.length) {
-				deltas.type = megaSpecies.types[1];
-			} else if (megaSpecies.types.length < baseSpecies.types.length) {
-				deltas.type = dex.gen >= 8 ? 'mono' : megaSpecies.types[0];
-			} else if (megaSpecies.types[1] !== baseSpecies.types[1]) {
-				deltas.type = megaSpecies.types[1];
-			}
-			const details = {
-				Gen: aStone.gen,
-				Weight: (deltas.weighthg < 0 ? "" : "+") + deltas.weighthg / 10 + " kg",
-			};
-			let tier;
-			if (['redorb', 'blueorb'].includes(aStone.id)) {
-				tier = "Orb";
-			} else if (aStone.name === "Dragon Ascent") {
-				tier = "Move";
+		const restricted = Dex.formats.get('gen7mixandmega').restricted;
+		if (restricted.includes(stone.name)) {
+			if (dex.species.get(stone.megaEvolves).isNonstandard === "Past") {
+				this.errorReply(`Warning: ${stone.name} is restricted in Mix and Mega.`);
 			} else {
-				tier = "Stone";
+				this.errorReply(`Warning: ${stone.name} is restricted to ${stone.megaEvolves} in Mix and Mega.`);
 			}
-			let buf = `<li class="result">`;
-			buf += `<span class="col numcol">${tier}</span> `;
-			if (aStone.name === "Dragon Ascent") {
-				buf += `<span class="col itemiconcol"></span>`;
-			} else {
-				buf += `<span class="col itemiconcol"><psicon item="${toID(aStone)}"/></span> `;
-			}
-			if (aStone.name === "Dragon Ascent") {
-				buf += `<span class="col movenamecol" style="white-space:nowrap"><a href="https://${Config.routes.dex}/moves/${targetid}" target="_blank">Dragon Ascent</a></span> `;
-			} else {
-				buf += `<span class="col pokemonnamecol" style="white-space:nowrap"><a href="https://${Config.routes.dex}/items/${aStone.id}" target="_blank">${aStone.name}</a></span> `;
-			}
-			if (deltas.type && deltas.type !== 'mono') {
-				buf += `<span class="col typecol"><img src="https://${Config.routes.client}/sprites/types/${deltas.type}.png" alt="${deltas.type}" height="14" width="32"></span> `;
-			} else {
-				buf += `<span class="col typecol"></span>`;
-			}
-			buf += `<span style="float:left;min-height:26px">`;
-			buf += `<span class="col abilitycol">${megaSpecies.abilities['0']}</span>`;
-			buf += `<span class="col abilitycol"></span>`;
-			buf += `</span>`;
-			buf += `<span style="float:left;min-height:26px">`;
-			buf += `<span class="col statcol"><em>HP</em><br />0</span> `;
-			buf += `<span class="col statcol"><em>Atk</em><br />${deltas.baseStats.atk}</span> `;
-			buf += `<span class="col statcol"><em>Def</em><br />${deltas.baseStats.def}</span> `;
-			buf += `<span class="col statcol"><em>SpA</em><br />${deltas.baseStats.spa}</span> `;
-			buf += `<span class="col statcol"><em>SpD</em><br />${deltas.baseStats.spd}</span> `;
-			buf += `<span class="col statcol"><em>Spe</em><br />${deltas.baseStats.spe}</span> `;
-			buf += `<span class="col bstcol"><em>BST<br />${deltas.bst}</em></span> `;
-			buf += `</span>`;
-			buf += `</li>`;
-			this.sendReply(`|raw|<div class="message"><ul class="utilichart">${buf}<li style="clear:both"></li></ul></div>`);
-			this.sendReply(`|raw|<font size="1"><font color="#686868">Gen:</font> ${details["Gen"]}&nbsp;|&ThickSpace;<font color="#686868">Weight:</font> ${details["Weight"]}</font>`);
 		}
+		if (targetid === 'dragonascent') {
+			this.errorReply(`Warning: Only Pokemon with access to Dragon Ascent can mega evolve with Mega Rayquaza's traits.`);
+		}
+		// Fake Mega Stones
+		if (stone.isNonstandard === 'CAP') {
+			this.errorReply(`Warning: ${stone.name} is a fake mega stone created by the CAP Project and is restricted to the CAP ${stone.megaEvolves}.`);
+		}
+		const megaTemplate = dex.species.get(
+			stone.id === 'redorb' ? 'Groudon-Primal' : stone.id === 'blueorb' ? 'Kyogre-Primal' : stone.megaStone
+		);
+		dex = Dex.forFormat('gen7mixandmegarocs');
+		const deltas = ({dex, ...dex.loadData().Scripts} as any as Battle).getMegaDeltas!(megaTemplate) as AnyObject;
+		deltas.id = stone.id;
+		deltas.species = stone.name;
+		if (deltas.type) deltas.types = [deltas.type];
+		deltas.gen = 6;
+		deltas.tier = deltas.isPrimal ? 'Orb' : deltas.isMega ? 'Stone' : 'Move';
+		deltas.effectType = 'Pokemon';
+		this.sendReply(`|raw|<div class="message"><ul class="utilichart"><li class="result">${Chat.describeThing(deltas).replace(/\bpokemon\b/g, 'item').replace(/iconcol/, "itemiconcol")}</li><li style="clear:both"></li></ul></div>\n|raw|<font size="1"><font color="#686868">Gen:</font> 6&nbsp;|&ThickSpace;<font color="#686868">Weight:</font> ${deltas.weighthg > 0 ? '+' : ''}${deltas.weighthg / 10} kg</font>`);
 	},
 	stonehelp: [`/stone <mega stone>[, generation] - Shows the changes that a mega stone/orb applies to a Pok\u00e9mon.`],
 

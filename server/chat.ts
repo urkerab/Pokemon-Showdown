@@ -1151,7 +1151,7 @@ export class CommandContext extends MessageContext {
 						this.tr`Because moderated chat is set, you must be of rank ${groupName} or higher to speak in this room.`
 					);
 				}
-				if (!this.bypassRoomCheck && !(user.id in room.users)) {
+				if (!this.bypassRoomCheck && room.users && !(user.id in room.users)) {
 					connection.popup(`You can't send a message to this room without being in it.`);
 					return null;
 				}
@@ -2047,6 +2047,14 @@ export const Chat = new class {
 
 		this.loadPluginDirectory('server/chat-plugins');
 		Chat.oldPlugins = {};
+
+		if (Config.chatfilter) Chat.filters.push(Config.chatfilter);
+		if (Config.namefilter) Chat.namefilters.push(Config.namefilter);
+		if (Config.hostfilter) Chat.hostfilters.push(Config.hostfilter);
+		if (Config.loginfilter) Chat.loginfilters.push(Config.loginfilter);
+		if (Config.nicknamefilter) Chat.nicknamefilters.push(Config.nicknamefilter);
+		if (Config.statusfilter) Chat.statusfilters.push(Config.statusfilter);
+
 		// lower priority should run later
 		Utils.sortBy(Chat.filters, filter => -(filter.priority || 0));
 	}
@@ -2416,12 +2424,12 @@ export const Chat = new class {
 				buf += '<span class="col abilitycol">' + species.abilities['0'] + '</span>';
 			}
 			if (species.abilities['H'] && species.abilities['S']) {
-				buf += '<span class="col twoabilitycol' + (species.unreleasedHidden ? ' unreleasedhacol' : '') + '"><em>' + species.abilities['H'] + '<br />(' + species.abilities['S'] + ')</em></span>';
+				buf += '<span class="col twoabilitycol' + (species.unreleasedHidden ? ' unreleasedhacol' : '') + '"><em>' + species.abilities['H'] + '<br />' + species.abilities['S'] + '</em></span>';
 			} else if (species.abilities['H']) {
 				buf += '<span class="col abilitycol' + (species.unreleasedHidden ? ' unreleasedhacol' : '') + '"><em>' + species.abilities['H'] + '</em></span>';
 			} else if (species.abilities['S']) {
 				// special case for Zygarde
-				buf += '<span class="col abilitycol"><em>(' + species.abilities['S'] + ')</em></span>';
+				buf += '<span class="col abilitycol"><em>' + species.abilities['S'] + '</em></span>';
 			} else {
 				buf += '<span class="col abilitycol"></span>';
 			}
@@ -2443,7 +2451,7 @@ export const Chat = new class {
 		buf += '</li>';
 		return `<div class="message"><ul class="utilichart">${buf}<li style="clear:both"></li></ul></div>`;
 	}
-	getDataMoveHTML(move: Move) {
+	getDataMoveHTML(move: Move, details = false) {
 		let buf = `<ul class="utilichart"><li class="result">`;
 		buf += `<span class="col movenamecol"><a href="https://${Config.routes.dex}/moves/${move.id}">${move.name}</a></span> `;
 		// encoding is important for the ??? type icon
@@ -2454,26 +2462,107 @@ export const Chat = new class {
 			buf += `<span class="col labelcol"><em>Power</em><br>${typeof move.basePower === 'number' ? move.basePower : '—'}</span> `;
 		}
 		buf += `<span class="col widelabelcol"><em>Accuracy</em><br>${typeof move.accuracy === 'number' ? (move.accuracy + '%') : '—'}</span> `;
-		const basePP = move.pp || 1;
-		const pp = Math.floor(move.noPPBoosts ? basePP : basePP * 8 / 5);
-		buf += `<span class="col pplabelcol"><em>PP</em><br>${pp}</span> `;
-		buf += `<span class="col movedesccol">${move.shortDesc || move.desc}</span> `;
+		buf += `<span class="col pplabelcol"><em>PP</em><br>${move.noPPBoosts || move.isZ ? move.pp : move.pp * 8 / 5}</span> `;
+		if (!details) {
+			buf += `<span class="col movedesccol" title="${move.shortDesc && move.desc}">${move.shortDesc || move.desc}</span> `;
+		}
 		buf += `</li><li style="clear:both"></li></ul>`;
 		return buf;
 	}
-	getDataAbilityHTML(ability: Ability) {
+	getDataAbilityHTML(ability: Ability, details = false) {
 		let buf = `<ul class="utilichart"><li class="result">`;
 		buf += `<span class="col namecol"><a href="https://${Config.routes.dex}/abilities/${ability.id}">${ability.name}</a></span> `;
-		buf += `<span class="col abilitydesccol">${ability.shortDesc || ability.desc}</span> `;
+		if (!details) {
+			buf += `<span class="col abilitydesccol" title="${ability.shortDesc && ability.desc}">${ability.shortDesc || ability.desc}</span> `;
+		}
 		buf += `</li><li style="clear:both"></li></ul>`;
 		return buf;
 	}
-	getDataItemHTML(item: Item) {
+	getDataItemHTML(item: Item, details = false) {
 		let buf = `<ul class="utilichart"><li class="result">`;
 		buf += `<span class="col itemiconcol"><psicon item="${item.id}"></span> <span class="col namecol"><a href="https://${Config.routes.dex}/items/${item.id}">${item.name}</a></span> `;
-		buf += `<span class="col itemdesccol">${item.shortDesc || item.desc}</span> `;
+		if (!details) {
+			buf += `<span class="col itemdesccol" title="${item.shortDesc && item.desc}">${item.shortDesc || item.desc}</span> `;
+		}
 		buf += `</li><li style="clear:both"></li></ul>`;
 		return buf;
+	}
+	getDataNatureHTML(nature: AnyObject) {
+		if (typeof nature === 'string') nature = Dex.natures.get(nature);
+		let buf = `<ul class="utilichart"><li class="result">`;
+		buf += `<a data-entry="nature|${nature.name}"><span class="col namecol">${nature.name}</span> `;
+		buf += `<span class="col abilitydesccol" title="${nature.shortDesc && nature.desc}">${nature.shortDesc || nature.desc}</span> `;
+		buf += `</a></li><li style="clear:both"></li></ul>`;
+		return buf;
+	}
+	describeThing(thing: AnyObject, dex: ModdedDex = Dex) {
+		if (thing.effectType === 'Pokemon') {
+			let result = `<span class="col numcol">${thing.tier}</span>`;
+			/*
+			let num = thing.spritenum || thing.num || 0;
+			let top = Math.floor(num / 12) * 30;
+			let left = (num % 12) * 40;
+			result += `<span class="col iconcol"><span style="background:transparent url(//play.pokemonshowdown.com/sprites/smicons-sheet.png?a1) no-repeat scroll -${left}px -${top}px}"></span></span>`;
+			*/
+			if (thing.id) result += `<span class="col iconcol"><psicon pokemon="${thing.id}"/></span>`;
+			result += `<span class="col pokemonnamecol" style="white-space:nowrap"><a href="https://pokemonshowdown.com/dex/pokemon/${thing.id}" target="_blank">${thing.species}</a></span>`;
+			result += '<span class="col typecol">';
+			if (thing.types) {
+				thing.types.forEach((type: string) => {
+					result += `<img src="//play.pokemonshowdown.com/sprites/types/${type.replace(/\?/g, '%3f')}.png" alt="${type}" height="14" width="32" />`;
+				});
+			}
+			result += '</span><span style="float:left;min-height:26px">';
+			if (dex.gen > 2 && thing.abilities['1'] && (dex.gen > 3 || dex.abilities.get(thing.abilities['1']).gen === 3)) {
+				result += `<span class="col twoabilitycol">${thing.abilities['0']}<br />${thing.abilities['1']}</span>`;
+			} else if (dex.gen > 2 && dex.currentMod !== 'letsgo') {
+				result += `<span class="col abilitycol">${thing.abilities['0']}</span>`;
+			} else {
+				result += '<span class="col abilitycol"></span>';
+			}
+			const unreleasedHidden = thing.unreleasedHidden ? ' unreleasedhacol' : '';
+			if (thing.abilities['H'] && thing.abilities['S']) {
+				result += `<span class="col twoabilitycol${unreleasedHidden}"><em>${thing.abilities['H']}<br />${thing.abilities['S']}</em></span>`;
+			} else if (thing.abilities['H']) {
+				result += `<span class="col abilitycol${unreleasedHidden}"><em>${thing.abilities['H']}</em></span>`;
+			} else if (thing.abilities['S']) {
+				// special case for Zygarde
+				result += `<span class="col abilitycol"><em>${thing.abilities['S']}</em></span>`;
+			} else {
+				result += '<span class="col abilitycol"></span>';
+			}
+			result += '</span><span style="float:left;min-height:26px">';
+			let bst = 0;
+			const stats = dex.gen > 1 ? ['HP', 'Atk', 'Def', 'Spa', 'Spd', 'Spe'] : ['HP', 'Atk', 'Def', 'Spc', 'Spe'];
+			stats.forEach(stat => {
+				let lcStat = stat.toLowerCase();
+				if (dex.gen < 2 && lcStat === 'spc') lcStat = 'spa';
+				bst += thing.baseStats[lcStat];
+				result += `<span class="col statcol"><em>${stat}</em><br />${thing.baseStats[lcStat]}</span>`;
+			});
+			return result + `<span class="col bstcol"><em>BST<br />${bst}</em></span>`;
+		}
+		const name = thing.name.replace(/^(Hidden Power )(.*)$/, '$1<small>$2</small>');
+		let result = `<span class="col namecol">${name}</span>`;
+		if (thing.effectType === 'Item' && thing.id) {
+			/*
+			let top = Math.floor(thing.spritenum / 16) * 24;
+			let left = (thing.spritenum % 16) * 24;
+			result = `<span class="col itemiconcol"><span style="background:transparent url(//play.pokemonshowdown.com/sprites/itemicons-sheet.png) no-repeat scroll -${left}px -${top}px"></span></span>` + result;
+			*/
+			result += `<span class="col iconcol"><psicon item="${thing.id}"/></span>`;
+		}
+		if (thing.effectType === 'Move') {
+			const type = thing.type.replace(/\?/g, '%3f');
+			result += `<span class="col typecol"><img src="//play.pokemonshowdown.com/sprites/types/${type}.png" alt="${thing.type}" height="14" width="32" />`;
+			result += `<img src="//play.pokemonshowdown.com/sprites/categories/${thing.category}.png" alt="${thing.category}" height="14" width="32" /></span>`;
+			if (thing.category === 'Status') result += '<span class="col labelcol"></span>';
+			else result += `<span class="col labelcol"><em>Power</em><br />${thing.basePower || '&mdash;'}</span>`;
+			result += `<span class="col widelabelcol"><em>Accuracy</em><br />${thing.accuracy === true ? '&mdash;' : thing.accuracy + '%'}</span>`;
+			result += `<span class="col pplabelcol"><em>PP</em><br />${thing.pp === 1 ? 1 : thing.pp * 8 / 5}</span>`;
+		}
+		return result +
+			Utils.html`<span class="col ${thing.effectType.toLowerCase()}desccol" title="${thing.shortDesc && thing.desc}">${thing.shortDesc || thing.desc}</span>`;
 	}
 
 	/**

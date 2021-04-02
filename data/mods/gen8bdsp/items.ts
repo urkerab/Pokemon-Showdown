@@ -1,75 +1,75 @@
 export const Items: {[k: string]: ModdedItemData} = {
 	absorbbulb: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	adrenalineorb: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	airballoon: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	assaultvest: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	berrysweet: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	bindingband: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	beastball: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	blunderpolicy: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	bugmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	burndrive: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	cellbattery: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	chilldrive: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	chippedpot: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	cloversweet: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	coverfossil: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	crackedpot: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	darkmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	dousedrive: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	dracoplate: {
 		inherit: true,
@@ -77,7 +77,7 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	dragonmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	dreadplate: {
 		inherit: true,
@@ -85,7 +85,7 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	dreamball: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	earthplate: {
 		inherit: true,
@@ -109,15 +109,15 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	ejectpack: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	electricmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	electricseed: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	eviolite: {
 		inherit: true,
@@ -126,15 +126,15 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	fairymemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fightingmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	firememory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fistplate: {
 		inherit: true,
@@ -146,63 +146,63 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	floatstone: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	flowersweet: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	flyingmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fossilizedbird: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fossilizeddino: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fossilizeddrake: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	fossilizedfish: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	galaricacuff: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	galaricawreath: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	ghostmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	grassmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	grassyseed: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	groundmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	heavydutyboots: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	icememory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	icestone: {
 		inherit: true,
@@ -222,15 +222,15 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	jawfossil: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	keeberry: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	lovesweet: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	luckypunch: {
 		inherit: true,
@@ -238,11 +238,11 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	luminousmoss: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	marangaberry: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	meadowplate: {
 		inherit: true,
@@ -254,31 +254,31 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	mistyseed: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	normalgem: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	plumefossil: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	poisonmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	protectivepads: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	psychicmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	psychicseed: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	razorfang: {
 		inherit: true,
@@ -286,55 +286,55 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	redcard: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	ribbonsweet: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	ringtarget: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	rockmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	rockyhelmet: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	roomservice: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	rustedshield: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	rustedsword: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	sachet: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	safariball: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	safetygoggles: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	sailfossil: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	shockdrive: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	skyplate: {
 		inherit: true,
@@ -342,7 +342,7 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	snowball: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	splashplate: {
 		inherit: true,
@@ -354,11 +354,11 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	starsweet: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	steelmemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	stoneplate: {
 		inherit: true,
@@ -366,23 +366,23 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	strawberrysweet: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	sweetapple: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tartapple: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	terrainextender: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	throatspray: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	toxicplate: {
 		inherit: true,
@@ -390,419 +390,419 @@ export const Items: {[k: string]: ModdedItemData} = {
 	},
 	tr00: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr01: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr02: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr03: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr04: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr05: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr06: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr07: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr08: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr09: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr10: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr11: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr12: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr13: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr14: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr15: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr16: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr17: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr18: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr19: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr20: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr21: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr22: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr23: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr24: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr25: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr26: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr27: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr28: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr29: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr30: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr31: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr32: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr33: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr34: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr35: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr36: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr37: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr38: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr39: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr40: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr41: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr42: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr43: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr44: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr45: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr46: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr47: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr48: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr49: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr50: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr51: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr52: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr53: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr54: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr55: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr56: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr57: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr58: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr59: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr60: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr61: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr62: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr63: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr64: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr65: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr66: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr67: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr68: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr69: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr70: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr71: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr72: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr73: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr74: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr75: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr76: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr77: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr78: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr79: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr80: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr81: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr82: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr83: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr84: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr85: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr86: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr87: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr88: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr89: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr90: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr91: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr92: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr93: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr94: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr95: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr96: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr97: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr98: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	tr99: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	utilityumbrella: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	watermemory: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	weaknesspolicy: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	whippeddream: {
 		inherit: true,
-		isNonstandard: "Past",
+		isNonstandard: "Future",
 	},
 	zapplate: {
 		inherit: true,

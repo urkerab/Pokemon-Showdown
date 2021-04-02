@@ -422,6 +422,7 @@ export interface EventMethods {
 	// Priorities (incomplete list)
 	onAccuracyPriority?: number;
 	onDamagingHitOrder?: number;
+	onAfterDamageOrder?: number;
 	onAfterMoveSecondaryPriority?: number;
 	onAfterMoveSecondarySelfPriority?: number;
 	onAfterMoveSelfPriority?: number;
@@ -441,6 +442,7 @@ export interface EventMethods {
 	onBeforeSwitchOutPriority?: number;
 	onBoostPriority?: number;
 	onDamagePriority?: number;
+	onDisableMovePriority?: number;
 	onDragOutPriority?: number;
 	onEffectivenessPriority?: number;
 	onFoeBasePowerPriority?: number;
@@ -451,6 +453,7 @@ export interface EventMethods {
 	onFoeTrapPokemonPriority?: number;
 	onFractionalPriorityPriority?: number;
 	onHitPriority?: number;
+	onImmunityPriority?: number;
 	onModifyAccuracyPriority?: number;
 	onModifyAtkPriority?: number;
 	onModifyCritRatioPriority?: number;
@@ -462,10 +465,13 @@ export interface EventMethods {
 	onModifySpePriority?: number;
 	onModifyTypePriority?: number;
 	onModifyWeightPriority?: number;
+	onPrepareHitPriority?: number;
 	onRedirectTargetPriority?: number;
 	onResidualOrder?: number;
 	onResidualPriority?: number;
 	onResidualSubOrder?: number;
+	onSetStatusPriority?: number;
+	onSourceAccuracyPriority?: number;
 	onSourceBasePowerPriority?: number;
 	onSourceInvulnerabilityPriority?: number;
 	onSourceModifyAccuracyPriority?: number;
@@ -473,10 +479,12 @@ export interface EventMethods {
 	onSourceModifyDamagePriority?: number;
 	onSourceModifySpAPriority?: number;
 	onSwitchInPriority?: number;
+	onTakeItemPriority?: number;
 	onTrapPokemonPriority?: number;
 	onTryEatItemPriority?: number;
 	onTryHealPriority?: number;
 	onTryHitPriority?: number;
+	onTryHitSidePriority?: number;
 	onTryMovePriority?: number;
 	onTryPrimaryHitPriority?: number;
 	onTypePriority?: number;
@@ -605,7 +613,9 @@ export interface FieldEventMethods extends EventMethods {
 	onFieldResidualPriority?: number;
 	onFieldResidualSubOrder?: number;
 }
-export interface PokemonConditionData extends Partial<Condition>, PokemonEventMethods {}
+export interface PokemonConditionData extends Partial<Omit<Condition, 'effectType'>>, PokemonEventMethods {
+	readonly effectType?: EffectType;
+}
 export interface SideConditionData extends
 	Partial<Omit<Condition, 'onStart' | 'onRestart' | 'onEnd'>>, SideEventMethods {}
 export interface FieldConditionData extends
@@ -622,7 +632,7 @@ export class Condition extends BasicEffect implements
 
 	declare readonly durationCallback?: (this: Battle, target: Pokemon, source: Pokemon, effect: Effect | null) => number;
 	declare readonly onCopy?: (this: Battle, pokemon: Pokemon) => void;
-	declare readonly onEnd?: (this: Battle, target: Pokemon) => void;
+	declare readonly onEnd?: (this: Battle, target: Pokemon & Side & Field, source: Pokemon, sourceEffect: Effect) => void;
 	declare readonly onRestart?: (
 		this: Battle, target: Pokemon, source: Pokemon, sourceEffect: Effect
 	) => boolean | null | void;
@@ -634,7 +644,7 @@ export class Condition extends BasicEffect implements
 		super(data);
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		data = this;
-		this.effectType = (['Weather', 'Status'].includes(data.effectType) ? data.effectType : 'Condition');
+		this.effectType = data.effectType || 'Condition';
 	}
 }
 
@@ -652,7 +662,7 @@ export class DexConditions {
 		if (!name) return EMPTY_CONDITION;
 		if (typeof name !== 'string') return name as Condition;
 
-		return this.getByID(name.startsWith('item:') || name.startsWith('ability:') ? name as ID : toID(name));
+		return this.getByID(name.startsWith('move:') || name.startsWith('item:') || name.startsWith('ability:') ? name as ID : toID(name));
 	}
 
 	getByID(id: ID): Condition {
@@ -662,7 +672,10 @@ export class DexConditions {
 		if (condition) return condition;
 
 		let found;
-		if (id.startsWith('item:')) {
+		if (id.startsWith('move:')) {
+			const move = this.dex.moves.getByID(id.slice(5) as ID);
+			condition = {...move, id: 'move:' + move.id as ID} as any as Condition;
+		} else if (id.startsWith('item:')) {
 			const item = this.dex.items.getByID(id.slice(5) as ID);
 			condition = {...item, id: 'item:' + item.id as ID} as any as Condition;
 		} else if (id.startsWith('ability:')) {
@@ -682,6 +695,8 @@ export class DexConditions {
 			condition = new Condition({name: 'Recoil', effectType: 'Recoil'});
 		} else if (id === 'drain') {
 			condition = new Condition({name: 'Drain', effectType: 'Drain'});
+		} else if (id === 'zpower') {
+			condition = new Condition({name: 'Z-Power', isZ: true});
 		} else {
 			condition = new Condition({name: id, exists: false});
 		}

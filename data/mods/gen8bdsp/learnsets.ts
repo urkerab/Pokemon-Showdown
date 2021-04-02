@@ -19485,6 +19485,7 @@ export const Learnsets: {[k: string]: ModdedLearnsetData} = {
 		],
 	},
 	deoxys: {
+		inherit: true,
 		learnset: {
 			aerialace: ["8M"],
 			agility: ["8L55"],

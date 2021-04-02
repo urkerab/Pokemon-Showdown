@@ -80,7 +80,7 @@ if (!process.argv[2] || /^[0-9]+$/.test(process.argv[2])) {
 	// when launching with this file the same way app.js normally allows, e.g. to
 	// host on port 9000:
 	// $ ./pokemon-showdown 9000
-	setupTSNode();
+	registerTSNode();
 	require('module')._load('./server', module, true);
 } else switch (process.argv[2]) {
 	case 'help':
@@ -130,7 +130,7 @@ if (!process.argv[2] || /^[0-9]+$/.test(process.argv[2])) {
 	case 'start':
 		{
 			process.argv.splice(2, 1);
-			setupTSNode();
+			registerTSNode();
 			require('module')._load('./server', module, true);
 			break;
 		}
@@ -169,9 +169,9 @@ if (!process.argv[2] || /^[0-9]+$/.test(process.argv[2])) {
 		break;
 	case 'simulate-battle':
 		{
-			sucraseBuild();
-			var BattleTextStream = require('./.sim-dist/battle-stream').BattleTextStream;
-			var Streams = require('./.lib-dist/streams');
+			registerTSNode();
+			var BattleTextStream = require('./sim/battle-stream').BattleTextStream;
+			var Streams = require('./lib/streams');
 			var stdin = Streams.stdin();
 			var stdout = Streams.stdout();
 

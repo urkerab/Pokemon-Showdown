@@ -215,6 +215,7 @@ export const commands: Chat.ChatCommands = {
 		this.errorReply(`You probably want to switch from /ioo to /hideroom`);
 	},
 
+	/*
 	inviteonlynext(target, room, user) {
 		const groupConfig = Config.groups[Users.PLAYER_SYMBOL];
 		if (!groupConfig?.editprivacy) return this.errorReply(`/ionext - Access denied.`);
@@ -228,6 +229,7 @@ export const commands: Chat.ChatCommands = {
 			this.sendReply(`Your next battle will be invite-only${Rooms.RoomBattle.battleForcedSetting(user, 'privacy') ? `, unless it is rated` : ``}.`);
 		}
 	},
+	*/
 	inviteonlynexthelp: [
 		`/inviteonlynext - Sets your next battle to be invite-only.`,
 		`/inviteonlynext off - Sets your next battle to be publicly visible.`,
@@ -256,6 +258,7 @@ export const commands: Chat.ChatCommands = {
 			return this.sendReply(`Modjoin is currently set to: ${modjoinSetting}`);
 		}
 		if (room.battle) {
+			/**/
 			this.checkCan('editprivacy', null, room);
 			if (room.battle.forcedSettings.privacy) {
 				return this.errorReply(
@@ -266,6 +269,7 @@ export const commands: Chat.ChatCommands = {
 				return this.errorReply(`Only the person who set this battle to be invite-only can turn it off.`);
 			}
 			room.battle.inviteOnlySetter = user.id;
+			/**/
 		} else if (room.settings.isPersonal) {
 			this.checkCan('editroom', null, room);
 		} else {
@@ -328,8 +332,8 @@ export const commands: Chat.ChatCommands = {
 		if (!room.settings.isPrivate) return this.parse('/hiddenroom');
 	},
 	modjoinhelp: [
-		`/modjoin [+|%|@|*|player|&|#|off] - Sets modjoin. Users lower than the specified rank can't join this room unless they have a room rank. Requires: \u2606 # &`,
-		`/modjoin [sync|off] - Sets modjoin. Only users who can speak in modchat can join this room. Requires: \u2606 # &`,
+		`/modjoin [+|%|@|*|player|&|~|#|off] - Sets modjoin. Users lower than the specified rank can't join this room unless they have a room rank. Requires: # & ~`,
+		`/modjoin [sync|off] - Sets modjoin. Only users who can speak in modchat can join this room. Requires: # & ~`,
 	],
 
 	roomlanguage(target, room, user) {
@@ -820,8 +824,8 @@ export const commands: Chat.ChatCommands = {
 	makegroupchat(target, room, user, connection, cmd) {
 		room = this.requireRoom();
 		this.checkChat();
-		if (!user.trusted) {
-			return this.errorReply("You must be trusted (public room driver or global voice) to make a groupchat.");
+		if (!user.autoconfirmed) {
+			return this.errorReply("You must be autoconfirmed to make a groupchat.");
 		}
 
 		const groupchatbanned = Punishments.isGroupchatBanned(user);
@@ -1170,6 +1174,7 @@ export const commands: Chat.ChatCommands = {
 		`/publicroom - Makes a room public. Requires: \u2606 &`,
 	],
 
+	/*
 	hidenext(target, room, user) {
 		const groupConfig = Config.groups[Users.PLAYER_SYMBOL];
 		if (!groupConfig?.editprivacy) return this.errorReply(`/hidenext - Access denied.`);
@@ -1183,6 +1188,7 @@ export const commands: Chat.ChatCommands = {
 			this.sendReply(`Your next battle will be hidden${Rooms.RoomBattle.battleForcedSetting(user, 'privacy') ? `, unless it is rated` : ``}.`);
 		}
 	},
+	*/
 	hidenexthelp: [
 		`/hidenext - Sets your next battle to be hidden.`,
 		`/hidenext off - Sets your next battle to be publicly visible.`,

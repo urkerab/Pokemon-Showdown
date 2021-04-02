@@ -430,6 +430,12 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 		inherit: true,
 		basePower: 70,
 	},
+	leechseed: {
+		inherit: true,
+		onTryImmunity(target) {
+			return !target.hasType('Grass');
+		},
+	},
 	lockon: {
 		inherit: true,
 		accuracy: 100,

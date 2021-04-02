@@ -307,7 +307,7 @@ class TextFormatter {
 					case 'w':
 					case 'wiki':
 						term = term.slice(term.charAt(key.length + 1) === ' ' ? key.length + 2 : key.length + 1);
-						uri = `//en.wikipedia.org/w/index.php?title=Special:Search&search=${this.toUriComponent(term)}`;
+						uri = `https://en.wikipedia.org/w/index.php?title=Special:Search&search=${this.toUriComponent(term)}`;
 						term = `wiki: ${term}`;
 						break;
 					case 'pokemon':
@@ -327,12 +327,12 @@ class TextFormatter {
 						if (key === 'item') dir += 's';
 						if (key === 'category') dir = 'categories' as 'category';
 
-						uri = `//dex.pokemonshowdown.com/${dir}/${toID(term)}`;
+						uri = `https://dex.pokemonshowdown.com/${dir}/${toID(term)}`;
 						term = display;
 					}
 				}
 				if (!uri) {
-					uri = `//www.google.com/search?ie=UTF-8&btnI&q=${this.toUriComponent(term)}`;
+					uri = `https://www.google.com/search?ie=UTF-8&btnI&q=${this.toUriComponent(term)}`;
 				}
 				this.pushSlice(start);
 				this.buffers.push(`<a href="${uri}" target="_blank">${term}</a>`);

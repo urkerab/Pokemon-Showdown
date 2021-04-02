@@ -31,7 +31,7 @@
         // probably bugs
         "@typescript-eslint/no-floating-promises": "error",
         "@typescript-eslint/no-for-in-array": "error",
-        "@typescript-eslint/no-misused-promises": "error",
+        "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/no-throw-literal": "error",
         "@typescript-eslint/no-unnecessary-condition": "off", // sadly, we use not-null assertions so commonly that these are often necessary
 
@@ -42,9 +42,8 @@
         // See https://github.com/typescript-eslint/typescript-eslint/issues/4554
         "@typescript-eslint/no-unnecessary-type-arguments": "off",
 
-        "@typescript-eslint/no-unnecessary-type-assertion": "error",
-        "@typescript-eslint/prefer-regexp-exec": "error",
-        "@typescript-eslint/prefer-string-starts-ends-with": "error"
+        "@typescript-eslint/no-unnecessary-type-assertion": "off",
+        "@typescript-eslint/prefer-regexp-exec": "error"
       }
     }
   ]
