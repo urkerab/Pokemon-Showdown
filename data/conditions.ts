@@ -158,7 +158,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 			this.effectData.time = this.random(2, 6);
 		},
 		onEnd(target) {
-			this.add('-end', target, 'confusion');
+			if (target.isActive) this.add('-end', target, 'confusion');
 		},
 		onBeforeMovePriority: 3,
 		onBeforeMove(pokemon) {
@@ -227,7 +227,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 			this.damage(pokemon.baseMaxhp / this.effectData.boundDivisor);
 		},
 		onEnd(pokemon) {
-			this.add('-end', pokemon, this.effectData.sourceEffect, '[partiallytrapped]');
+			if (pokemon.isActive) this.add('-end', pokemon, this.effectData.sourceEffect, '[partiallytrapped]');
 		},
 		onTrapPokemon(pokemon) {
 			const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectData.sourceEffect.id);
@@ -255,7 +255,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 			}
 		},
 		onEnd(target) {
-			if (this.effectData.trueDuration > 1) return;
+			if (!target.isActive || this.effectData.trueDuration > 1) return;
 			target.addVolatile('confusion');
 		},
 		onLockMove(pokemon) {
@@ -283,7 +283,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 			this.runEvent('PrepareHit', target, source, effect);
 		},
 		onEnd(target) {
-			target.removeVolatile(this.effectData.move);
+			if (target.isActive) target.removeVolatile(this.effectData.move);
 		},
 		onLockMove() {
 			return this.effectData.move;
@@ -380,6 +380,7 @@ export const Conditions: {[k: string]: ConditionData} = {
 		},
 	},
 	healreplacement: {
+		duration: 2,
 		// this is a slot condition
 		name: 'healreplacement',
 		onStart(side, source, sourceEffect) {

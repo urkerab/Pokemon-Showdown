@@ -525,6 +525,7 @@ export interface EventMethods {
 	// Priorities (incomplete list)
 	onAccuracyPriority?: number;
 	onDamagingHitOrder?: number;
+	onAfterDamageOrder?: number;
 	onAfterMoveSecondaryPriority?: number;
 	onAfterMoveSecondarySelfPriority?: number;
 	onAfterMoveSelfPriority?: number;
@@ -544,6 +545,7 @@ export interface EventMethods {
 	onBeforeSwitchOutPriority?: number;
 	onBoostPriority?: number;
 	onDamagePriority?: number;
+	onDisableMovePriority?: number;
 	onDragOutPriority?: number;
 	onEffectivenessPriority?: number;
 	onFoeBasePowerPriority?: number;
@@ -553,6 +555,7 @@ export interface EventMethods {
 	onFoeTrapPokemonPriority?: number;
 	onFractionalPriorityPriority?: number;
 	onHitPriority?: number;
+	onImmunityPriority?: number;
 	onModifyAccuracyPriority?: number;
 	onModifyAtkPriority?: number;
 	onModifyCritRatioPriority?: number;
@@ -561,12 +564,15 @@ export interface EventMethods {
 	onModifyPriorityPriority?: number;
 	onModifySpAPriority?: number;
 	onModifySpDPriority?: number;
+	onModifySpePriority?: number;
 	onModifyTypePriority?: number;
 	onModifyWeightPriority?: number;
+	onPrepareHitPriority?: number;
 	onRedirectTargetPriority?: number;
 	onResidualOrder?: number;
 	onResidualPriority?: number;
 	onResidualSubOrder?: number;
+	onSetStatusPriority?: number;
 	onSourceBasePowerPriority?: number;
 	onSourceInvulnerabilityPriority?: number;
 	onSourceModifyAccuracyPriority?: number;
@@ -574,17 +580,21 @@ export interface EventMethods {
 	onSourceModifyDamagePriority?: number;
 	onSourceModifySpAPriority?: number;
 	onSwitchInPriority?: number;
+	onTakeItemPriority?: number;
 	onTerrainPriority?: number;
 	onTrapPokemonPriority?: number;
 	onTryEatItemPriority?: number;
 	onTryHealPriority?: number;
 	onTryHitPriority?: number;
+	onTryHitSidePriority?: number;
 	onTryMovePriority?: number;
 	onTryPrimaryHitPriority?: number;
 	onTypePriority?: number;
 }
 
-export interface ConditionData extends Partial<Condition>, EventMethods {}
+export interface ConditionData extends Partial<Omit<Condition, 'effectType'>>, EventMethods {
+	readonly effectType?: EffectType;
+}
 
 export type ModdedConditionData = ConditionData | Partial<ConditionData> & {inherit: true};
 
@@ -594,13 +604,13 @@ export class Condition extends BasicEffect implements Readonly<BasicEffect & Con
 
 	readonly durationCallback?: (this: Battle, target: Pokemon, source: Pokemon, effect: Effect | null) => number;
 	readonly onCopy?: (this: Battle, pokemon: Pokemon) => void;
-	readonly onEnd?: (this: Battle, target: Pokemon & Side & Field) => void;
+	readonly onEnd?: (this: Battle, target: Pokemon & Side & Field, source: Pokemon, sourceEffect: Effect) => void;
 	readonly onRestart?: (this: Battle, target: Pokemon & Side & Field, source: Pokemon, sourceEffect: Effect) => void;
 	readonly onStart?: (this: Battle, target: Pokemon & Side & Field, source: Pokemon, sourceEffect: Effect) => void;
 
 	constructor(data: AnyObject, ...moreData: (AnyObject | null)[]) {
 		super(data, ...moreData);
 		data = this;
-		this.effectType = (['Weather', 'Status'].includes(data.effectType) ? data.effectType : 'Condition');
+		this.effectType = data.effectType || 'Condition';
 	}
 }

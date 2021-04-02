@@ -517,6 +517,9 @@ export const Formats: {[k: string]: FormatData} = {
 					if (nameTable.has(name)) {
 						return [`Your Pokémon must have different nicknames.`, `(You have more than one ${name})`];
 					}
+					/// if (this.getTemplate(name).exists) {
+					/// 	return ["Your Pokémon cannot have a nickname that is the species of another Pokémon.", "(Your " + team[i].species + "'s nickname is " + name + ")"];
+					/// }
 					nameTable.add(name);
 				}
 			}
@@ -587,6 +590,14 @@ export const Formats: {[k: string]: FormatData} = {
 			}
 		},
 	},
+	ateclause: {
+		effectType: 'ValidatorRule',
+		name: '-ate Clause',
+		banlist: ['Aerilate ++ Pixilate ++ Refrigerate > 1'],
+		onBegin() {
+			this.add('rule', '-ate Clause: Limit one of Aerilate/Refrigerate/Pixilate');
+		},
+	},
 	ohkoclause: {
 		effectType: 'ValidatorRule',
 		name: 'OHKO Clause',
@@ -626,6 +637,8 @@ export const Formats: {[k: string]: FormatData} = {
 	accuracymovesclause: {
 		effectType: 'ValidatorRule',
 		name: 'Accuracy Moves Clause',
+		/// desc: "Bans moves that consistently lower the foe's accuracy when used",
+		/// banlist: ['Flash', 'Kinesis', 'Mud-Slap', 'Sand Attack', 'Smokescreen'],
 		desc: "Bans moves that have a chance to lower the target's accuracy when used",
 		banlist: [
 			'Flash', 'Kinesis', 'Leaf Tornado', 'Mirror Shot', 'Mud Bomb', 'Mud-Slap', 'Muddy Water', 'Night Daze', 'Octazooka', 'Sand Attack', 'Smokescreen',
@@ -787,6 +800,12 @@ export const Formats: {[k: string]: FormatData} = {
 			this.add('rule', '3 Baton Pass Clause: Limit three Baton Passers');
 		},
 	},
+	zcrystalsclause: {
+		effectType: 'ValidatorRule',
+		name: 'Z-Crystals Clause',
+		desc: "Bans the use of Z-Crystals",
+		banlist: ["Aloraichium Z", "Buginium Z", "Darkinium Z", "Decidium Z", "Dragonium Z", "Eevium Z", "Electrium Z", "Fairium Z", "Fightinium Z", "Firium Z", "Flyinium Z", "Ghostium Z", "Grassium Z", "Groundium Z", "Icium Z", "Incinium Z", "Kommonium Z", "Lunalium Z", "Lycanium Z", "Marshadium Z", "Mewnium Z", "Mimikium Z", "Normalium Z", "Pikanium Z", "Pikashunium Z", "Poisonium Z", "Primarium Z", "Psychium Z", "Rockium Z", "Snorlium Z", "Solganium Z", "Steelium Z", "Tapunium Z", "Ultranecrozium Z", "Waterium Z"],
+	},
 	cfzclause: {
 		effectType: 'ValidatorRule',
 		name: 'CFZ Clause',
@@ -858,7 +877,7 @@ export const Formats: {[k: string]: FormatData} = {
 		effectType: 'Rule',
 		name: 'Sleep Clause Mod',
 		desc: "Prevents players from putting more than one of their opponent's Pok&eacute;mon to sleep at a time, and bans Mega Gengar from using Hypnosis",
-		banlist: ['Hypnosis + Gengarite'],
+		banlist: ['Gengar-Mega + move:Hypnosis'],
 		onBegin() {
 			this.add('rule', 'Sleep Clause Mod: Limit one foe put to sleep');
 		},
@@ -1092,6 +1111,19 @@ export const Formats: {[k: string]: FormatData} = {
 				if (types.includes(move.type)) return null;
 			}
 			return this.checkCanLearn(move, species, setSources, set);
+		},
+	},
+	allowonesketch: {
+		effectType: 'ValidatorRule',
+		name: 'Allow One Sketch',
+		desc: "Allows each Pok&eacute;mon to use one move they don't normally have access to via Sketch",
+		checkCanLearn(move, template, lsetData, set) {
+			const problem = this.checkCanLearn(move, template, lsetData, set);
+			if (!problem) return null;
+			if (move.isZ || this.ruleTable.isRestricted('move:' + move.id)) return problem;
+			if (set!.sketchMove) return `${set!.species}'s move ${move.name} can't be Sketched because it can only Sketch 1 move.`;
+			set!.sketchMove = move.id;
+			return null;
 		},
 	},
 	alphabetcupmovelegality: {

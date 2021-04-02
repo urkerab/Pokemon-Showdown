@@ -46,6 +46,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	venusaurmega: {
 		num: 3,
+		spritenum: 972 + 0,
 		name: "Venusaur-Mega",
 		baseSpecies: "Venusaur",
 		forme: "Mega",
@@ -121,6 +122,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	charizardmegax: {
 		num: 6,
+		spritenum: 972 + 1,
 		name: "Charizard-Mega-X",
 		baseSpecies: "Charizard",
 		forme: "Mega-X",
@@ -136,6 +138,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	charizardmegay: {
 		num: 6,
+		spritenum: 972 + 2,
 		name: "Charizard-Mega-Y",
 		baseSpecies: "Charizard",
 		forme: "Mega-Y",
@@ -211,6 +214,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	blastoisemega: {
 		num: 9,
+		spritenum: 972 + 3,
 		name: "Blastoise-Mega",
 		baseSpecies: "Blastoise",
 		forme: "Mega",
@@ -336,6 +340,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	beedrillmega: {
 		num: 15,
+		spritenum: 972 + 4,
 		name: "Beedrill-Mega",
 		baseSpecies: "Beedrill",
 		forme: "Mega",
@@ -391,6 +396,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pidgeotmega: {
 		num: 18,
+		spritenum: 972 + 5,
 		name: "Pidgeot-Mega",
 		baseSpecies: "Pidgeot",
 		forme: "Mega",
@@ -419,6 +425,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	rattataalola: {
 		num: 19,
+		spritenum: 804 + 119,
 		name: "Rattata-Alola",
 		baseSpecies: "Rattata",
 		forme: "Alola",
@@ -448,6 +455,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	raticatealola: {
 		num: 20,
+		spritenum: 804 + 120,
 		name: "Raticate-Alola",
 		baseSpecies: "Raticate",
 		forme: "Alola",
@@ -549,6 +557,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachucosplay: {
 		num: 25,
+		spritenum: 804 + 7,
 		name: "Pikachu-Cosplay",
 		baseSpecies: "Pikachu",
 		forme: "Cosplay",
@@ -564,6 +573,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachurockstar: {
 		num: 25,
+		spritenum: 804 + 6,
 		name: "Pikachu-Rock-Star",
 		baseSpecies: "Pikachu",
 		forme: "Rock-Star",
@@ -580,6 +590,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachubelle: {
 		num: 25,
+		spritenum: 804 + 2,
 		name: "Pikachu-Belle",
 		baseSpecies: "Pikachu",
 		forme: "Belle",
@@ -596,6 +607,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachupopstar: {
 		num: 25,
+		spritenum: 804 + 5,
 		name: "Pikachu-Pop-Star",
 		baseSpecies: "Pikachu",
 		forme: "Pop-Star",
@@ -612,6 +624,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachuphd: {
 		num: 25,
+		spritenum: 804 + 4,
 		name: "Pikachu-PhD",
 		baseSpecies: "Pikachu",
 		forme: "PhD",
@@ -628,6 +641,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachulibre: {
 		num: 25,
+		spritenum: 804 + 3,
 		name: "Pikachu-Libre",
 		baseSpecies: "Pikachu",
 		forme: "Libre",
@@ -644,6 +658,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachuoriginal: {
 		num: 25,
+		spritenum: 804 + 153,
 		name: "Pikachu-Original",
 		baseSpecies: "Pikachu",
 		forme: "Original",
@@ -659,6 +674,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachuhoenn: {
 		num: 25,
+		spritenum: 804 + 154,
 		name: "Pikachu-Hoenn",
 		baseSpecies: "Pikachu",
 		forme: "Hoenn",
@@ -674,6 +690,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachusinnoh: {
 		num: 25,
+		spritenum: 804 + 155,
 		name: "Pikachu-Sinnoh",
 		baseSpecies: "Pikachu",
 		forme: "Sinnoh",
@@ -689,6 +706,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachuunova: {
 		num: 25,
+		spritenum: 804 + 156,
 		name: "Pikachu-Unova",
 		baseSpecies: "Pikachu",
 		forme: "Unova",
@@ -704,6 +722,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachukalos: {
 		num: 25,
+		spritenum: 804 + 157,
 		name: "Pikachu-Kalos",
 		baseSpecies: "Pikachu",
 		forme: "Kalos",
@@ -719,6 +738,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pikachualola: {
 		num: 25,
+		spritenum: 804 + 158,
 		name: "Pikachu-Alola",
 		baseSpecies: "Pikachu",
 		forme: "Alola",
@@ -807,6 +827,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	raichualola: {
 		num: 26,
+		spritenum: 804 + 121,
 		name: "Raichu-Alola",
 		baseSpecies: "Raichu",
 		forme: "Alola",
@@ -837,6 +858,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	sandshrewalola: {
 		num: 27,
+		spritenum: 804 + 122,
 		name: "Sandshrew-Alola",
 		baseSpecies: "Sandshrew",
 		forme: "Alola",
@@ -866,6 +888,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	sandslashalola: {
 		num: 28,
+		spritenum: 804 + 123,
 		name: "Sandslash-Alola",
 		baseSpecies: "Sandslash",
 		forme: "Alola",
@@ -1013,6 +1036,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	vulpixalola: {
 		num: 37,
+		spritenum: 804 + 124,
 		name: "Vulpix-Alola",
 		baseSpecies: "Vulpix",
 		forme: "Alola",
@@ -1045,6 +1069,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	ninetalesalola: {
 		num: 38,
+		spritenum: 804 + 125,
 		name: "Ninetales-Alola",
 		baseSpecies: "Ninetales",
 		forme: "Alola",
@@ -1222,6 +1247,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	diglettalola: {
 		num: 50,
+		spritenum: 804 + 126,
 		name: "Diglett-Alola",
 		baseSpecies: "Diglett",
 		forme: "Alola",
@@ -1251,6 +1277,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	dugtrioalola: {
 		num: 51,
+		spritenum: 804 + 127,
 		name: "Dugtrio-Alola",
 		baseSpecies: "Dugtrio",
 		forme: "Alola",
@@ -1281,6 +1308,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	meowthalola: {
 		num: 52,
+		spritenum: 804 + 128,
 		name: "Meowth-Alola",
 		baseSpecies: "Meowth",
 		forme: "Alola",
@@ -1338,6 +1366,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	persianalola: {
 		num: 53,
+		spritenum: 804 + 129,
 		name: "Persian-Alola",
 		baseSpecies: "Persian",
 		forme: "Alola",
@@ -1515,6 +1544,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	alakazammega: {
 		num: 65,
+		spritenum: 972 + 6,
 		name: "Alakazam-Mega",
 		baseSpecies: "Alakazam",
 		forme: "Mega",
@@ -1667,6 +1697,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	geodudealola: {
 		num: 74,
+		spritenum: 804 + 130,
 		name: "Geodude-Alola",
 		baseSpecies: "Geodude",
 		forme: "Alola",
@@ -1697,6 +1728,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	graveleralola: {
 		num: 75,
+		spritenum: 804 + 131,
 		name: "Graveler-Alola",
 		baseSpecies: "Graveler",
 		forme: "Alola",
@@ -1728,6 +1760,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	golemalola: {
 		num: 76,
+		spritenum: 804 + 132,
 		name: "Golem-Alola",
 		baseSpecies: "Golem",
 		forme: "Alola",
@@ -1844,6 +1877,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	slowbromega: {
 		num: 80,
+		spritenum: 972 + 7,
 		name: "Slowbro-Mega",
 		baseSpecies: "Slowbro",
 		forme: "Mega",
@@ -1993,6 +2027,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	grimeralola: {
 		num: 88,
+		spritenum: 804 + 133,
 		name: "Grimer-Alola",
 		baseSpecies: "Grimer",
 		forme: "Alola",
@@ -2022,6 +2057,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	mukalola: {
 		num: 89,
+		spritenum: 804 + 134,
 		name: "Muk-Alola",
 		baseSpecies: "Muk",
 		forme: "Alola",
@@ -2105,6 +2141,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	gengarmega: {
 		num: 94,
+		spritenum: 972 + 8,
 		name: "Gengar-Mega",
 		baseSpecies: "Gengar",
 		forme: "Mega",
@@ -2265,6 +2302,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	exeggutoralola: {
 		num: 103,
+		spritenum: 804 + 135,
 		name: "Exeggutor-Alola",
 		baseSpecies: "Exeggutor",
 		forme: "Alola",
@@ -2308,6 +2346,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	marowakalola: {
 		num: 105,
+		spritenum: 804 + 136,
 		name: "Marowak-Alola",
 		baseSpecies: "Marowak",
 		forme: "Alola",
@@ -2490,6 +2529,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	kangaskhanmega: {
 		num: 115,
+		spritenum: 972 + 9,
 		name: "Kangaskhan-Mega",
 		baseSpecies: "Kangaskhan",
 		forme: "Mega",
@@ -2688,6 +2728,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pinsirmega: {
 		num: 127,
+		spritenum: 972 + 10,
 		name: "Pinsir-Mega",
 		baseSpecies: "Pinsir",
 		forme: "Mega",
@@ -2741,6 +2782,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	gyaradosmega: {
 		num: 130,
+		spritenum: 972 + 11,
 		name: "Gyarados-Mega",
 		baseSpecies: "Gyarados",
 		forme: "Mega",
@@ -2964,6 +3006,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	aerodactylmega: {
 		num: 142,
+		spritenum: 972 + 12,
 		name: "Aerodactyl-Mega",
 		baseSpecies: "Aerodactyl",
 		forme: "Mega",
@@ -3147,6 +3190,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	mewtwomegax: {
 		num: 150,
+		spritenum: 972 + 13,
 		name: "Mewtwo-Mega-X",
 		baseSpecies: "Mewtwo",
 		forme: "Mega-X",
@@ -3162,6 +3206,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	mewtwomegay: {
 		num: 150,
+		spritenum: 972 + 14,
 		name: "Mewtwo-Mega-Y",
 		baseSpecies: "Mewtwo",
 		forme: "Mega-Y",
@@ -3605,6 +3650,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	ampharosmega: {
 		num: 181,
+		spritenum: 972 + 15,
 		name: "Ampharos-Mega",
 		baseSpecies: "Ampharos",
 		forme: "Mega",
@@ -3900,8 +3946,8 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 		weightkg: 5,
 		color: "Black",
 		eggGroups: ["Undiscovered"],
-		cosmeticFormes: ["Unown-B", "Unown-C", "Unown-D", "Unown-E", "Unown-F", "Unown-G", "Unown-H", "Unown-I", "Unown-J", "Unown-K", "Unown-L", "Unown-M", "Unown-N", "Unown-O", "Unown-P", "Unown-Q", "Unown-R", "Unown-S", "Unown-T", "Unown-U", "Unown-V", "Unown-W", "Unown-X", "Unown-Y", "Unown-Z", "Unown-Exclamation", "Unown-Question"],
-		formeOrder: ["Unown", "Unown-B", "Unown-C", "Unown-D", "Unown-E", "Unown-F", "Unown-G", "Unown-H", "Unown-I", "Unown-J", "Unown-K", "Unown-L", "Unown-M", "Unown-N", "Unown-O", "Unown-P", "Unown-Q", "Unown-R", "Unown-S", "Unown-T", "Unown-U", "Unown-V", "Unown-W", "Unown-X", "Unown-Y", "Unown-Z", "Unown-Exclamation", "Unown-Question"],
+		/// cosmeticFormes: ["Unown-B", "Unown-C", "Unown-D", "Unown-E", "Unown-F", "Unown-G", "Unown-H", "Unown-I", "Unown-J", "Unown-K", "Unown-L", "Unown-M", "Unown-N", "Unown-O", "Unown-P", "Unown-Q", "Unown-R", "Unown-S", "Unown-T", "Unown-U", "Unown-V", "Unown-W", "Unown-X", "Unown-Y", "Unown-Z", "Unown-Exclamation", "Unown-Question"],
+		/// formeOrder: ["Unown", "Unown-B", "Unown-C", "Unown-D", "Unown-E", "Unown-F", "Unown-G", "Unown-H", "Unown-I", "Unown-J", "Unown-K", "Unown-L", "Unown-M", "Unown-N", "Unown-O", "Unown-P", "Unown-Q", "Unown-R", "Unown-S", "Unown-T", "Unown-U", "Unown-V", "Unown-W", "Unown-X", "Unown-Y", "Unown-Z", "Unown-Exclamation", "Unown-Question"],
 	},
 	wobbuffet: {
 		num: 202,
@@ -3994,6 +4040,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	steelixmega: {
 		num: 208,
+		spritenum: 972 + 16,
 		name: "Steelix-Mega",
 		baseSpecies: "Steelix",
 		forme: "Mega",
@@ -4062,6 +4109,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	scizormega: {
 		num: 212,
+		spritenum: 972 + 17,
 		name: "Scizor-Mega",
 		baseSpecies: "Scizor",
 		forme: "Mega",
@@ -4100,6 +4148,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	heracrossmega: {
 		num: 214,
+		spritenum: 972 + 18,
 		name: "Heracross-Mega",
 		baseSpecies: "Heracross",
 		forme: "Mega",
@@ -4320,6 +4369,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	houndoommega: {
 		num: 229,
+		spritenum: 972 + 19,
 		name: "Houndoom-Mega",
 		baseSpecies: "Houndoom",
 		forme: "Mega",
@@ -4585,6 +4635,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	tyranitarmega: {
 		num: 248,
+		spritenum: 972 + 20,
 		name: "Tyranitar-Mega",
 		baseSpecies: "Tyranitar",
 		forme: "Mega",
@@ -4679,6 +4730,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	sceptilemega: {
 		num: 254,
+		spritenum: 972 + 21,
 		name: "Sceptile-Mega",
 		baseSpecies: "Sceptile",
 		forme: "Mega",
@@ -4738,6 +4790,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	blazikenmega: {
 		num: 257,
+		spritenum: 972 + 22,
 		name: "Blaziken-Mega",
 		baseSpecies: "Blaziken",
 		forme: "Mega",
@@ -4797,6 +4850,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	swampertmega: {
 		num: 260,
+		spritenum: 972 + 23,
 		name: "Swampert-Mega",
 		baseSpecies: "Swampert",
 		forme: "Mega",
@@ -5133,6 +5187,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	gardevoirmega: {
 		num: 282,
+		spritenum: 972 + 24,
 		name: "Gardevoir-Mega",
 		baseSpecies: "Gardevoir",
 		forme: "Mega",
@@ -5409,6 +5464,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	sableyemega: {
 		num: 302,
+		spritenum: 972 + 25,
 		name: "Sableye-Mega",
 		baseSpecies: "Sableye",
 		forme: "Mega",
@@ -5436,6 +5492,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	mawilemega: {
 		num: 303,
+		spritenum: 972 + 26,
 		name: "Mawile-Mega",
 		baseSpecies: "Mawile",
 		forme: "Mega",
@@ -5491,6 +5548,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	aggronmega: {
 		num: 306,
+		spritenum: 972 + 27,
 		name: "Aggron-Mega",
 		baseSpecies: "Aggron",
 		forme: "Mega",
@@ -5532,6 +5590,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	medichammega: {
 		num: 308,
+		spritenum: 972 + 28,
 		name: "Medicham-Mega",
 		baseSpecies: "Medicham",
 		forme: "Mega",
@@ -5573,6 +5632,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	manectricmega: {
 		num: 310,
+		spritenum: 972 + 29,
 		name: "Manectric-Mega",
 		baseSpecies: "Manectric",
 		forme: "Mega",
@@ -5701,6 +5761,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	sharpedomega: {
 		num: 319,
+		spritenum: 972 + 30,
 		name: "Sharpedo-Mega",
 		baseSpecies: "Sharpedo",
 		forme: "Mega",
@@ -5767,6 +5828,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	cameruptmega: {
 		num: 323,
+		spritenum: 972 + 31,
 		name: "Camerupt-Mega",
 		baseSpecies: "Camerupt",
 		forme: "Mega",
@@ -5919,6 +5981,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	altariamega: {
 		num: 334,
+		spritenum: 972 + 32,
 		name: "Altaria-Mega",
 		baseSpecies: "Altaria",
 		forme: "Mega",
@@ -6149,6 +6212,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	castformsunny: {
 		num: 351,
+		spritenum: 804 + 37,
 		name: "Castform-Sunny",
 		baseSpecies: "Castform",
 		forme: "Sunny",
@@ -6164,6 +6228,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	castformrainy: {
 		num: 351,
+		spritenum: 804 + 35,
 		name: "Castform-Rainy",
 		baseSpecies: "Castform",
 		forme: "Rainy",
@@ -6179,6 +6244,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	castformsnowy: {
 		num: 351,
+		spritenum: 804 + 36,
 		name: "Castform-Snowy",
 		baseSpecies: "Castform",
 		forme: "Snowy",
@@ -6232,6 +6298,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	banettemega: {
 		num: 354,
+		spritenum: 972 + 33,
 		name: "Banette-Mega",
 		baseSpecies: "Banette",
 		forme: "Mega",
@@ -6311,6 +6378,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	absolmega: {
 		num: 359,
+		spritenum: 972 + 34,
 		name: "Absol-Mega",
 		baseSpecies: "Absol",
 		forme: "Mega",
@@ -6365,6 +6433,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	glaliemega: {
 		num: 362,
+		spritenum: 972 + 35,
 		name: "Glalie-Mega",
 		baseSpecies: "Glalie",
 		forme: "Mega",
@@ -6523,6 +6592,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	salamencemega: {
 		num: 373,
+		spritenum: 972 + 36,
 		name: "Salamence-Mega",
 		baseSpecies: "Salamence",
 		forme: "Mega",
@@ -6581,6 +6651,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	metagrossmega: {
 		num: 376,
+		spritenum: 972 + 37,
 		name: "Metagross-Mega",
 		baseSpecies: "Metagross",
 		forme: "Mega",
@@ -6646,6 +6717,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	latiasmega: {
 		num: 380,
+		spritenum: 972 + 38,
 		name: "Latias-Mega",
 		baseSpecies: "Latias",
 		forme: "Mega",
@@ -6675,6 +6747,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	latiosmega: {
 		num: 381,
+		spritenum: 972 + 39,
 		name: "Latios-Mega",
 		baseSpecies: "Latios",
 		forme: "Mega",
@@ -6704,6 +6777,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	kyogreprimal: {
 		num: 382,
+		spritenum: 972 + 40,
 		name: "Kyogre-Primal",
 		baseSpecies: "Kyogre",
 		forme: "Primal",
@@ -6733,6 +6807,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	groudonprimal: {
 		num: 383,
+		spritenum: 972 + 41,
 		name: "Groudon-Primal",
 		baseSpecies: "Groudon",
 		forme: "Primal",
@@ -6762,6 +6837,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	rayquazamega: {
 		num: 384,
+		spritenum: 972 + 42,
 		name: "Rayquaza-Mega",
 		baseSpecies: "Rayquaza",
 		forme: "Mega",
@@ -6804,6 +6880,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	deoxysattack: {
 		num: 386,
+		spritenum: 804 + 38,
 		name: "Deoxys-Attack",
 		baseSpecies: "Deoxys",
 		forme: "Attack",
@@ -6819,6 +6896,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	deoxysdefense: {
 		num: 386,
+		spritenum: 804 + 39,
 		name: "Deoxys-Defense",
 		baseSpecies: "Deoxys",
 		forme: "Defense",
@@ -6834,6 +6912,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	deoxysspeed: {
 		num: 386,
+		spritenum: 804 + 40,
 		name: "Deoxys-Speed",
 		baseSpecies: "Deoxys",
 		forme: "Speed",
@@ -7216,6 +7295,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	wormadamsandy: {
 		num: 413,
+		spritenum: 804 + 43,
 		name: "Wormadam-Sandy",
 		baseSpecies: "Wormadam",
 		forme: "Sandy",
@@ -7232,6 +7312,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	wormadamtrash: {
 		num: 413,
+		spritenum: 804 + 44,
 		name: "Wormadam-Trash",
 		baseSpecies: "Wormadam",
 		forme: "Trash",
@@ -7353,6 +7434,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	cherrimsunshine: {
 		num: 421,
+		spritenum: 804 + 45,
 		name: "Cherrim-Sunshine",
 		baseSpecies: "Cherrim",
 		forme: "Sunshine",
@@ -7465,6 +7547,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	lopunnymega: {
 		num: 428,
+		spritenum: 972 + 43,
 		name: "Lopunny-Mega",
 		baseSpecies: "Lopunny",
 		forme: "Mega",
@@ -7702,6 +7785,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	garchompmega: {
 		num: 445,
+		spritenum: 972 + 44,
 		name: "Garchomp-Mega",
 		baseSpecies: "Garchomp",
 		forme: "Mega",
@@ -7761,6 +7845,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	lucariomega: {
 		num: 448,
+		spritenum: 972 + 45,
 		name: "Lucario-Mega",
 		baseSpecies: "Lucario",
 		forme: "Mega",
@@ -7927,6 +8012,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	abomasnowmega: {
 		num: 460,
+		spritenum: 972 + 46,
 		name: "Abomasnow-Mega",
 		baseSpecies: "Abomasnow",
 		forme: "Mega",
@@ -8162,6 +8248,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	gallademega: {
 		num: 475,
+		spritenum: 972 + 47,
 		name: "Gallade-Mega",
 		baseSpecies: "Gallade",
 		forme: "Mega",
@@ -8234,6 +8321,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	rotomheat: {
 		num: 479,
+		spritenum: 804 + 50,
 		name: "Rotom-Heat",
 		baseSpecies: "Rotom",
 		forme: "Heat",
@@ -8249,6 +8337,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	rotomwash: {
 		num: 479,
+		spritenum: 804 + 52,
 		name: "Rotom-Wash",
 		baseSpecies: "Rotom",
 		forme: "Wash",
@@ -8264,6 +8353,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	rotomfrost: {
 		num: 479,
+		spritenum: 804 + 49,
 		name: "Rotom-Frost",
 		baseSpecies: "Rotom",
 		forme: "Frost",
@@ -8279,6 +8369,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	rotomfan: {
 		num: 479,
+		spritenum: 804 + 48,
 		name: "Rotom-Fan",
 		baseSpecies: "Rotom",
 		forme: "Fan",
@@ -8294,6 +8385,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	rotommow: {
 		num: 479,
+		spritenum: 804 + 51,
 		name: "Rotom-Mow",
 		baseSpecies: "Rotom",
 		forme: "Mow",
@@ -8407,6 +8499,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	giratinaorigin: {
 		num: 487,
+		spritenum: 804 + 53,
 		name: "Giratina-Origin",
 		baseSpecies: "Giratina",
 		forme: "Origin",
@@ -8486,6 +8579,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	shayminsky: {
 		num: 492,
+		spritenum: 804 + 54,
 		name: "Shaymin-Sky",
 		baseSpecies: "Shaymin",
 		forme: "Sky",
@@ -9295,6 +9389,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	audinomega: {
 		num: 531,
+		spritenum: 972 + 48,
 		name: "Audino-Mega",
 		baseSpecies: "Audino",
 		forme: "Mega",
@@ -9560,6 +9655,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	basculinbluestriped: {
 		num: 550,
+		spritenum: 804 + 56,
 		name: "Basculin-Blue-Striped",
 		baseSpecies: "Basculin",
 		forme: "Blue-Striped",
@@ -9656,6 +9752,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	darmanitanzen: {
 		num: 555,
+		spritenum: 804 + 57,
 		name: "Darmanitan-Zen",
 		baseSpecies: "Darmanitan",
 		forme: "Zen",
@@ -10853,6 +10950,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	tornadustherian: {
 		num: 641,
+		spritenum: 804 + 66,
 		name: "Tornadus-Therian",
 		baseSpecies: "Tornadus",
 		forme: "Therian",
@@ -10883,6 +10981,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	thundurustherian: {
 		num: 642,
+		spritenum: 804 + 67,
 		name: "Thundurus-Therian",
 		baseSpecies: "Thundurus",
 		forme: "Therian",
@@ -10937,6 +11036,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	landorustherian: {
 		num: 645,
+		spritenum: 804 + 68,
 		name: "Landorus-Therian",
 		baseSpecies: "Landorus",
 		forme: "Therian",
@@ -10966,6 +11066,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	kyuremblack: {
 		num: 646,
+		spritenum: 804 + 69,
 		name: "Kyurem-Black",
 		baseSpecies: "Kyurem",
 		forme: "Black",
@@ -10981,6 +11082,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	kyuremwhite: {
 		num: 646,
+		spritenum: 804 + 70,
 		name: "Kyurem-White",
 		baseSpecies: "Kyurem",
 		forme: "White",
@@ -11011,6 +11113,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	keldeoresolute: {
 		num: 647,
+		spritenum: 804 + 71,
 		name: "Keldeo-Resolute",
 		baseSpecies: "Keldeo",
 		forme: "Resolute",
@@ -11042,6 +11145,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	meloettapirouette: {
 		num: 648,
+		spritenum: 804 + 72,
 		name: "Meloetta-Pirouette",
 		baseSpecies: "Meloetta",
 		forme: "Pirouette",
@@ -11265,6 +11369,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	greninjaash: {
 		num: 658,
+		spritenum: 804 + 137,
 		name: "Greninja-Ash",
 		baseSpecies: "Greninja",
 		forme: "Ash",
@@ -11412,6 +11517,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	vivillonfancy: {
 		num: 666,
+		spritenum: 804 + 76,
 		name: "Vivillon-Fancy",
 		baseSpecies: "Vivillon",
 		forme: "Fancy",
@@ -11425,6 +11531,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	vivillonpokeball: {
 		num: 666,
+		spritenum: 804 + 85,
 		name: "Vivillon-Pokeball",
 		baseSpecies: "Vivillon",
 		forme: "Pokeball",
@@ -11500,6 +11607,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	floetteeternal: {
 		num: 670,
+		spritenum: 804 + 98,
 		name: "Floette-Eternal",
 		baseSpecies: "Floette",
 		forme: "Eternal",
@@ -11637,6 +11745,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	meowsticf: {
 		num: 678,
+		spritenum: 804 + 115,
 		name: "Meowstic-F",
 		baseSpecies: "Meowstic",
 		forme: "F",
@@ -11696,6 +11805,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	aegislashblade: {
 		num: 681,
+		spritenum: 804 + 116,
 		name: "Aegislash-Blade",
 		baseSpecies: "Aegislash",
 		forme: "Blade",
@@ -12293,6 +12403,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	zygarde10: {
 		num: 718,
+		spritenum: 804 + 138,
 		name: "Zygarde-10%",
 		baseSpecies: "Zygarde",
 		forme: "10%",
@@ -12309,6 +12420,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	zygardecomplete: {
 		num: 718,
+		spritenum: 804 + 139,
 		name: "Zygarde-Complete",
 		baseSpecies: "Zygarde",
 		forme: "Complete",
@@ -12340,6 +12452,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	dianciemega: {
 		num: 719,
+		spritenum: 973 + 49,
 		name: "Diancie-Mega",
 		baseSpecies: "Diancie",
 		forme: "Mega",
@@ -12370,6 +12483,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	hoopaunbound: {
 		num: 720,
+		spritenum: 804 + 118,
 		name: "Hoopa-Unbound",
 		baseSpecies: "Hoopa",
 		forme: "Unbound",
@@ -12698,6 +12812,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	oricoriopompom: {
 		num: 741,
+		spritenum: 804 + 140,
 		name: "Oricorio-Pom-Pom",
 		baseSpecies: "Oricorio",
 		forme: "Pom-Pom",
@@ -12713,6 +12828,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	oricoriopau: {
 		num: 741,
+		spritenum: 804 + 141,
 		name: "Oricorio-Pa'u",
 		baseSpecies: "Oricorio",
 		forme: "Pa'u",
@@ -12728,6 +12844,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	oricoriosensu: {
 		num: 741,
+		spritenum: 804 + 142,
 		name: "Oricorio-Sensu",
 		baseSpecies: "Oricorio",
 		forme: "Sensu",
@@ -12814,6 +12931,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	lycanrocmidnight: {
 		num: 745,
+		spritenum: 804 + 143,
 		name: "Lycanroc-Midnight",
 		baseSpecies: "Lycanroc",
 		forme: "Midnight",
@@ -12860,6 +12978,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	wishiwashischool: {
 		num: 746,
+		spritenum: 804 + 144,
 		name: "Wishiwashi-School",
 		baseSpecies: "Wishiwashi",
 		forme: "School",
@@ -13560,6 +13679,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	miniormeteor: {
 		num: 774,
+		spritenum: 804 + 145,
 		name: "Minior-Meteor",
 		baseSpecies: "Minior",
 		forme: "Meteor",
@@ -14031,6 +14151,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	magearnaoriginal: {
 		num: 801,
+		spritenum: 804 + 152,
 		name: "Magearna-Original",
 		baseSpecies: "Magearna",
 		forme: "Original",
@@ -15898,6 +16019,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	syclar: {
 		num: -1,
+		spritenum: 1164 + 0,
 		name: "Syclar",
 		types: ["Ice", "Bug"],
 		baseStats: {hp: 40, atk: 76, def: 45, spa: 74, spd: 39, spe: 91},
@@ -15911,6 +16033,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	syclant: {
 		num: -2,
+		spritenum: 1140 + 0,
 		name: "Syclant",
 		types: ["Ice", "Bug"],
 		baseStats: {hp: 70, atk: 116, def: 70, spa: 114, spd: 64, spe: 121},
@@ -15925,6 +16048,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	revenankh: {
 		num: -3,
+		spritenum: 1140 + 1,
 		name: "Revenankh",
 		types: ["Ghost", "Fighting"],
 		baseStats: {hp: 90, atk: 105, def: 90, spa: 65, spd: 110, spe: 65},
@@ -15937,6 +16061,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	embirch: {
 		num: -4,
+		spritenum: 1164 + 1,
 		name: "Embirch",
 		types: ["Fire", "Grass"],
 		baseStats: {hp: 60, atk: 40, def: 55, spa: 65, spd: 40, spe: 60},
@@ -15950,6 +16075,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	flarelm: {
 		num: -5,
+		spritenum: 1164 + 2,
 		name: "Flarelm",
 		types: ["Fire", "Grass"],
 		baseStats: {hp: 90, atk: 50, def: 95, spa: 75, spd: 70, spe: 40},
@@ -15965,6 +16091,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	pyroak: {
 		num: -6,
+		spritenum: 1140 + 2,
 		name: "Pyroak",
 		types: ["Fire", "Grass"],
 		baseStats: {hp: 120, atk: 70, def: 105, spa: 95, spd: 90, spe: 60},
@@ -15979,6 +16106,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	breezi: {
 		num: -7,
+		spritenum: 1164 + 3,
 		name: "Breezi",
 		types: ["Poison", "Flying"],
 		baseStats: {hp: 50, atk: 46, def: 69, spa: 60, spd: 50, spe: 75},
@@ -15992,6 +16120,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	fidgit: {
 		num: -8,
+		spritenum: 1140 + 3,
 		name: "Fidgit",
 		types: ["Poison", "Ground"],
 		baseStats: {hp: 95, atk: 76, def: 109, spa: 90, spd: 80, spe: 105},
@@ -16036,6 +16165,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	stratagem: {
 		num: -11,
+		spritenum: 1140 + 4,
 		name: "Stratagem",
 		types: ["Rock"],
 		gender: "N",
@@ -16064,6 +16194,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	arghonaut: {
 		num: -13,
+		spritenum: 1140 + 5,
 		name: "Arghonaut",
 		types: ["Water", "Fighting"],
 		baseStats: {hp: 105, atk: 110, def: 95, spa: 70, spd: 100, spe: 75},
@@ -16078,6 +16209,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	kitsunoh: {
 		num: -14,
+		spritenum: 1140 + 6,
 		name: "Kitsunoh",
 		types: ["Ghost", "Steel"],
 		baseStats: {hp: 80, atk: 103, def: 85, spa: 55, spd: 80, spe: 110},
@@ -16090,6 +16222,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	cyclohm: {
 		num: -15,
+		spritenum: 1140 + 7,
 		name: "Cyclohm",
 		types: ["Electric", "Dragon"],
 		baseStats: {hp: 108, atk: 60, def: 118, spa: 112, spd: 70, spe: 80},
@@ -16102,6 +16235,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	colossoil: {
 		num: -16,
+		spritenum: 1140 + 8,
 		name: "Colossoil",
 		types: ["Dark", "Ground"],
 		baseStats: {hp: 133, atk: 122, def: 72, spa: 71, spd: 72, spe: 95},
@@ -16114,6 +16248,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	krilowatt: {
 		num: -17,
+		spritenum: 1140 + 9,
 		name: "Krilowatt",
 		types: ["Electric", "Water"],
 		baseStats: {hp: 151, atk: 84, def: 73, spa: 83, spd: 74, spe: 105},
@@ -16139,6 +16274,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	voodoom: {
 		num: -19,
+		spritenum: 1140 + 10,
 		name: "Voodoom",
 		types: ["Fighting", "Dark"],
 		baseStats: {hp: 90, atk: 85, def: 80, spa: 105, spd: 80, spe: 110},
@@ -16153,6 +16289,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	scratchet: {
 		num: -20,
+		spritenum: 1164 + 4,
 		name: "Scratchet",
 		types: ["Normal", "Fighting"],
 		baseStats: {hp: 55, atk: 85, def: 80, spa: 20, spd: 70, spe: 40},
@@ -16166,6 +16303,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	tomohawk: {
 		num: -21,
+		spritenum: 1140 + 11,
 		name: "Tomohawk",
 		types: ["Flying", "Fighting"],
 		baseStats: {hp: 105, atk: 60, def: 90, spa: 115, spd: 80, spe: 85},
@@ -16180,6 +16318,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	necturine: {
 		num: -22,
+		spritenum: 1164 + 5,
 		name: "Necturine",
 		types: ["Grass", "Ghost"],
 		gender: "F",
@@ -16194,6 +16333,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	necturna: {
 		num: -23,
+		spritenum: 1140 + 12,
 		name: "Necturna",
 		types: ["Grass", "Ghost"],
 		gender: "F",
@@ -16209,6 +16349,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	mollux: {
 		num: -24,
+		spritenum: 1140 + 13,
 		name: "Mollux",
 		types: ["Fire", "Poison"],
 		baseStats: {hp: 95, atk: 45, def: 83, spa: 131, spd: 105, spe: 76},
@@ -16221,6 +16362,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	cupra: {
 		num: -25,
+		spritenum: 1164 + 6,
 		name: "Cupra",
 		types: ["Bug", "Psychic"],
 		baseStats: {hp: 50, atk: 60, def: 49, spa: 67, spd: 30, spe: 44},
@@ -16234,6 +16376,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	argalis: {
 		num: -26,
+		spritenum: 1164 + 7,
 		name: "Argalis",
 		types: ["Bug", "Psychic"],
 		baseStats: {hp: 60, atk: 90, def: 89, spa: 87, spd: 40, spe: 54},
@@ -16249,6 +16392,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	aurumoth: {
 		num: -27,
+		spritenum: 1140 + 14,
 		name: "Aurumoth",
 		types: ["Bug", "Psychic"],
 		baseStats: {hp: 110, atk: 120, def: 99, spa: 117, spd: 60, spe: 94},
@@ -16263,6 +16407,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	brattler: {
 		num: -28,
+		spritenum: 1164 + 8,
 		name: "Brattler",
 		types: ["Dark", "Grass"],
 		baseStats: {hp: 80, atk: 70, def: 40, spa: 20, spd: 90, spe: 30},
@@ -16276,6 +16421,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	malaconda: {
 		num: -29,
+		spritenum: 1140 + 15,
 		name: "Malaconda",
 		types: ["Dark", "Grass"],
 		baseStats: {hp: 115, atk: 100, def: 60, spa: 40, spd: 130, spe: 55},
@@ -16290,6 +16436,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	cawdet: {
 		num: -30,
+		spritenum: 1164 + 9,
 		name: "Cawdet",
 		types: ["Steel", "Flying"],
 		baseStats: {hp: 35, atk: 72, def: 85, spa: 40, spd: 55, spe: 88},
@@ -16303,6 +16450,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	cawmodore: {
 		num: -31,
+		spritenum: 1140 + 16,
 		name: "Cawmodore",
 		types: ["Steel", "Flying"],
 		baseStats: {hp: 50, atk: 92, def: 130, spa: 65, spd: 75, spe: 118},
@@ -16317,6 +16465,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	volkritter: {
 		num: -32,
+		spritenum: 1164 + 10,
 		name: "Volkritter",
 		types: ["Water", "Fire"],
 		baseStats: {hp: 60, atk: 30, def: 50, spa: 80, spd: 60, spe: 70},
@@ -16330,6 +16479,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	volkraken: {
 		num: -33,
+		spritenum: 1140 + 17,
 		name: "Volkraken",
 		types: ["Water", "Fire"],
 		baseStats: {hp: 100, atk: 45, def: 80, spa: 135, spd: 100, spe: 95},
@@ -16344,6 +16494,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	snugglow: {
 		num: -34,
+		spritenum: 1164 + 11,
 		name: "Snugglow",
 		types: ["Electric", "Poison"],
 		baseStats: {hp: 40, atk: 37, def: 79, spa: 91, spd: 68, spe: 70},
@@ -16357,6 +16508,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	plasmanta: {
 		num: -35,
+		spritenum: 1140 + 18,
 		name: "Plasmanta",
 		types: ["Electric", "Poison"],
 		baseStats: {hp: 60, atk: 57, def: 119, spa: 131, spd: 98, spe: 100},
@@ -16371,6 +16523,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	floatoy: {
 		num: -36,
+		spritenum: 1164 + 12,
 		name: "Floatoy",
 		types: ["Water"],
 		baseStats: {hp: 48, atk: 70, def: 40, spa: 70, spd: 30, spe: 77},
@@ -16384,6 +16537,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	caimanoe: {
 		num: -37,
+		spritenum: 1164 + 13,
 		name: "Caimanoe",
 		types: ["Water", "Steel"],
 		baseStats: {hp: 73, atk: 85, def: 65, spa: 80, spd: 40, spe: 87},
@@ -16399,6 +16553,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	naviathan: {
 		num: -38,
+		spritenum: 1140 + 19,
 		name: "Naviathan",
 		types: ["Water", "Steel"],
 		baseStats: {hp: 103, atk: 110, def: 90, spa: 95, spd: 65, spe: 97},
@@ -16413,6 +16568,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	crucibelle: {
 		num: -39,
+		spritenum: 1140 + 20,
 		name: "Crucibelle",
 		types: ["Rock", "Poison"],
 		genderRatio: {M: 0.25, F: 0.75},
@@ -16428,6 +16584,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	crucibellemega: {
 		num: -39,
+		spritenum: 1140 + 21,
 		name: "Crucibelle-Mega",
 		baseSpecies: "Crucibelle",
 		forme: "Mega",
@@ -16441,9 +16598,11 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 		eggGroups: ["Amorphous", "Mineral"],
 		requiredItem: "Crucibellite",
 		gen: 6,
+		battleOnly: "Crucibelle",
 	},
 	pluffle: {
 		num: -40,
+		spritenum: 1164 + 14,
 		name: "Pluffle",
 		types: ["Fairy"],
 		baseStats: {hp: 74, atk: 38, def: 51, spa: 65, spd: 78, spe: 49},
@@ -16457,6 +16616,7 @@ export const Pokedex: {[speciesid: string]: SpeciesData} = {
 	},
 	kerfluffle: {
 		num: -41,
+		spritenum: 1140 + 22,
 		name: "Kerfluffle",
 		types: ["Fairy", "Fighting"],
 		baseStats: {hp: 84, atk: 78, def: 86, spa: 115, spd: 88, spe: 119},

@@ -49,7 +49,7 @@ export function exec(args: string | string[], execOptions?: AnyObject) {
 	}
 }
 
-class SubprocessStream extends Streams.ObjectReadWriteStream<string> {
+export class SubprocessStream extends Streams.ObjectReadWriteStream<string> {
 	process: StreamProcessWrapper;
 	taskId: number;
 	constructor(process: StreamProcessWrapper, taskId: number) {
@@ -542,9 +542,16 @@ export class QueryProcessManager<T = string, U = string> extends ProcessManager<
 			);
 		}, this.timeout);
 
-		const result = await process.query(input);
+		try {
+			return await process.query(input);
+		} catch (e) {
+		} finally {
+			clearTimeout(timeout);
+		}
 
-		clearTimeout(timeout);
+		const newProcess = this.createProcess();
+		const result = await process.query(input);
+		this.processes[this.processes.indexOf(process)] = newProcess;
 		return result;
 	}
 	queryTemporaryProcess(input: T, force?: boolean) {
@@ -602,7 +609,14 @@ export class StreamProcessManager extends ProcessManager<StreamProcessWrapper> {
 	createStream() {
 		const process = this.acquire();
 		if (!process) return this._createStream();
-		return process.createStream();
+		try {
+			return process.createStream();
+		} catch (e) {
+		}
+		const newProcess = this.createProcess();
+		const stream = newProcess.createStream();
+		this.processes[this.processes.indexOf(process)] = newProcess;
+		return stream;
 	}
 	createProcess() {
 		return new StreamProcessWrapper(this.filename, this.messageCallback);

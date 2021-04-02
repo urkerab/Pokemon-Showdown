@@ -17,8 +17,8 @@
 
 const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz'.split('');
 
-const TIMEOUT_EMPTY_DEALLOCATE = 10 * 60 * 1000;
-const TIMEOUT_INACTIVE_DEALLOCATE = 40 * 60 * 1000;
+const TIMEOUT_EMPTY_DEALLOCATE = 10 * 60 * 60 * 1000;
+const TIMEOUT_INACTIVE_DEALLOCATE = 40 * 60 * 60 * 1000;
 const REPORT_USER_STATS_INTERVAL = 10 * 60 * 1000;
 const MAX_CHATROOM_ID_LENGTH = 225;
 
@@ -383,7 +383,7 @@ export abstract class BasicRoom {
 	 * Inserts (sanitized) HTML into the room log.
 	 */
 	addRaw(message: string) {
-		return this.add('|raw|' + message);
+		return this.add('|html|' + message);
 	}
 	/**
 	 * Inserts some text into the room log, attributed to user. The
@@ -683,7 +683,7 @@ export abstract class BasicRoom {
 		this.roomlog(entry);
 	}
 	getIntroMessage(user: User) {
-		let message = Utils.html`\n|raw|<div class="infobox"> You joined ${this.title}`;
+		let message = Utils.html`\n|html|<div class="infobox"> You joined ${this.title}`;
 		if (this.settings.modchat) {
 			message += ` [${this.settings.modchat} or higher to talk]`;
 		}
@@ -696,7 +696,7 @@ export abstract class BasicRoom {
 		}
 		message += `</div>`;
 		if (this.settings.introMessage) {
-			message += `\n|raw|<div class="infobox infobox-roomintro"><div ${(!this.settings.isOfficial ? 'class="infobox-limited"' : '')}>` +
+			message += `\n|html|<div class="infobox infobox-roomintro"><div ${(!this.settings.isOfficial ? 'class="infobox-limited"' : '')}>` +
 				this.settings.introMessage.replace(/\n/g, '') +
 				`</div></div>`;
 		}
@@ -708,12 +708,12 @@ export abstract class BasicRoom {
 		if (!user.can('mute', null, this)) return ``;
 		let message = ``;
 		if (this.settings.staffMessage) {
-			message += `\n|raw|<div class="infobox">(Staff intro:)<br /><div>` +
+			message += `\n|html|<div class="infobox">(Staff intro:)<br /><div>` +
 				this.settings.staffMessage.replace(/\n/g, '') +
 				`</div>`;
 		}
 		if (this.pendingApprovals?.size) {
-			message += `\n|raw|<div class="infobox">`;
+			message += `\n|html|<div class="infobox">`;
 			message += `<details open><summary>(Pending media requests: ${this.pendingApprovals.size})</summary>`;
 			for (const [userid, entry] of this.pendingApprovals) {
 				message += `<div class="infobox">`;
@@ -732,7 +732,7 @@ export abstract class BasicRoom {
 			}
 			message += `</details></div>`;
 		}
-		return message ? `|raw|${message}` : ``;
+		return message ? `|html|${message}` : ``;
 	}
 	getSubRooms(includeSecret = false) {
 		if (!this.subRooms) return [];
@@ -1741,8 +1741,11 @@ export class GameRoom extends BasicRoom {
 		this.pokeExpireTimer();
 	}
 	pokeExpireTimer() {
-		// empty rooms time out after ten minutes
-		if (!this.userCount) {
+		// dead rooms time out after ten minutes
+		if (
+			!this.battle || !(this.battle.ended ||
+			(this.battle.stream && this.battle.stream.process && (this.battle.stream.process as any).connected))
+		) {
 			if (this.expireTimer) clearTimeout(this.expireTimer);
 			this.expireTimer = setTimeout(() => this.expire(), TIMEOUT_EMPTY_DEALLOCATE);
 		} else {
@@ -1942,14 +1945,14 @@ export const Rooms = {
 			if (battle.forcePublic) {
 				room.setPrivate(false);
 				room.settings.modjoin = null;
-				room.add(`|raw|<div class="broadcast-blue"><strong>This battle is required to be public due to a player having a name starting with '${battle.forcePublic}'.</div>`);
+				room.add(`|html|<div class="broadcast-blue"><strong>This battle is required to be public due to a player having a name starting with '${battle.forcePublic}'.</div>`);
 			} else if (!options.tour || (room.tour?.allowModjoin)) {
 				room.setPrivate('hidden');
 				if (inviteOnly) room.settings.modjoin = '%';
 				room.privacySetter = privacySetter;
 				if (inviteOnly) {
 					room.settings.modjoin = '%';
-					room.add(`|raw|<div class="broadcast-red"><strong>This battle is invite-only!</strong><br />Users must be invited with <code>/invite</code> (or be staff) to join</div>`);
+					room.add(`|html|<div class="broadcast-red"><strong>This battle is invite-only!</strong><br />Users must be invited with <code>/invite</code> (or be staff) to join</div>`);
 				}
 			}
 		}

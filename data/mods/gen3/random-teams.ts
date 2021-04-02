@@ -556,10 +556,37 @@ export class RandomGen3Teams extends RandomGen4Teams {
 		const ruleTable = this.dex.getRuleTable(this.format);
 		const pokemon: RandomTeamsTypes.RandomSet[] = [];
 
+		const allowedNFE = ['Scyther', 'Vigoroth'];
+
 		// For Monotype
-		const isMonotype = ruleTable.has('sametypeclause');
-		const typePool = Object.keys(this.dex.data.TypeChart);
-		const type = this.sample(typePool);
+		const isMonotype: string | false = ruleTable.has('sametypeclause') && this.sample(Object.keys(this.dex.data.TypeChart));
+
+		const availableFormes: {[k: string]: string[]} = {};
+		for (const id in this.dex.data.FormatsData) {
+			const template = this.dex.getSpecies(id);
+			if (isMonotype) {
+				let types = template.types;
+				if (template.battleOnly) types = this.dex.getSpecies(template.baseSpecies).types;
+				if (!types.includes(isMonotype)) continue;
+			}
+			if (template.isNonstandard || !template.randomBattleMoves) continue;
+			if (template.evos && !allowedNFE.includes(template.name)) {
+				let invalid = false;
+				for (const evo of template.evos) {
+					if (this.dex.getSpecies(evo).gen <= 3) {
+						invalid = true;
+						break;
+					}
+				}
+				if (invalid) continue;
+			}
+			if (!availableFormes[template.baseSpecies]) {
+				availableFormes[template.baseSpecies] = [id];
+			} else {
+				availableFormes[template.baseSpecies].push(id);
+			}
+		}
+		const pokemonPool = Object.values(availableFormes);
 
 		const baseFormes: {[k: string]: number} = {};
 		const tierCount: {[k: string]: number} = {};
@@ -567,13 +594,18 @@ export class RandomGen3Teams extends RandomGen4Teams {
 		const typeComboCount: {[k: string]: number} = {};
 		const teamDetails: RandomTeamsTypes.TeamDetails = {};
 
-		const pokemonPool = this.getPokemonPool(type, pokemon, isMonotype);
-
+		if (isMonotype) {
+			// Allow more pure types in Monotype teams
+			typeComboCount['Electric'] = -3;
+			typeComboCount['Normal'] = -2;
+			typeComboCount['Ghost'] = -2;
+			typeComboCount['Fighting'] = -2;
+			typeComboCount[isMonotype + ',Flying'] = -2;
+			typeComboCount[isMonotype + ',Water'] = -2;
+		}
 		while (pokemonPool.length && pokemon.length < 6) {
-			const species = this.dex.getSpecies(this.sampleNoReplace(pokemonPool));
-			if (!species.exists || !species.randomBattleMoves) continue;
-			// Limit to one of each species (Species Clause)
-			if (baseFormes[species.baseSpecies]) continue;
+			const species = this.dex.getSpecies(this.sample(this.sampleNoReplace(pokemonPool)));
+			if (!species.exists) continue;
 
 			// Limit to one Wobbuffet per battle (not just per team)
 			if (species.name === 'Wobbuffet' && this.battleHasWobbuffet) continue;
@@ -581,29 +613,36 @@ export class RandomGen3Teams extends RandomGen4Teams {
 			if (this.dex.gen < 3 && species.name === 'Ditto' && this.battleHasDitto) continue;
 
 			const tier = species.tier;
-			const types = species.types;
-			const typeCombo = types.slice().sort().join();
+			// Limit 2 Pokemon per tier
+			if (tierCount[tier] >= 2 && this.randomChance(4, 5)) {
+				continue;
+			}
 
 			if (!isMonotype) {
-				// Limit two Pokemon per tier
-				if (tierCount[tier] >= 2) continue;
-
-				// Limit two of any type
+				// Limit 2 of any type
 				let skip = false;
-				for (const typeName of types) {
-					if (typeCount[typeName] > 1) {
+				for (const type of species.types) {
+					if (typeCount[type] > 1 && this.randomChance(4, 5)) {
 						skip = true;
 						break;
 					}
 				}
 				if (skip) continue;
+			}
 
-				// Limit one of any type combination
-				if (typeComboCount[typeCombo] >= 1) continue;
+			const set = this.randomSet(species, teamDetails);
+
+			// Limit 1 of any type combination, 2 in monotype
+			let typeCombo = species.types.slice().sort().join();
+			if (set.ability === 'Drought' || set.ability === 'Drizzle' || set.ability === 'Sand Stream') {
+				// Drought, Drizzle and Sand Stream don't count towards the type combo limit
+				typeCombo = set.ability;
+				if (typeCombo in typeComboCount) continue;
+			} else {
+				if (typeComboCount[typeCombo] >= (isMonotype ? 2 : 1)) continue;
 			}
 
 			// Okay, the set passes, add it to our team
-			const set = this.randomSet(species, teamDetails);
 			pokemon.push(set);
 
 			// Now that our Pokemon has passed all checks, we can increment our counters
@@ -617,11 +656,11 @@ export class RandomGen3Teams extends RandomGen4Teams {
 			}
 
 			// Increment type counters
-			for (const typeName of types) {
-				if (typeName in typeCount) {
-					typeCount[typeName]++;
+			for (const type of species.types) {
+				if (type in typeCount) {
+					typeCount[type]++;
 				} else {
-					typeCount[typeName] = 1;
+					typeCount[type] = 1;
 				}
 			}
 			if (typeCombo in typeComboCount) {
@@ -643,7 +682,7 @@ export class RandomGen3Teams extends RandomGen4Teams {
 			if (species.id === 'ditto') this.battleHasDitto = true;
 		}
 
-		if (pokemon.length < 6 && !isMonotype) {
+		if (pokemon.length < 6) {
 			throw new Error(`Could not build a random team for ${this.format} (seed=${seed})`);
 		}
 

@@ -49,7 +49,7 @@ export const ssbSets: SSBSets = {
 	},
 	Aelita: {
 		species: 'Zygarde', ability: 'Scyphozoa', item: 'Focus Sash', gender: 'F',
-		moves: ['Protect', 'Leech Seed', 'Thousand Arrows'],
+		moves: ['Rest', 'Sleep Talk', 'Thousand Arrows'],
 		signatureMove: 'XANA\'s Keys To Lyoko',
 		evs: {hp: 252, atk: 4, spd: 252}, nature: 'Careful',
 	},
@@ -92,7 +92,7 @@ export const ssbSets: SSBSets = {
 	},
 	Andrew: {
 		species: 'Spectrier', ability: 'Neutralizing Gas', item: 'Choice Specs', gender: 'M',
-		moves: ['Moongeist Beam', 'Pollen Puff', 'Trick'],
+		moves: ['Astral Barrage', 'Moonblast', 'Aura Sphere'],
 		signatureMove: 'Whammer Jammer',
 		evs: {hp: 4, spa: 252, spe: 252}, ivs: {atk: 0}, nature: 'Timid',
 	},
@@ -157,7 +157,7 @@ export const ssbSets: SSBSets = {
 		evs: {hp: 252, spa: 252, spd: 4}, ivs: {atk: 0}, nature: 'Modest', shiny: true,
 	},
 	Blaz: {
-		species: 'Carbink', ability: 'Solid Rock', item: 'Leftovers', gender: 'N',
+		species: 'Carbink', ability: 'Why Worry', item: 'Leftovers', gender: 'N',
 		moves: ['Cosmic Power', 'Body Press', 'Recover'],
 		signatureMove: 'Bleak December',
 		evs: {hp: 4, def: 252, spd: 252}, ivs: {atk: 0}, nature: 'Careful', shiny: true,
@@ -174,15 +174,9 @@ export const ssbSets: SSBSets = {
 		signatureMove: 'Kinetosis',
 		evs: {hp: 248, def: 8, spd: 252}, ivs: {atk: 0}, nature: 'Calm',
 	},
-	Buffy: {
-		species: 'Dragonite', ability: 'Speed Control', item: 'Metal Coat', gender: '',
-		moves: ['Swords Dance', 'Thousand Arrows', 'Double Iron Bash'],
-		signatureMove: 'Pandora\'s Box',
-		evs: {atk: 252, def: 4, spe: 252}, nature: 'Jolly', shiny: 2,
-	},
 	Cake: {
 		species: 'Dunsparce', ability: 'Wonder Guard', item: 'Shell Bell', gender: 'M',
-		moves: ['Haze', 'Jungle Healing', ['Poison Gas', 'Corrosive Gas', 'Magic Powder', 'Speed Swap', 'Spite', 'Refresh', 'Screech', 'Trick Room', 'Heal Block', 'Geomancy']],
+		moves: ['Haze', 'Ingrain', ['Poison Gas', 'Corrosive Gas', 'Magic Powder', 'Speed Swap', 'Spite', 'Refresh', 'Screech', 'Trick Room', 'Heal Block', 'Geomancy']],
 		signatureMove: 'Kevin',
 		evs: {hp: 252, atk: 252, spd: 4}, nature: 'Adamant',
 	},
@@ -191,6 +185,12 @@ export const ssbSets: SSBSets = {
 		moves: ['Quiver Dance', 'Roost', 'Will-O-Wisp'],
 		signatureMove: 'Never Lucky',
 		evs: {hp: 248, def: 36, spe: 224}, ivs: {atk: 0}, nature: 'Timid',
+	},
+	Celestial: {
+		species: 'Dragonite', ability: 'Speed Control', item: 'Metal Coat', gender: '',
+		moves: ['Swords Dance', 'Thousand Arrows', 'Double Iron Bash'],
+		signatureMove: 'Pandora\'s Box',
+		evs: {atk: 252, def: 4, spe: 252}, nature: 'Jolly', shiny: 2,
 	},
 	Celine: {
 		species: 'Lucario', ability: 'Guardian Armor', item: 'Leftovers', gender: 'F',
@@ -243,7 +243,7 @@ export const ssbSets: SSBSets = {
 		evs: {hp: 4, spa: 252, spe: 252}, ivs: {atk: 0}, nature: 'Timid', shiny: true,
 	},
 	Emeri: {
-		species: 'Flygon', ability: 'Drake Skin', item: 'Throat Spray', gender: 'M',
+		species: 'Flygon', ability: 'Draco Voice', item: 'Throat Spray', gender: 'M',
 		moves: ['Boomburst', 'Earth Power', 'Agility'],
 		signatureMove: 'Forced Landing',
 		evs: {spa: 252, spd: 4, spe: 252}, ivs: {atk: 0}, nature: 'Timid',
@@ -359,7 +359,7 @@ export const ssbSets: SSBSets = {
 		signatureMove: 'Paranoia',
 		evs: {atk: 252, def: 4, spe: 252}, nature: 'Jolly',
 	},
-	instruct: {
+	INStruct: {
 		species: 'Riolu', ability: 'Truant', item: 'Heavy-Duty Boots', gender: '',
 		moves: ['Explosion', 'Lunar Dance', 'Memento'],
 		signatureMove: 'Soda Break',
@@ -445,8 +445,8 @@ export const ssbSets: SSBSets = {
 		evs: {spa: 252, spd: 4, spe: 252}, ivs: {atk: 0}, nature: 'Timid',
 	},
 	Lamp: {
-		species: 'Lampent', ability: 'Soul-Heart', item: 'Eviolite', gender: 'M',
-		moves: ['Nasty Plot', 'Searing Shot', 'Recover'],
+		species: 'Lampent', ability: 'Candlewax', item: 'Eviolite', gender: 'M',
+		moves: ['Nasty Plot', 'Searing Shot', 'Strength Sap'],
 		signatureMove: 'Soul Swap',
 		evs: {def: 4, spa: 252, spe: 252}, ivs: {atk: 0}, nature: 'Timid',
 	},
@@ -470,7 +470,7 @@ export const ssbSets: SSBSets = {
 		species: 'Zekrom', ability: 'Petrichor', item: 'Damp Rock', gender: 'N',
 		moves: ['Bolt Strike', 'Dragon Claw', 'Liquidation'],
 		signatureMove: 'Ca-LLAMA-ty',
-		evs: {atk: 252, def: 4, spe: 252}, nature: 'Jolly', shiny: true,
+		evs: {atk: 252, def: 4, spe: 252}, ivs: {def: 0}, nature: 'Jolly', shiny: true,
 	},
 	MajorBowman: {
 		species: 'Weezing-Galar', ability: 'Neutralizing Gas', item: 'Black Sludge', gender: 'M',
@@ -510,13 +510,13 @@ export const ssbSets: SSBSets = {
 	},
 	Nol: {
 		species: 'Litwick', ability: 'Burning Soul', item: 'Spooky Plate', gender: 'F',
-		moves: ['Shadow Ball', 'Flamethrower', 'Giga Drain'],
+		moves: ['Shadow Ball', 'Flamethrower', 'Trick Room'],
 		signatureMove: 'Mad Hacks',
 		evs: {hp: 252, spa: 252, spd: 4}, ivs: {atk: 0, spe: 0}, nature: 'Quiet', shiny: true,
 	},
 	Notater517: {
 		species: 'Jellicent', ability: 'Last-Minute Lag', item: 'Leftovers', gender: 'M',
-		moves: ['Hydro Cannon', 'Blast Burn', ['Toxic Spikes', 'Recover']],
+		moves: ['Hydro Cannon', 'Blast Burn', 'Toxic Spikes'],
 		signatureMove: 'Techno Tuber Transmission',
 		evs: {hp: 236, spa: 252, spe: 20}, ivs: {atk: 0}, nature: 'Modest',
 	},
@@ -745,12 +745,6 @@ export const ssbSets: SSBSets = {
 		signatureMove: 'Watt Up',
 		evs: {spa: 252, spd: 4, spe: 252}, ivs: {atk: 0}, nature: 'Timid',
 	},
-	thewaffleman: {
-		species: 'Mr. Rime', ability: 'Prankster', item: 'Kasib Berry', gender: 'M',
-		moves: ['Cotton Guard', 'Slack Off', 'Focus Blast'],
-		signatureMove: 'Ice Press',
-		evs: {hp: 252, def: 4, spd: 252}, ivs: {atk: 0}, nature: 'Calm',
-	},
 	tiki: {
 		species: 'Snom', ability: 'True Grit', item: 'Eviolite', gender: 'M',
 		moves: ['Toxic', 'Strength Sap', 'U-turn'],
@@ -793,9 +787,15 @@ export const ssbSets: SSBSets = {
 		signatureMove: 'Panda Express',
 		evs: {hp: 252, atk: 252, spd: 4}, ivs: {atk: 0}, nature: 'Adamant',
 	},
+	xJoelituh: {
+		species: 'Marowak-Alola', ability: 'Mountaineer', item: 'Rare Bone', gender: 'M',
+		moves: ['Poltergeist', 'Fire Punch', 'Stomping Tantrum'],
+		signatureMove: 'Burn Bone',
+		evs: {hp: 248, atk: 8, spd: 252}, nature: 'Careful', shiny: true,
+	},
 	yuki: {
 		species: 'Pikachu-Cosplay', ability: 'Combat Training', item: 'Light Ball', gender: 'F',
-		moves: ['Quick Attack', 'Agility'],
+		moves: ['Quick Attack'],
 		signatureMove: 'Class Change',
 		evs: {hp: 4, spa: 252, spe: 252}, ivs: {atk: 0}, nature: ['Modest', 'Timid'],
 	},
@@ -808,14 +808,14 @@ export const ssbSets: SSBSets = {
 	},
 	'yuki-Dancer': {
 		species: 'Pikachu-Pop-Star', ability: 'Dancer', item: 'Light Ball', gender: 'F',
-		moves: ['Fiery Dance', 'Revelation Dance', 'Quiver Dance'],
+		moves: ['Fiery Dance', 'Revelation Dance', 'Lunar Dance'],
 		signatureMove: 'Class Change',
 		evs: {hp: 4, spa: 252, spe: 252}, ivs: {atk: 0},
 		skip: 'yuki',
 	},
 	'yuki-Ninja': {
 		species: 'Pikachu-Libre', ability: 'White Smoke', item: 'Light Ball', gender: 'F',
-		moves: ['Water Shuriken', 'Frost Breath', 'Toxic'],
+		moves: ['Water Shuriken', 'Acrobatics', 'Toxic'],
 		signatureMove: 'Class Change',
 		evs: {hp: 4, spa: 252, spe: 252}, ivs: {atk: 0},
 		skip: 'yuki',
@@ -828,8 +828,8 @@ export const ssbSets: SSBSets = {
 		skip: 'yuki',
 	},
 	'yuki-Jester': {
-		species: 'Pikachu-Belle', ability: 'Weak Armor', item: 'Light Ball', gender: 'F',
-		moves: ['Fire Blast', 'Thunder', 'Blizzard'],
+		species: 'Pikachu-Belle', ability: 'Tangled Feet', item: 'Light Ball', gender: 'F',
+		moves: ['Present', 'Metronome', 'Teeter Dance'],
 		signatureMove: 'Class Change',
 		evs: {hp: 4, spa: 252, spe: 252}, ivs: {atk: 0},
 		skip: 'yuki',
@@ -884,15 +884,10 @@ export class RandomStaffBrosTeams extends RandomTeams {
 			// Enforce typing limits
 			if (!debug.length) { // Type limits are ignored when debugging
 				const types = this.dex.getSpecies(ssbSet.species).types;
-				const weaknesses = [];
-				for (const type in this.dex.data.TypeChart) {
-					const typeMod = this.dex.getEffectiveness(type, types);
-					if (typeMod > 0) weaknesses.push(type);
-				}
 				let rejected = false;
-				for (const type of weaknesses) {
+				for (const type of types) {
 					if (typePool[type] === undefined) typePool[type] = 0;
-					if (typePool[type] >= 3) {
+					if (typePool[type] >= 2) {
 						// Reject
 						rejected = true;
 						break;
@@ -907,7 +902,7 @@ export class RandomStaffBrosTeams extends RandomTeams {
 				}
 				if (rejected) continue;
 				// Update type counts
-				for (const type of weaknesses) {
+				for (const type of types) {
 					typePool[type]++;
 				}
 			}

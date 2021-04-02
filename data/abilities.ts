@@ -34,6 +34,7 @@ Ratings and how they work:
 
 export const Abilities: {[abilityid: string]: AbilityData} = {
 	noability: {
+		copyLimited: ['entrainment', 'roleplay', 'skillswap', 'wanderingspirit'],
 		isNonstandard: "Past",
 		name: "No Ability",
 		rating: 0.1,
@@ -68,7 +69,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	aftermath: {
 		name: "Aftermath",
-		onDamagingHitOrder: 1,
+		onDamagingHitOrder: 2,
 		onDamagingHit(damage, target, source, move) {
 			if (move.flags['contact'] && !target.hp) {
 				this.damage(source.baseMaxhp / 4, source, target);
@@ -317,7 +318,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	bigpecks: {
 		onBoost(boost, target, source, effect) {
-			if (source && target === source) return;
+			if (!source || target === source) return;
 			if (boost.def && boost.def < 0) {
 				delete boost.def;
 				if (!(effect as ActiveMove).secondaries && effect.id !== 'octolock') {
@@ -389,7 +390,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	clearbody: {
 		onBoost(boost, target, source, effect) {
-			if (source && target === source) return;
+			if (!source || target === source) return;
 			let showMsg = false;
 			let i: BoostName;
 			for (i in boost) {
@@ -986,7 +987,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				}
 			},
 			onEnd(target) {
-				this.add('-end', target, 'ability: Flash Fire', '[silent]');
+				if (target.isActive) this.add('-end', target, 'ability: Flash Fire', '[silent]');
 			},
 		},
 		name: "Flash Fire",
@@ -1024,6 +1025,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				return this.chainModify(1.5);
 			}
 		},
+		copyLimited: ['skillswap', 'wanderingspirit'],
 		name: "Flower Gift",
 		rating: 1,
 		num: 122,
@@ -1047,7 +1049,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 		onAllySetStatus(status, target, source, effect) {
 			if (target.hasType('Grass') && source && target !== source && effect && effect.id !== 'yawn') {
 				this.debug('interrupting setStatus with Flower Veil');
-				if (effect.id === 'synchronize' || (effect.effectType === 'Move' && !effect.secondaries)) {
+				if ((effect as Move)?.status) {
 					const effectHolder = this.effectData.target;
 					this.add('-block', target, 'ability: Flower Veil', '[of] ' + effectHolder);
 				}
@@ -1101,6 +1103,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				pokemon.formeChange(forme, this.effect, false, '[msg]');
 			}
 		},
+		copyLimited: ['skillswap', 'wanderingspirit'],
 		name: "Forecast",
 		rating: 2,
 		num: 59,
@@ -1160,7 +1163,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	fullmetalbody: {
 		onBoost(boost, target, source, effect) {
-			if (source && target === source) return;
+			if (!source || target === source) return;
 			let showMsg = false;
 			let i: BoostName;
 			for (i in boost) {
@@ -1420,6 +1423,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			const targetForme = pokemon.species.name === 'Morpeko' ? 'Morpeko-Hangry' : 'Morpeko';
 			pokemon.formeChange(targetForme);
 		},
+		copyLimited: [],
 		name: "Hunger Switch",
 		rating: 1,
 		num: 258,
@@ -1456,7 +1460,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	hypercutter: {
 		onBoost(boost, target, source, effect) {
-			if (source && target === source) return;
+			if (!source || target === source) return;
 			if (boost.atk && boost.atk < 0) {
 				delete boost.atk;
 				if (!(effect as ActiveMove).secondaries) {
@@ -1579,6 +1583,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			pokemon.illusion = null;
 		},
 		isUnbreakable: true,
+		copyLimited: [],
 		name: "Illusion",
 		rating: 4.5,
 		num: 149,
@@ -1614,6 +1619,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			}
 			this.effectData.switchingIn = false;
 		},
+		copyLimited: ['skill swap', 'wandering spirit'],
 		name: "Imposter",
 		rating: 5,
 		num: 150,
@@ -1628,7 +1634,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	innardsout: {
 		name: "Innards Out",
-		onDamagingHitOrder: 1,
+		onDamagingHitOrder: 2,
 		onDamagingHit(damage, target, source, move) {
 			if (!target.hp) {
 				this.damage(target.getUndynamaxedHP(damage), source, target);
@@ -1698,7 +1704,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 		num: 234,
 	},
 	ironbarbs: {
-		onDamagingHitOrder: 1,
+		onDamagingHitOrder: 2,
 		onDamagingHit(damage, target, source, move) {
 			if (move.flags['contact']) {
 				this.damage(source.baseMaxhp / 8, source, target);
@@ -1732,7 +1738,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	keeneye: {
 		onBoost(boost, target, source, effect) {
-			if (source && target === source) return;
+			if (!source || target === source) return;
 			if (boost.accuracy && boost.accuracy < 0) {
 				delete boost.accuracy;
 				if (!(effect as ActiveMove).secondaries) {
@@ -2067,7 +2073,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	mirrorarmor: {
 		onBoost(boost, target, source, effect) {
 			// Don't bounce self stat changes, or boosts that have already bounced
-			if (target === source || !boost || effect.id === 'mirrorarmor') return;
+			if (!target || target === source || !boost || effect.id === 'mirrorarmor') return;
 			let b: BoostName;
 			for (b in boost) {
 				if (boost[b]! < 0) {
@@ -2295,12 +2301,9 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			this.add('-ability', pokemon, 'Neutralizing Gas');
 			pokemon.abilityData.ending = false;
 			for (const target of this.getAllActive()) {
-				if (target.illusion) {
-					this.singleEvent('End', this.dex.getAbility('Illusion'), target.abilityData, target, pokemon, 'neutralizinggas');
-				}
-				if (target.volatiles['slowstart']) {
-					delete target.volatiles['slowstart'];
-					this.add('-end', target, 'Slow Start', '[silent]');
+				if (target.ignoringAbility()) {
+					const ability = target.getAbility();
+					this.singleEvent('End', ability, target.abilityData, target, pokemon, 'neutralizinggas');
 				}
 			}
 		},
@@ -2324,6 +2327,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				}
 			}
 		},
+		copyLimited: [],
 		name: "Neutralizing Gas",
 		rating: 5,
 		num: 256,
@@ -2664,12 +2668,6 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			if (pokemon.species.id === 'zygardecomplete' || pokemon.hp > pokemon.maxhp / 2) return;
 			this.add('-activate', pokemon, 'ability: Power Construct');
 			pokemon.formeChange('Zygarde-Complete', this.effect, true);
-			pokemon.baseMaxhp = Math.floor(Math.floor(
-				2 * pokemon.species.baseStats['hp'] + pokemon.set.ivs['hp'] + Math.floor(pokemon.set.evs['hp'] / 4) + 100
-			) * pokemon.level / 100 + 10);
-			const newMaxHP = pokemon.volatiles['dynamax'] ? (2 * pokemon.baseMaxhp) : pokemon.baseMaxhp;
-			pokemon.hp = newMaxHP - (pokemon.maxhp - pokemon.hp);
-			pokemon.maxhp = newMaxHP;
 			this.add('-heal', pokemon, pokemon.getHealth, '[silent]');
 		},
 		isPermanent: true,
@@ -2681,13 +2679,11 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 		onAllyFaint(target) {
 			if (!this.effectData.target.hp) return;
 			const ability = target.getAbility();
-			const additionalBannedAbilities = [
-				'noability', 'flowergift', 'forecast', 'hungerswitch', 'illusion', 'imposter', 'neutralizinggas', 'powerofalchemy', 'receiver', 'trace', 'wonderguard',
-			];
-			if (target.getAbility().isPermanent || additionalBannedAbilities.includes(target.ability)) return;
+			if (ability.isPermanent || ability.copyLimited && !ability.copyLimited.includes('powerofalchemy')) return;
 			this.add('-ability', this.effectData.target, ability, '[from] ability: Power of Alchemy', '[of] ' + target);
 			this.effectData.target.setAbility(ability);
 		},
+		copyLimited: ['skillswap', 'wanderingspirit'],
 		name: "Power of Alchemy",
 		rating: 0,
 		num: 223,
@@ -2778,7 +2774,9 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			const type = move.type;
 			if (type && type !== '???' && source.getTypes().join() !== type) {
 				if (!source.setType(type)) return;
+				this.attrLastMove('[still]');
 				this.add('-start', source, 'typechange', type, '[from] ability: Protean');
+				this.addMove('-anim', source, move, target);
 			}
 		},
 		name: "Protean",
@@ -2890,13 +2888,11 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 		onAllyFaint(target) {
 			if (!this.effectData.target.hp) return;
 			const ability = target.getAbility();
-			const additionalBannedAbilities = [
-				'noability', 'flowergift', 'forecast', 'hungerswitch', 'illusion', 'imposter', 'neutralizinggas', 'powerofalchemy', 'receiver', 'trace', 'wonderguard',
-			];
-			if (target.getAbility().isPermanent || additionalBannedAbilities.includes(target.ability)) return;
+			if (ability.isPermanent || ability.copyLimited && !ability.copyLimited.includes('receiver')) return;
 			this.add('-ability', this.effectData.target, ability, '[from] ability: Receiver', '[of] ' + target);
 			this.effectData.target.setAbility(ability);
 		},
+		copyLimited: ['skillswap', 'wanderingspirit'],
 		name: "Receiver",
 		rating: 0,
 		num: 222,
@@ -3013,7 +3009,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 		num: 69,
 	},
 	roughskin: {
-		onDamagingHitOrder: 1,
+		onDamagingHitOrder: 2,
 		onDamagingHit(damage, target, source, move) {
 			if (move.flags['contact']) {
 				this.damage(source.baseMaxhp / 8, source, target);
@@ -3253,7 +3249,6 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				delete move.secondaries;
 				// Technically not a secondary effect, but it is negated
 				delete move.self;
-				if (move.id === 'clangoroussoulblaze') delete move.selfBoost;
 				// Actual negation of `AfterMoveSecondary` effects implemented in scripts.js
 				move.hasSheerForce = true;
 			}
@@ -3353,14 +3348,19 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	slowstart: {
 		onStart(pokemon) {
+			pokemon.abilityData.endTurn = pokemon.activeTurns + 5;
 			pokemon.addVolatile('slowstart');
 		},
 		onEnd(pokemon) {
 			delete pokemon.volatiles['slowstart'];
 			this.add('-end', pokemon, 'Slow Start', '[silent]');
 		},
+		onResidualOrder: 26,
+		onResidualSubOrder: 1,
+		onResidual(pokemon) {
+			if (pokemon.activeTurns === pokemon.abilityData.endTurn) pokemon.removeVolatile('slowstart');
+		},
 		condition: {
-			duration: 5,
 			onStart(target) {
 				this.add('-start', target, 'ability: Slow Start');
 			},
@@ -3372,7 +3372,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				return this.chainModify(0.5);
 			},
 			onEnd(target) {
-				this.add('-end', target, 'Slow Start');
+				if (target.isActive) this.add('-end', target, 'Slow Start');
 			},
 		},
 		name: "Slow Start",
@@ -3949,11 +3949,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				if (possibleTargets.length > 1) rand = this.random(possibleTargets.length);
 				const target = possibleTargets[rand];
 				const ability = target.getAbility();
-				const additionalBannedAbilities = [
-					// Zen Mode included here for compatability with Gen 5-6
-					'noability', 'flowergift', 'forecast', 'hungerswitch', 'illusion', 'imposter', 'neutralizinggas', 'powerofalchemy', 'receiver', 'trace', 'zenmode',
-				];
-				if (target.getAbility().isPermanent || additionalBannedAbilities.includes(target.ability)) {
+				if (ability.isPermanent || ability.copyLimited && !ability.copyLimited.includes('trace')) {
 					possibleTargets.splice(rand, 1);
 					continue;
 				}
@@ -3962,6 +3958,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				return;
 			}
 		},
+		copyLimited: ['skillswap', 'wanderingspirit'],
 		name: "Trace",
 		rating: 2.5,
 		num: 36,
@@ -4133,16 +4130,12 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	wanderingspirit: {
 		onDamagingHit(damage, target, source, move) {
-			const additionalBannedAbilities = ['hungerswitch', 'illusion', 'neutralizinggas', 'wonderguard'];
-			if (source.getAbility().isPermanent || additionalBannedAbilities.includes(source.ability) ||
-				target.volatiles['dynamax']
-			) {
-				return;
-			}
+			const sourceAbility = source.getAbility();
+			if (sourceAbility.isPermanent || sourceAbility.copyLimited && !sourceAbility.copyLimited.includes('wanderingspirit')) return;
+			if (target.volatiles['dynamax']) return;
 
 			if (move.flags['contact']) {
-				const sourceAbility = source.setAbility('wanderingspirit', target);
-				if (!sourceAbility) return;
+				if (!source.setAbility('wanderingspirit', target)) return;
 				if (target.side === source.side) {
 					this.add('-activate', target, 'Skill Swap', '', '', '[of] ' + source);
 				} else {
@@ -4248,7 +4241,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	whitesmoke: {
 		onBoost(boost, target, source, effect) {
-			if (source && target === source) return;
+			if (!source || target === source) return;
 			let showMsg = false;
 			let i: BoostName;
 			for (i in boost) {
@@ -4294,6 +4287,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				return null;
 			}
 		},
+		copyLimited: ['entrainment', 'trace'],
 		name: "Wonder Guard",
 		rating: 5,
 		num: 25,
@@ -4340,7 +4334,7 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 				}
 			},
 			onEnd(pokemon) {
-				if (['Zen', 'Galar-Zen'].includes(pokemon.species.forme)) {
+				if (pokemon.isActive && ['Zen', 'Galar-Zen'].includes(pokemon.species.forme)) {
 					pokemon.formeChange(pokemon.species.battleOnly as string);
 				}
 			},

@@ -415,16 +415,13 @@ export const commands: ChatCommands = {
 		this.sendReply(`||[Main process] RSS: ${results[0]}, Heap: ${results[1]} / ${results[2]}`);
 	},
 
-	forcehotpatch: 'hotpatch',
-	async hotpatch(target, room, user, connection, cmd) {
+	hotpatch(target, room, user, connection, cmd) {
 		if (!target) return this.parse('/help hotpatch');
 		this.canUseConsole();
 
 		if (Monitor.updateServerLock) {
 			return this.errorReply("Wait for /updateserver to finish before hotpatching.");
 		}
-		this.sendReply("Rebuilding...");
-		await rebuild(this);
 
 		const lock = Monitor.hotpatchLock;
 		const hotpatches = [
@@ -443,7 +440,7 @@ export const commands: ChatCommands = {
 				}
 
 				for (const hotpatch of hotpatches) {
-					await this.parse(`/hotpatch ${hotpatch}`);
+					this.parse(`/hotpatch ${hotpatch}`);
 				}
 			} else if (target === 'chat' || target === 'commands') {
 				if (lock['tournaments']) {
@@ -461,6 +458,9 @@ export const commands: ChatCommands = {
 					this.errorReply(`Hotpatching will enable them. Use /forcehotpatch chat if you're sure.`);
 					return this.errorReply(`Currently disabled: ${disabledCommands.join(', ')}`);
 				}
+
+				// reload .sim-dist/dex.js
+				global.Dex = require('../../sim/dex').Dex;
 
 				const oldPlugins = Chat.plugins;
 				Chat.destroy();
@@ -580,7 +580,17 @@ export const commands: ChatCommands = {
 				global.Tournaments = require('../tournaments').Tournaments;
 				Chat.loadPluginData(Tournaments, 'tournaments');
 				this.sendReply("DONE");
-			} else if (target === 'formats' || target === 'battles') {
+			} else if (target === 'battles') {
+				if (lock['battles']) {
+					return this.errorReply(`Hot-patching battles has been disabled by ${lock['battles'].by} (${lock['battles'].reason})`);
+				}
+				if (lock['formats']) {
+					return this.errorReply(`Hot-patching formats has been disabled by ${lock['formats'].by} (${lock['formats'].reason})`);
+				}
+
+				void Rooms.PM.respawn();
+				this.sendReply("Battles have been hot-patched. Any battles started after now will use the new code; however, in-progress battles will continue to use the old code.");
+			} else if (target === 'formats') {
 				if (lock['formats']) {
 					return this.errorReply(`Hot-patching formats has been disabled by ${lock['formats'].by} (${lock['formats'].reason})`);
 				}
@@ -618,6 +628,8 @@ export const commands: ChatCommands = {
 
 				this.sendReply("Hotpatching validator...");
 				void TeamValidatorAsync.PM.respawn();
+				// reload .sim-dist/dex.js
+				global.Dex = require('../../sim/dex').Dex;
 				this.sendReply("DONE. Any battles started after now will have teams be validated according to the new code.");
 			} else if (target === 'punishments') {
 				if (lock['punishments']) {
@@ -676,6 +688,7 @@ export const commands: ChatCommands = {
 		`Hot-patching has greater memory requirements than restarting`,
 		`You can disable various hot-patches with /nohotpatch. For more information on this, see /help nohotpatch`,
 		`/hotpatch chat - reloads the chat-commands and chat-plugins directories`,
+		`/hotpatch battles - spawn new simulator processes`,
 		`/hotpatch validator - spawn new team validator processes`,
 		`/hotpatch formats - reload the .sim-dist/dex.js tree, rebuild and rebroad the formats list, and spawn new simulator and team validator processes`,
 		`/hotpatch dnsbl - reloads IPTools datacenters`,
@@ -684,7 +697,6 @@ export const commands: ChatCommands = {
 		`/hotpatch tournaments - reloads new tournaments code`,
 		`/hotpatch modlog - reloads new modlog code`,
 		`/hotpatch all - hot-patches chat, tournaments, formats, login server, punishments, modlog, and dnsbl`,
-		`/forcehotpatch [target] - as above, but performs the update regardless of whether the history has changed in git`,
 	],
 
 	hotpatchlock: 'nohotpatch',
@@ -1015,33 +1027,35 @@ export const commands: ChatCommands = {
 		this.stafflog(`${user.name} used /endemergency.`);
 	},
 
-	kill(target, room, user) {
+	shutdown: 'restart',
+	restart(target, room, user) {
 		this.checkCan('lockdown');
 
 		if (Rooms.global.lockdown !== true) {
-			return this.errorReply("For safety reasons, /kill can only be used during lockdown.");
+			return this.errorReply("For safety reasons, /restart can only be used during lockdown.");
 		}
 
 		if (Monitor.updateServerLock) {
-			return this.errorReply("Wait for /updateserver to finish before using /kill.");
+			return this.errorReply("Wait for /updateserver to finish before using /restart.");
 		}
 
 		const logRoom = Rooms.get('staff') || Rooms.lobby || room;
 
-		if (!logRoom?.log.roomlogStream) return process.exit();
+		if (!logRoom?.log.roomlogStream) return process.exit(+(this.cmd === 'shutdown'));
 
-		logRoom.roomlog(`${user.name} used /kill`);
+		logRoom.roomlog(`${user.name} used /${this.cmd}`);
 
 		void logRoom.log.roomlogStream.writeEnd().then(() => {
-			process.exit();
+			process.exit(+(this.cmd === 'shutdown'));
 		});
 
 		// In the case the above never terminates
 		setTimeout(() => {
-			process.exit();
+			process.exit(+(this.cmd === 'shutdown'));
 		}, 10000);
 	},
-	killhelp: [`/kill - kills the server. Can't be done unless the server is in lockdown state. Requires: &`],
+	restarthelp: [`/restart - restarts the server. Can't be done unless the server is in lockdown state. Requires: ~`],
+	shutdownhelp: [`/shutdown - shuts down the server. Can't be done unless the server is in lockdown state. Requires: ~`],
 
 	loadbanlist(target, room, user, connection) {
 		this.checkCan('lockdown');
@@ -1107,6 +1121,9 @@ export const commands: ChatCommands = {
 		Monitor.updateServerLock = false;
 		this.sendReply(`DONE`);
 	},
+	rebuildhelp: [
+		`/rebuild - Compile's the servers TypeScript into JavaScript. Requires: console access`,
+	],
 
 	/*********************************************************
 	 * Low-level administration commands
@@ -1129,10 +1146,6 @@ export const commands: ChatCommands = {
 		if (!this.runBroadcast(true)) return;
 		const logRoom = Rooms.get('upperstaff') || Rooms.get('staff');
 
-		if (this.message.startsWith('>>') && room) {
-			this.broadcasting = true;
-			this.broadcastToRoom = true;
-		}
 		const generateHTML = (direction: string, contents: string) => (
 			`<table border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">` +
 				Utils.escapeHTML(direction).repeat(2) +
@@ -1175,7 +1188,8 @@ export const commands: ChatCommands = {
 			return this.errorReply("/evalbattle - This isn't a battle room.");
 		}
 
-		void room.battle.stream.write(`>eval ${target.replace(/\n/g, '\f')}`);
+		if (this.broadcasting) void room.battle.stream.write(`>eval ${target.replace(/\n/g, '\f')}`);
+		else void room.battle.stream.write(`>evalbattle ${user.id} ${target.replace(/\n/g, '\f')}`);
 	},
 
 	ebat: 'editbattle',

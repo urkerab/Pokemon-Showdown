@@ -97,6 +97,7 @@ class Ladder extends LadderStore {
 			connection.popup(`You are barred from starting any new games until your battle ban expires.`);
 			return null;
 		}
+		/*
 		const gameCount = user.games.size;
 		if (Monitor.countConcurrentBattle(gameCount, connection)) {
 			return null;
@@ -104,6 +105,7 @@ class Ladder extends LadderStore {
 		if (Monitor.countPrepBattle(connection.ip, connection)) {
 			return null;
 		}
+		*/
 
 		try {
 			this.formatid = Dex.validateFormat(this.formatid);

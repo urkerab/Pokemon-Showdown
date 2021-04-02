@@ -38,7 +38,6 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 	// Annika
 	mewtwomegay: {
 		inherit: true,
-		baseStats: {hp: 106, atk: 110, def: 90, spa: 154, spd: 90, spe: 130},
 		abilities: {0: "Overprotective"},
 	},
 	// A Quag To The Past
@@ -115,7 +114,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 	pichu: {
 		inherit: true,
 		types: ["Electric", "Water"],
-		baseStats: {hp: 67, atk: 58, def: 57, spa: 81, spd: 67, spe: 101},
+		baseStats: {hp: 70, atk: 80, def: 55, spa: 75, spd: 75, spe: 100},
 	},
 	// Inactive
 	gyaradosmega: {
@@ -203,11 +202,6 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 		inherit: true,
 		abilities: {0: "Winding Song"},
 	},
-	// tiki
-	snom: {
-		inherit: true,
-		baseStats: {hp: 70, atk: 65, def: 60, spa: 125, spd: 90, spe: 65},
-	},
 	// vivalospride's interaction with Coconut's move
 	darumaka: {
 		inherit: true,
@@ -246,7 +240,7 @@ export const Pokedex: {[k: string]: ModdedSpeciesData} = {
 	pikachubelle: {
 		inherit: true,
 		baseStats: {hp: 60, atk: 85, def: 50, spa: 95, spd: 85, spe: 110},
-		abilities: {0: "Weak Armor"},
+		abilities: {0: "Tangled Feet"},
 	},
 	// Zalm
 	weedle: {

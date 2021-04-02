@@ -42,11 +42,12 @@ import {PRNG, PRNGSeed} from './prng';
 import {Utils} from '../lib';
 
 const BASE_MOD = 'gen8' as ID;
-const DEFAULT_MOD = BASE_MOD;
+const DEFAULT_MOD = 'gen7';
 const DATA_DIR = path.resolve(__dirname, '../.data-dist');
 const MODS_DIR = path.resolve(__dirname, '../.data-dist/mods');
 const MAIN_FORMATS = path.resolve(__dirname, '../.config-dist/formats');
 const CUSTOM_FORMATS = path.resolve(__dirname, '../.config-dist/custom-formats');
+const LOCAL_FORMATS = path.resolve(__dirname, '../.config-dist/local-formats');
 
 const dexes: {[mod: string]: ModdedDex} = Object.create(null);
 
@@ -287,7 +288,7 @@ export class ModdedDex {
 		}
 	}
 
-	getSpecies(name?: string | Species): Species {
+	getSpecies(name?: string | Species | null): Species {
 		if (name && typeof name !== 'string') return name;
 
 		name = (name || '').trim();
@@ -308,6 +309,7 @@ export class ModdedDex {
 				species.name = id;
 				species.id = id;
 				species.abilities = {0: species.abilities['S']};
+				species.exists = false;
 			} else {
 				species = this.getSpecies(this.data.Aliases[id]);
 				if (species.cosmeticFormes) {
@@ -432,7 +434,7 @@ export class ModdedDex {
 	}
 
 	getDescs(table: keyof TextTableData, id: ID, dataEntry: AnyObject) {
-		if (dataEntry.shortDesc) {
+		if (dataEntry.desc || dataEntry.shortDesc) {
 			return {
 				desc: dataEntry.desc,
 				shortDesc: dataEntry.shortDesc,
@@ -521,11 +523,16 @@ export class ModdedDex {
 		if (effect) return effect as Condition;
 
 		if (name.startsWith('move:')) {
-			effect = this.getMove(name.slice(5));
+			const move = this.getMove(name.slice(5));
+			// @ts-ignore
+			effect = Object.assign(Object.create(move), {id: 'move:' + move.id});
 		} else if (name.startsWith('item:')) {
-			effect = this.getItem(name.slice(5));
+			const item = this.getItem(name.slice(5));
+			// @ts-ignore
+			effect = Object.assign(Object.create(item), {id: 'item:' + item.id});
 		} else if (name.startsWith('ability:')) {
 			const ability = this.getAbility(name.slice(8));
+			// @ts-ignore
 			effect = Object.assign(Object.create(ability), {id: 'ability:' + ability.id});
 		}
 		if (effect) {
@@ -556,6 +563,8 @@ export class ModdedDex {
 			effect = new Condition({id, name: 'Recoil', effectType: 'Recoil'});
 		} else if (id === 'drain') {
 			effect = new Condition({id, name: 'Drain', effectType: 'Drain'});
+		} else if (id === 'zpower') {
+			effect = new Condition({name: 'Z-Power', isZ: true});
 		} else {
 			effect = new Condition({id, name: id, exists: false});
 		}
@@ -595,9 +604,6 @@ export class ModdedDex {
 			name = this.data.Aliases[id];
 			id = toID(name);
 		}
-		if (this.data.Formats.hasOwnProperty(DEFAULT_MOD + id)) {
-			id = (DEFAULT_MOD + id) as ID;
-		}
 		let supplementaryAttributes: AnyObject | null = null;
 		if (name.includes('@@@')) {
 			if (!isTrusted) {
@@ -619,6 +625,10 @@ export class ModdedDex {
 		let effect;
 		if (this.data.Formats.hasOwnProperty(id)) {
 			effect = new Format({name}, this.data.Formats[id], supplementaryAttributes);
+		} else if (this.data.Formats.hasOwnProperty(DEFAULT_MOD + id)) {
+			effect = new Format({name}, this.data.Formats[DEFAULT_MOD + id], supplementaryAttributes);
+		} else if (this.data.Formats.hasOwnProperty(BASE_MOD + id)) {
+			effect = new Format({name}, this.data.Formats[BASE_MOD + id], supplementaryAttributes);
 		} else {
 			effect = new Format({id, name, exists: false});
 		}
@@ -878,7 +888,7 @@ export class ModdedDex {
 			for (const [subRule, source, limit, bans] of subRuleTable.complexTeamBans) {
 				ruleTable.addComplexTeamBan(subRule, source || subformat.name, limit, bans);
 			}
-			if (subRuleTable.checkCanLearn) {
+			if (subRuleTable.checkCanLearn && !format.checkCanLearn) {
 				if (ruleTable.checkCanLearn) {
 					throw new Error(
 						`"${format.name}" has conflicting move validation rules from ` +
@@ -913,7 +923,7 @@ export class ModdedDex {
 	}
 
 	validateRule(rule: string, format: Format | null = null) {
-		if (rule !== rule.trim()) throw new Error(`Rule "${rule}" should be trimmed`);
+		if (rule.trim() !== rule.replace(/^ -/, "-")) throw new Error(`Rule "${rule}" should be trimmed`);
 		switch (rule.charAt(0)) {
 		case '-':
 		case '*':
@@ -930,7 +940,7 @@ export class ModdedDex {
 				let checkTeam = buf.includes('++');
 				const banNames = buf.split(checkTeam ? '++' : '+').map(v => v.trim());
 				if (banNames.length === 1 && limit > 0) checkTeam = true;
-				const innerRule = banNames.join(checkTeam ? ' ++ ' : ' + ');
+				const innerRule = banNames.join(' + ');
 				const bans = banNames.map(v => this.validateBanRule(v));
 
 				if (checkTeam) {
@@ -1057,6 +1067,7 @@ export class ModdedDex {
 					isInexact,
 					searchType: searchTypes[table],
 					name: res.name,
+					thing: res,
 				});
 			}
 		}
@@ -1412,7 +1423,7 @@ export class ModdedDex {
 		const basePath = this.dataDir + '/';
 
 		const Scripts = this.loadDataFile(basePath, 'Scripts');
-		this.parentMod = this.isBase ? '' : (Scripts.inherit || 'base');
+		this.parentMod = this.isBase ? '' : Scripts.inherit || (/^gen\d./.test(this.currentMod) ? this.currentMod.slice(0, 4) : 'base');
 
 		let parentDex;
 		if (this.parentMod) {
@@ -1452,13 +1463,7 @@ export class ModdedDex {
 					} else if (childTypedData[entryId] && childTypedData[entryId].inherit) {
 						// {inherit: true} can be used to modify only parts of the parent data,
 						// instead of overwriting entirely
-						delete childTypedData[entryId].inherit;
-
-						// Merge parent into children entry, preserving existing childs' properties.
-						for (const key in parentTypedData[entryId]) {
-							if (key in childTypedData[entryId]) continue;
-							childTypedData[entryId][key] = parentTypedData[entryId][key];
-						}
+						this.mergeEntry(childTypedData[entryId], parentTypedData[entryId] as AnyObject);
 					}
 				}
 			}
@@ -1476,12 +1481,24 @@ export class ModdedDex {
 		return this.dataCache;
 	}
 
+	// Merge parent into children entry, preserving existing childs' properties.
+	mergeEntry(child: AnyObject, parent: AnyObject) {
+		delete child.inherit;
+		for (const key in parent) {
+			if (!(key in child)) {
+				child[key] = parent[key];
+			} else if (child[key] && child[key].inherit) {
+				this.mergeEntry(child[key], parent[key]);
+			}
+		}
+	}
+
 	includeFormats(): ModdedDex {
 		if (!this.isBase) throw new Error(`This should only be run on the base mod`);
 		this.includeMods();
 		if (this.formatsCache) return this;
 
-		if (!this.formatsCache) this.formatsCache = {};
+		this.formatsCache = {};
 
 		// Load formats
 		let Formats: any;
@@ -1524,6 +1541,75 @@ export class ModdedDex {
 			if (format.mod === undefined) format.mod = 'gen8';
 			if (!dexes[format.mod]) throw new Error(`Format "${format.name}" requires nonexistent mod: '${format.mod}'`);
 			this.formatsCache[id] = format;
+		}
+
+		// Load local formats
+		let LocalFormats;
+		try {
+			LocalFormats = require(LOCAL_FORMATS).Formats;
+			if (!Array.isArray(LocalFormats)) {
+				throw new TypeError("Exported property `Formats`from `" + "./config/local-formats.js" + "` must be an array.");
+			}
+
+			const baseFormats = this.formatsCache;
+			this.formatsCache = {};
+
+			section = '';
+			column = 1;
+			for (let [i, format] of LocalFormats.entries()) {
+				const id = toID(format.name);
+				if (format.section) section = format.section;
+				if (format.column) column = format.column;
+				if (!format.name && format.section) continue;
+				if (!id) {
+					throw new RangeError(`Format #${i + 1} must have a name with alphanumeric characters, not '${format.name}'`);
+				}
+				if (!format.section) format.section = section;
+				if (!format.column) format.column = column;
+				if (this.formatsCache[id]) throw new Error(`Format #${i + 1} has a duplicate ID: '${id}'`);
+				if (baseFormats[id]) format = Object.assign(baseFormats[id], format);
+				format.effectType = 'Format';
+				if (format.challengeShow === undefined) format.challengeShow = true;
+				if (format.searchShow === undefined) format.searchShow = true;
+				if (format.tournamentShow === undefined) format.tournamentShow = true;
+				if (!format.inherit && format.mod === undefined) {
+					throw new Error(`Format "${format.name}" has no mod`);
+				}
+				if (format.mod !== undefined && !dexes[format.mod]) {
+					throw new Error(`Format "${format.name}" requires nonexistent mod: '${format.mod}'`);
+				}
+				// let gen = dexes[format.mod].loadData().Scripts.gen;
+				// let match = id.match(/^gen(\d)/);
+				// if (match && +match[1] !== gen) throw new Error(`Format "${format.name}" is prefixed ${match[0]}, but uses gen${gen} mechanics.`);
+				this.formatsCache[id] = format;
+			}
+			for (const format of LocalFormats) {
+				if (format.inherit) {
+					for (const inherit of format.inherit) {
+						if (!this.formatsCache.hasOwnProperty(toID(inherit))) {
+							if (!this.formatsCache.hasOwnProperty('gen7' + toID(inherit))) {
+								throw new Error(`Format "${format.name}" requires nonexistent parent: '${inherit}'`);
+							}
+						}
+					}
+				}
+			}
+			const inheritFormats = (formatsCache: DexTable<Format>, id: string) => {
+				// console.log('inheritFormats: ', id);
+				const effect = {};
+				for (const inherit of formatsCache[id].inherit!.map(toID)) {
+					if (formatsCache[inherit].inherit) inheritFormats(formatsCache, inherit);
+					Object.assign(effect, formatsCache[inherit]);
+				}
+				delete formatsCache[id].inherit;
+				Object.assign(effect, formatsCache[id]);
+				Object.assign(formatsCache[id], effect);
+			};
+			for (const id in this.formatsCache) {
+				if (this.formatsCache[id].inherit) inheritFormats(this.formatsCache, id);
+			}
+		} catch (e) {
+			if (e.code !== 'MODULE_NOT_FOUND') throw e;
 		}
 
 		return this;

@@ -7,7 +7,7 @@ export interface FormatData extends Partial<Format>, EventMethods {
 }
 
 export type FormatList = (FormatData | {section: string, column?: number})[];
-export type ModdedFormatData = FormatData | Omit<FormatData, 'name'> & {inherit: true};
+export type ModdedFormatData = FormatData | Omit<Omit<FormatData, 'name'>, 'inherit'> & {inherit: true};
 
 type FormatEffectType = 'Format' | 'Ruleset' | 'Rule' | 'ValidatorRule';
 
@@ -69,7 +69,7 @@ export class RuleTable extends Map<string, string> {
 		if (this.has(`*pokemon:${species.id}`)) return true;
 		if (this.has(`+basepokemon:${toID(species.baseSpecies)}`)) return false;
 		if (this.has(`*basepokemon:${toID(species.baseSpecies)}`)) return true;
-		const tier = species.tier === '(PU)' ? 'ZU' : species.tier === '(NU)' ? 'PU' : species.tier;
+		const tier = species.tier === 'AG' ? 'Uber' : species.tier === '(PU)' ? 'ZU' : species.tier === '(NU)' ? 'PU' : species.tier;
 		if (this.has(`+pokemontag:${toID(tier)}`)) return false;
 		if (this.has(`*pokemontag:${toID(tier)}`)) return true;
 		const doublesTier = species.doublesTier === '(DUU)' ? 'DNU' : species.doublesTier;
@@ -127,6 +127,7 @@ export class RuleTable extends Map<string, string> {
 }
 
 export class Format extends BasicEffect implements Readonly<BasicEffect> {
+	inherit?: string[];
 	readonly mod: string;
 	/**
 	 * Name of the team generator algorithm, if this format uses
@@ -203,6 +204,7 @@ export class Format extends BasicEffect implements Readonly<BasicEffect> {
 
 	readonly battle?: ModdedBattleScriptsData;
 	readonly pokemon?: ModdedBattlePokemon;
+	readonly side?: ModdedBattleSide;
 	readonly queue?: ModdedBattleQueue;
 	readonly field?: ModdedField;
 	readonly cannotMega?: string[];
@@ -211,17 +213,18 @@ export class Format extends BasicEffect implements Readonly<BasicEffect> {
 	readonly threads?: string[];
 	readonly timer?: Partial<GameTimerSettings>;
 	readonly tournamentShow?: boolean;
+	readonly factoryTier?: string;
 	readonly checkCanLearn?: (
-		this: TeamValidator, move: Move, species: Species, setSources: PokemonSources, set: PokemonSet
+		this: TeamValidator, move: Move, species: Species, setSources?: PokemonSources, set?: PokemonSet
 	) => string | null;
-	readonly getEvoFamily?: (this: Format, speciesid: string) => ID;
+	readonly getEvoFamily?: (this: Format, species: string | Species) => ID;
 	readonly getSharedPower?: (this: Format, pokemon: Pokemon) => Set<string>;
 	readonly onChangeSet?: (
 		this: TeamValidator, set: PokemonSet, format: Format, setHas?: AnyObject, teamHas?: AnyObject
 	) => string[] | void;
 	readonly onModifySpeciesPriority?: number;
 	readonly onModifySpecies?: (
-		this: Battle, species: Species, target?: Pokemon, source?: Pokemon, effect?: Effect
+		this: Battle, species: Species, target: Pokemon, source: Format, effect?: Effect
 	) => Species | void;
 	readonly onStart?: (this: Battle) => void;
 	readonly onTeamPreview?: (this: Battle) => void;
@@ -231,13 +234,19 @@ export class Format extends BasicEffect implements Readonly<BasicEffect> {
 	readonly onValidateTeam?: (
 		this: TeamValidator, team: PokemonSet[], format: Format, teamHas: AnyObject
 	) => string[] | void;
-	readonly validateSet?: (this: TeamValidator, set: PokemonSet, teamHas: AnyObject) => string[] | null;
+	readonly validateSet?: (this: TeamValidator, set: PokemonSet, teamHas: AnyObject) => string[] | null | void;
 	readonly validateTeam?: (this: TeamValidator, team: PokemonSet[], options?: {
 		removeNicknames?: boolean,
 		skipSets?: {[name: string]: {[key: string]: boolean}},
-	}) => string[] | void;
+	}) => string[] | null;
 	readonly section?: string;
 	readonly column?: number;
+
+	// oms
+	readonly accessories?: { [index: string]: {type: string} & SparseStatsTable };
+	readonly customBans?: { [index: string]: string[] };
+	readonly maxHazards?: number;
+	abilityMap?: { [index: string]: string[] };
 
 	constructor(data: AnyObject, ...moreData: (AnyObject | null)[]) {
 		super(data, ...moreData);

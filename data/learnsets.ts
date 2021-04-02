@@ -2186,7 +2186,7 @@ export const Learnsets: {[speciesid: string]: LearnsetData} = {
 			stompingtantrum: ["7T"],
 			strength: ["7V", "6M", "5M", "4M", "3M"],
 			substitute: ["8V", "7M", "7V", "6M", "5M", "4M", "3T"],
-			suckerpunch: ["8V"],
+			suckerpunch: ["8V", "5C"],
 			sunnyday: ["7M", "7V", "6M", "5M", "4M", "3M"],
 			swagger: ["7M", "7V", "6M", "5M", "4M", "3T"],
 			swallow: ["7L27", "6L27", "5L27", "4L28", "3L46"],

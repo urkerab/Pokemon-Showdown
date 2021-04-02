@@ -637,7 +637,6 @@ export const Scripts: ModdedBattleScriptsData = {
 				this.runEvent('AfterEachBoost', target, source, effect, currentBoost);
 			}
 		}
-		this.runEvent('AfterBoost', target, source, effect, boost);
 		return success;
 	},
 	// getDamage can be found on sim/battle.js on the Battle object.

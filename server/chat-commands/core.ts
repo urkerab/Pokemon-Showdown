@@ -1415,8 +1415,8 @@ export const commands: ChatCommands = {
 		if (!user.named) {
 			return this.popupReply(this.tr`You must choose a username before you challenge someone.`);
 		}
-		if (Config.pmmodchat && !user.hasSysopAccess() && !Users.globalAuth.atLeast(user, Config.pmmodchat as GroupSymbol)) {
-			const groupName = Config.groups[Config.pmmodchat].name || Config.pmmodchat;
+		if (Config.laddermodchat && !user.hasSysopAccess() && !Users.globalAuth.atLeast(user, Config.laddermodchat as AuthLevel)) {
+			const groupName = Config.groups[Config.laddermodchat]?.name || Config.laddermodchat;
 			this.popupReply(this.tr`This server requires you to be rank ${groupName} or higher to challenge users.`);
 			return false;
 		}
@@ -1476,9 +1476,11 @@ export const commands: ChatCommands = {
 	},
 
 	vtm(target, room, user, connection) {
+		/*
 		if (Monitor.countPrepBattle(connection.ip, connection)) {
 			return;
 		}
+		*/
 		if (!target) return this.errorReply(this.tr`Provide a valid format.`);
 		const originalFormat = Dex.getFormat(target);
 		// Note: The default here of [Gen 8] Anything Goes isn't normally hit; since the web client will send a default format
