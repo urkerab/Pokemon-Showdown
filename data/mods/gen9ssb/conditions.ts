@@ -30,7 +30,7 @@ export const Conditions: {[id: IDEntry]: ModdedConditionData & {innateName?: str
 			if (this.randomChance(2, 100)) {
 				this.add(`c:|${getName('aegii')}|...right, I was saying in SSB4 to "stan loona", but this has to be changed now that we've found out that the company managing loona is shady af. I would like to amend that to "stan the individual members of loona" (or if you want, you can choose to stan any other group of your choice!)`);
 			} else {
-				pokemon.side.addSlotCondition(pokemon, 'aegiibpmsg');
+				pokemon.addSlotCondition('aegiibpmsg');
 			}
 		},
 		onFaint() {
@@ -41,7 +41,7 @@ export const Conditions: {[id: IDEntry]: ModdedConditionData & {innateName?: str
 		onSwap(target, source) {
 			if (!target.fainted) {
 				this.add(`c:|${getName('aegii')}|~yes ${target.name}`);
-				target.side.removeSlotCondition(target, 'aegiibpmsg');
+				target.removeSlotCondition('aegiibpmsg');
 			}
 		},
 	},

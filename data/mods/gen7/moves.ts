@@ -389,7 +389,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 					target.heal(target.maxhp);
 					target.clearStatus();
 					this.add('-heal', target, target.getHealth, '[from] move: Healing Wish');
-					target.side.removeSlotCondition(target, 'healingwish');
+					target.removeSlotCondition('healingwish');
 				}
 			},
 		},
@@ -619,7 +619,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 						moveSlot.pp = moveSlot.maxpp;
 					}
 					this.add('-heal', target, target.getHealth, '[from] move: Lunar Dance');
-					target.side.removeSlotCondition(target, 'lunardance');
+					target.removeSlotCondition('lunardance');
 				}
 			},
 		},

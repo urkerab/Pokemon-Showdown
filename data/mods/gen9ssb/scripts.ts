@@ -523,7 +523,7 @@ export const Scripts: ModdedBattleScriptsData = {
 			action.target.hp = 1; // Needed so hp functions works
 			action.target.sethp(action.target.maxhp / 2);
 			this.add('-heal', action.target, action.target.getHealth, '[from] move: Revival Blessing');
-			action.pokemon.side.removeSlotCondition(action.pokemon, 'revivalblessing');
+			action.pokemon.removeSlotCondition('revivalblessing');
 			break;
 		// @ts-ignore I'm sorry but it takes a lot
 		case 'scapegoat':
@@ -547,7 +547,7 @@ export const Scripts: ModdedBattleScriptsData = {
 			// @ts-ignore
 			this.add(`c:|${getName((action.pokemon.illusion || action.pokemon).name)}|Don't worry, if this plan fails we can just blame ${action.target.name}`);
 			// @ts-ignore
-			action.pokemon.side.removeSlotCondition(action.pokemon, 'scapegoat');
+			action.pokemon.removeSlotCondition('scapegoat');
 			break;
 		case 'runUnnerve':
 			this.singleEvent('PreStart', action.pokemon.getAbility(), action.pokemon.abilityState, action.pokemon);

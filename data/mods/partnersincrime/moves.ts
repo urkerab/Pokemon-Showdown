@@ -66,7 +66,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 						target.m.trackPP.set(key, 0);
 					}
 					this.add('-heal', target, target.getHealth, '[from] move: Lunar Dance');
-					target.side.removeSlotCondition(target, 'lunardance');
+					target.removeSlotCondition('lunardance');
 				}
 			},
 		},

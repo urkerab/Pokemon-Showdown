@@ -2637,7 +2637,7 @@ export class Battle {
 			action.target.hp = 1; // Needed so hp functions works
 			action.target.sethp(action.target.maxhp / 2);
 			this.add('-heal', action.target, action.target.getHealth, '[from] move: Revival Blessing');
-			action.pokemon.side.removeSlotCondition(action.pokemon, 'revivalblessing');
+			action.pokemon.removeSlotCondition('revivalblessing');
 			break;
 		case 'runUnnerve':
 			this.singleEvent('PreStart', action.pokemon.getAbility(), action.pokemon.abilityState, action.pokemon);

@@ -3982,7 +3982,7 @@ export const Moves: import('../sim/dex-moves').MoveDataTable = {
 		priority: 0,
 		flags: {metronome: 1, futuremove: 1},
 		onTry(source, target) {
-			if (!target.side.addSlotCondition(target, 'futuremove')) return false;
+			if (!target.addSlotCondition('futuremove')) return false;
 			Object.assign(target.side.slotConditions[target.position]['futuremove'], {
 				move: 'doomdesire',
 				source: source,
@@ -6614,7 +6614,7 @@ export const Moves: import('../sim/dex-moves').MoveDataTable = {
 		flags: {allyanim: 1, metronome: 1, futuremove: 1},
 		ignoreImmunity: true,
 		onTry(source, target) {
-			if (!target.side.addSlotCondition(target, 'futuremove')) return false;
+			if (!target.addSlotCondition('futuremove')) return false;
 			Object.assign(target.side.slotConditions[target.position]['futuremove'], {
 				move: 'futuresight',
 				source: source,
@@ -8642,7 +8642,7 @@ export const Moves: import('../sim/dex-moves').MoveDataTable = {
 					target.heal(target.maxhp);
 					target.clearStatus();
 					this.add('-heal', target, target.getHealth, '[from] move: Healing Wish');
-					target.side.removeSlotCondition(target, 'healingwish');
+					target.removeSlotCondition('healingwish');
 				}
 			},
 		},
@@ -10962,7 +10962,7 @@ export const Moves: import('../sim/dex-moves').MoveDataTable = {
 						moveSlot.pp = moveSlot.maxpp;
 					}
 					this.add('-heal', target, target.getHealth, '[from] move: Lunar Dance');
-					target.side.removeSlotCondition(target, 'lunardance');
+					target.removeSlotCondition('lunardance');
 				}
 			},
 		},

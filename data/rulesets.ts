@@ -2481,7 +2481,7 @@ export const Rulesets: import('../sim/dex-formats').FormatDataTable = {
 			switch (move.id) {
 			case 'doomdesire': {
 				move.onTry = function (source, subtarget) {
-					if (!subtarget.side.addSlotCondition(subtarget, 'futuremove')) return false;
+					if (!subtarget.addSlotCondition('futuremove')) return false;
 					Object.assign(subtarget.side.slotConditions[subtarget.position]['futuremove'], {
 						move: 'doomdesire',
 						source: source,
@@ -2504,7 +2504,7 @@ export const Rulesets: import('../sim/dex-formats').FormatDataTable = {
 			}
 			case 'futuresight': {
 				move.onTry = function (source, subtarget) {
-					if (!subtarget.side.addSlotCondition(subtarget, 'futuremove')) return false;
+					if (!subtarget.addSlotCondition('futuremove')) return false;
 					Object.assign(subtarget.side.slotConditions[subtarget.position]['futuremove'], {
 						duration: 3,
 						move: 'futuresight',

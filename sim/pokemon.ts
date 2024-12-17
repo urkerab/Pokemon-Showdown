@@ -1977,6 +1977,21 @@ export class Pokemon {
 		}
 	}
 
+	addSlotCondition(
+		status: string | Condition, source: Pokemon | 'debug' | null = null,
+		sourceEffect: Effect | null = null
+	) {
+		return this.side.addSlotCondition(this, status, source, sourceEffect);
+	}
+
+	getSlotCondition(status: string | Effect) {
+		return this.side.getSlotCondition(this, status);
+	}
+
+	removeSlotCondition(status: string | Effect) {
+		return this.side.removeSlotCondition(this, status);
+	}
+
 	getHealth = () => {
 		if (!this.hp) return {side: this.side.id, secret: '0 fnt', shared: '0 fnt'};
 		let secret = `${this.hp}/${this.maxhp}`;

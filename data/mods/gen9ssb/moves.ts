@@ -184,7 +184,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 				if (!target.fainted && (target.hp < target.maxhp)) {
 					target.heal(target.maxhp / 3);
 					this.add('-heal', target, target.getHealth, '[from] move: Free Switch Button');
-					target.side.removeSlotCondition(target, 'freeswitchbutton');
+					target.removeSlotCondition('freeswitchbutton');
 				}
 			},
 		},
@@ -3950,7 +3950,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 			onSwap(target) {
 				if (!target.fainted) {
 					target.addVolatile('catstampofapproval');
-					target.side.removeSlotCondition(target, 'qualitycontrolzoomies');
+					target.removeSlotCondition('qualitycontrolzoomies');
 				}
 			},
 		},
@@ -4039,7 +4039,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 				if (!target.fainted) {
 					this.add(`c:|${getName((source.illusion || source).name)}|~nyaa ${target.name}`);
 					this.add(`c:|${getName('Jeopard-E')}|**It is now ${target.name}'s turn to ask a question.**`);
-					target.side.removeSlotCondition(target, 'nyaa');
+					target.removeSlotCondition('nyaa');
 				}
 			},
 		},
@@ -6268,7 +6268,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 					this.add('-anim', target, "Baton Pass", target);
 					target.addVolatile('focusenergy');
 					this.boost({spe: 1}, target, this.effectState.source, this.dex.getActiveMove('tagyoureit'));
-					target.side.removeSlotCondition(target, 'tagyoureit');
+					target.removeSlotCondition('tagyoureit');
 				}
 			},
 		},

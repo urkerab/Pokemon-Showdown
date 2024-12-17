@@ -428,7 +428,7 @@ export const Conditions: import('../sim/dex-conditions').ConditionDataTable = {
 			if (!target.fainted) {
 				target.heal(target.maxhp);
 				this.add('-heal', target, target.getHealth, '[from] move: ' + this.effectState.sourceEffect, '[zeffect]');
-				target.side.removeSlotCondition(target, 'healreplacement');
+				target.removeSlotCondition('healreplacement');
 			}
 		},
 	},

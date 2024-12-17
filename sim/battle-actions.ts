@@ -1268,7 +1268,7 @@ export class BattleActions {
 					didSomething = this.combineResults(didSomething, hitResult);
 				}
 				if (moveData.slotCondition) {
-					hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
+					hitResult = target.addSlotCondition(moveData.slotCondition, source, move);
 					didSomething = this.combineResults(didSomething, hitResult);
 				}
 				if (moveData.weather) {
@@ -1534,7 +1534,7 @@ export class BattleActions {
 				this.battle.heal(pokemon.maxhp, pokemon, pokemon, zPower);
 				break;
 			case 'healreplacement':
-				pokemon.side.addSlotCondition(pokemon, 'healreplacement', pokemon, move);
+				pokemon.addSlotCondition('healreplacement', pokemon, move);
 				break;
 			case 'clearnegativeboost':
 				const boosts: SparseBoostsTable = {};

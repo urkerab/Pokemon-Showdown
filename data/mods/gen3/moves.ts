@@ -252,7 +252,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 	doomdesire: {
 		inherit: true,
 		onTry(source, target) {
-			if (!target.side.addSlotCondition(target, 'futuremove')) return false;
+			if (!target.addSlotCondition('futuremove')) return false;
 			const moveData = {
 				name: "Doom Desire",
 				basePower: 120,

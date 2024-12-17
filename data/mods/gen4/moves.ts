@@ -327,7 +327,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 		accuracy: 85,
 		basePower: 120,
 		onTry(source, target) {
-			if (!target.side.addSlotCondition(target, 'futuremove')) return false;
+			if (!target.addSlotCondition('futuremove')) return false;
 			const moveData = {
 				name: "Doom Desire",
 				basePower: 120,
@@ -572,7 +572,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 		basePower: 80,
 		pp: 15,
 		onTry(source, target) {
-			if (!target.side.addSlotCondition(target, 'futuremove')) return false;
+			if (!target.addSlotCondition('futuremove')) return false;
 			const moveData = {
 				name: "Future Sight",
 				basePower: 80,
@@ -758,7 +758,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 					target.heal(target.maxhp);
 					target.clearStatus();
 					this.add('-heal', target, target.getHealth, '[from] move: Healing Wish');
-					target.side.removeSlotCondition(target, 'healingwish');
+					target.removeSlotCondition('healingwish');
 					target.lastMove = this.lastMove;
 				} else {
 					target.switchFlag = true;
@@ -942,7 +942,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 						moveSlot.pp = moveSlot.maxpp;
 					}
 					this.add('-heal', target, target.getHealth, '[from] move: Lunar Dance');
-					target.side.removeSlotCondition(target, 'lunardance');
+					target.removeSlotCondition('lunardance');
 					target.lastMove = this.lastMove;
 				} else {
 					target.switchFlag = true;

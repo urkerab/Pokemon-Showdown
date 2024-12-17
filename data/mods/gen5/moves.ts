@@ -273,7 +273,7 @@ export const Moves: import('../../../sim/dex-moves').ModdedMoveDataTable = {
 		inherit: true,
 		basePower: 100,
 		onTry(source, target) {
-			if (!target.side.addSlotCondition(target, 'futuremove')) return false;
+			if (!target.addSlotCondition('futuremove')) return false;
 			Object.assign(target.side.slotConditions[target.position]['futuremove'], {
 				duration: 3,
 				move: 'futuresight',
