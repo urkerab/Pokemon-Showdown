@@ -375,16 +375,15 @@ export const Conditions: import('../sim/dex-conditions').ConditionDataTable = {
 		// this is a slot condition
 		name: 'futuremove',
 		onStart(target) {
-			this.effectState.targetSlot = target.getSlot();
 			this.effectState.endingTurn = (this.turn - 1) + 2;
 			if (this.effectState.endingTurn >= 254) {
 				this.hint(`In Gen 8+, Future attacks will never resolve when used on the 255th turn or later.`);
 			}
 		},
 		onResidualOrder: 3,
-		onResidual(side: any) {
+		onResidual(target) {
 			if (this.getOverflowedTurnCount() < this.effectState.endingTurn) return;
-			side.removeSlotCondition(this.getAtSlot(this.effectState.targetSlot), 'futuremove');
+			target.removeSlotCondition('futuremove');
 		},
 		onEnd(target) {
 			const data = this.effectState;

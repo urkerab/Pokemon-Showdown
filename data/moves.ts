@@ -21733,9 +21733,9 @@ export const Moves: import('../sim/dex-moves').MoveDataTable = {
 				}
 			},
 			onResidualOrder: 4,
-			onResidual(side: any) {
+			onResidual(target) {
 				if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
-				side.removeSlotCondition(this.getAtSlot(this.effectState.sourceSlot), 'wish');
+				target.removeSlotCondition('wish');
 			},
 			onEnd(target) {
 				if (target && !target.fainted) {

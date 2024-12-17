@@ -86,7 +86,7 @@ interface EventListenerWithoutPriority {
 	state: EffectState | null;
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	end: Function | null;
-	endCallArgs?: any[];
+	allowFainted?: boolean;
 	effectHolder: Pokemon | Side | Field | Battle;
 }
 interface EventListener extends EventListenerWithoutPriority {
@@ -493,12 +493,11 @@ export class Battle {
 			const handler = handlers[0];
 			handlers.shift();
 			const effect = handler.effect;
-			if ((handler.effectHolder as Pokemon).fainted) continue;
+			if (!handler.allowFainted && (handler.effectHolder as Pokemon).fainted) continue;
 			if (handler.end && handler.state && handler.state.duration) {
 				handler.state.duration--;
 				if (!handler.state.duration) {
-					const endCallArgs = handler.endCallArgs || [handler.effectHolder, effect.id];
-					handler.end.call(...endCallArgs as [any, ...any[]]);
+					handler.end.call(handler.effectHolder, effect.id);
 					if (this.ended) return;
 					continue;
 				}
@@ -1007,9 +1006,9 @@ export class Battle {
 					effect: slotCondition,
 					callback,
 					state: slotConditionState,
-					end: side.removeSlotCondition,
-					endCallArgs: [side, pokemon, slotCondition.id],
-					effectHolder: side,
+					end: pokemon.removeSlotCondition,
+					effectHolder: pokemon,
+					allowFainted: true,
 				}, callbackName));
 			}
 		}
